@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timecurve-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manager
+      role: backend
+      scs: timecurve
+  template:
+    metadata:
+      labels:
+        app: manager
+        role: backend
+        scs: timecurve
+    spec:
+      containers:
+        - name: timecurve-manager
+          image: eu.gcr.io/buc-personal-banking/timecurve-manager:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /timecurve/objects/ready
+              port: 8080
+          ports:
+            - protocol: TCP
+              containerPort: 8080
+          # The following environment variables will contain the database host,
+          # user and password to connect to the PostgreSQL instance.
+#          env:
+#            - name: POSTGRES_DB_HOST
+#              value: 127.0.0.1:5432
+            # [START cloudsql_secrets]
+#            - name: POSTGRES_DB_USER
+#              valueFrom:
+#                secretKeyRef:
+#                  name: cloudsql-db-credentials
+#                  key: username
+#            - name: POSTGRES_DB_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: cloudsql-db-credentials
+#                  key: password
+            # [END cloudsql_secrets]
+        # Change <INSTANCE_CONNECTION_NAME> here to include your GCP
+        # project, the region of your Cloud SQL instance and the name
+        # of your Cloud SQL instance. The format is
+        # $PROJECT:$REGION:$INSTANCE
+        # [START proxy_container]
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances=buc-personal-banking:europe-west3:timecurves=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          # [START cloudsql_security_context]
+#          securityContext:
+#            runAsUser: 2  # non-root user
+#            allowPrivilegeEscalation: false
+          # [END cloudsql_security_context]
+          volumeMounts:
+            - name: my-secrets-volume
+              mountPath: /secrets/cloudsql
+              readOnly: true
+        # [END proxy_container]
+      # [START volumes]
+      volumes:
+        - name: my-secrets-volume
+          secret:
+            secretName: cloudsql-instance-credentials
+      # [END volumes]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timecurve-manager
+spec:
+  selector:
+    app: manager
+    role: backend
+    scs: timecurve
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
