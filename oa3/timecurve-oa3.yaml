@@ -9,23 +9,23 @@ info:
   * fast querying
   * multi dimensional dates per curve'
 tags:
-- name: timecurve
-  description: Everything about your timecurves
-  externalDocs:
-    description: Find out more
-    url: http://swagger.io
-- name: store
-  description: Access to timecurvestore orders
-- name: user
-  description: Operations about user
-  externalDocs:
-    description: Find out more about our store
-    url: http://swagger.io
+  - name: timecurve
+    description: Everything about your timecurves
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: store
+    description: Access to timecurvestore orders
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
 paths:
   /timecurve:
     put:
       tags:
-      - timecurve
+        - timecurve
       summary: Update an existing timecurve
       operationId: updatetimecurve
       requestBody:
@@ -49,12 +49,12 @@ paths:
           description: Validation exception
           content: {}
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
     post:
       tags:
-      - timecurve
+        - timecurve
       summary: Add a new timecurve to the store
       operationId: addtimecurve
       requestBody:
@@ -72,32 +72,32 @@ paths:
           description: Invalid input
           content: {}
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
   /timecurve/findByStatus:
     get:
       tags:
-      - timecurve
+        - timecurve
       summary: Finds timecurves by status
       description: Multiple status values can be provided with comma separated strings
       operationId: findtimecurvesByStatus
       parameters:
-      - name: status
-        in: query
-        description: Status values that need to be considered for filter
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: array
-          items:
-            type: string
-            default: available
-            enum:
-            - available
-            - pending
-            - sold
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              default: available
+              enum:
+                - available
+                - pending
+                - sold
       responses:
         200:
           description: successful operation
@@ -116,28 +116,28 @@ paths:
           description: Invalid status value
           content: {}
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
   /timecurve/findByTags:
     get:
       tags:
-      - timecurve
+        - timecurve
       summary: Finds timecurves by tags
       description: Muliple tags can be provided with comma separated strings. Use         tag1,
         tag2, tag3 for testing.
       operationId: findtimecurvesByTags
       parameters:
-      - name: tags
-        in: query
-        description: Tags to filter by
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: array
-          items:
-            type: string
+        - name: tags
+          in: query
+          description: Tags to filter by
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         200:
           description: successful operation
@@ -157,24 +157,24 @@ paths:
           content: {}
       deprecated: true
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
   /timecurve/{timecurveId}:
     get:
       tags:
-      - timecurve
+        - timecurve
       summary: Find timecurve by ID
       description: Returns a single timecurve
       operationId: gettimecurveById
       parameters:
-      - name: timecurveId
-        in: path
-        description: ID of timecurve to return
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: timecurveId
+          in: path
+          description: ID of timecurve to return
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: successful operation
@@ -192,20 +192,20 @@ paths:
           description: timecurve not found
           content: {}
       security:
-      - api_key: []
+        - api_key: []
     post:
       tags:
-      - timecurve
+        - timecurve
       summary: Updates a timecurve in the store with form data
       operationId: updatetimecurveWithForm
       parameters:
-      - name: timecurveId
-        in: path
-        description: ID of timecurve that needs to be updated
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: timecurveId
+          in: path
+          description: ID of timecurve that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -222,26 +222,26 @@ paths:
           description: Invalid input
           content: {}
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
     delete:
       tags:
-      - timecurve
+        - timecurve
       summary: Deletes a timecurve
       operationId: deletetimecurve
       parameters:
-      - name: api_key
-        in: header
-        schema:
-          type: string
-      - name: timecurveId
-        in: path
-        description: timecurve id to delete
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: timecurveId
+          in: path
+          description: timecurve id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         400:
           description: Invalid ID supplied
@@ -250,23 +250,23 @@ paths:
           description: timecurve not found
           content: {}
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
   /timecurve/{timecurveId}/uploadImage:
     post:
       tags:
-      - timecurve
+        - timecurve
       summary: uploads an image
       operationId: uploadFile
       parameters:
-      - name: timecurveId
-        in: path
-        description: ID of timecurve to update
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: timecurveId
+          in: path
+          description: ID of timecurve to update
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           multipart/form-data:
@@ -287,13 +287,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-      - timecurvestore_auth:
-        - write:timecurves
-        - read:timecurves
+        - timecurvestore_auth:
+            - write:timecurves
+            - read:timecurves
   /store/inventory:
     get:
       tags:
-      - store
+        - store
       summary: Returns timecurve inventories by status
       description: Returns a map of status codes to quantities
       operationId: getInventory
@@ -308,11 +308,11 @@ paths:
                   type: integer
                   format: int32
       security:
-      - api_key: []
+        - api_key: []
   /store/order:
     post:
       tags:
-      - store
+        - store
       summary: Place an order for a timecurve
       operationId: placeOrder
       requestBody:
@@ -338,21 +338,21 @@ paths:
   /store/order/{orderId}:
     get:
       tags:
-      - store
+        - store
       summary: Find purchase order by ID
       description: For valid response try integer IDs with value >= 1 and <= 10.         Other
         values will generated exceptions
       operationId: getOrderById
       parameters:
-      - name: orderId
-        in: path
-        description: ID of timecurve that needs to be fetched
-        required: true
-        schema:
-          maximum: 10.0
-          minimum: 1.0
-          type: integer
-          format: int64
+        - name: orderId
+          in: path
+          description: ID of timecurve that needs to be fetched
+          required: true
+          schema:
+            maximum: 10.0
+            minimum: 1.0
+            type: integer
+            format: int64
       responses:
         200:
           description: successful operation
@@ -371,20 +371,20 @@ paths:
           content: {}
     delete:
       tags:
-      - store
+        - store
       summary: Delete purchase order by ID
       description: For valid response try integer IDs with positive integer value.         Negative
         or non-integer values will generate API errors
       operationId: deleteOrder
       parameters:
-      - name: orderId
-        in: path
-        description: ID of the order that needs to be deleted
-        required: true
-        schema:
-          minimum: 1.0
-          type: integer
-          format: int64
+        - name: orderId
+          in: path
+          description: ID of the order that needs to be deleted
+          required: true
+          schema:
+            minimum: 1.0
+            type: integer
+            format: int64
       responses:
         400:
           description: Invalid ID supplied
@@ -395,7 +395,7 @@ paths:
   /user:
     post:
       tags:
-      - user
+        - user
       summary: Create user
       description: This can only be done by the logged in user.
       operationId: createUser
@@ -413,7 +413,7 @@ paths:
   /user/createWithArray:
     post:
       tags:
-      - user
+        - user
       summary: Creates list of users with given input array
       operationId: createUsersWithArrayInput
       requestBody:
@@ -432,7 +432,7 @@ paths:
   /user/createWithList:
     post:
       tags:
-      - user
+        - user
       summary: Creates list of users with given input array
       operationId: createUsersWithListInput
       requestBody:
@@ -451,22 +451,22 @@ paths:
   /user/login:
     get:
       tags:
-      - user
+        - user
       summary: Logs user into the system
       operationId: loginUser
       parameters:
-      - name: username
-        in: query
-        description: The user name for login
-        required: true
-        schema:
-          type: string
-      - name: password
-        in: query
-        description: The password for login in clear text
-        required: true
-        schema:
-          type: string
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: successful operation
@@ -494,7 +494,7 @@ paths:
   /user/logout:
     get:
       tags:
-      - user
+        - user
       summary: Logs out current logged in user session
       operationId: logoutUser
       responses:
@@ -504,16 +504,16 @@ paths:
   /user/{username}:
     get:
       tags:
-      - user
+        - user
       summary: Get user by user name
       operationId: getUserByName
       parameters:
-      - name: username
-        in: path
-        description: 'The name that needs to be fetched. Use user1 for testing. '
-        required: true
-        schema:
-          type: string
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: successful operation
@@ -532,17 +532,17 @@ paths:
           content: {}
     put:
       tags:
-      - user
+        - user
       summary: Updated user
       description: This can only be done by the logged in user.
       operationId: updateUser
       parameters:
-      - name: username
-        in: path
-        description: name that need to be updated
-        required: true
-        schema:
-          type: string
+        - name: username
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
       requestBody:
         description: Updated user object
         content:
@@ -559,17 +559,17 @@ paths:
           content: {}
     delete:
       tags:
-      - user
+        - user
       summary: Delete user
       description: This can only be done by the logged in user.
       operationId: deleteUser
       parameters:
-      - name: username
-        in: path
-        description: The name that needs to be deleted
-        required: true
-        schema:
-          type: string
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
       responses:
         400:
           description: Invalid username supplied
@@ -598,9 +598,9 @@ components:
           type: string
           description: Order Status
           enum:
-          - placed
-          - approved
-          - delivered
+            - placed
+            - approved
+            - delivered
         complete:
           type: boolean
           default: false
@@ -652,8 +652,8 @@ components:
         name: Tag
     timecurve:
       required:
-      - name
-      - photoUrls
+        - name
+        - photoUrls
       type: object
       properties:
         id:
@@ -682,9 +682,9 @@ components:
           type: string
           description: timecurve status in the store
           enum:
-          - available
-          - pending
-          - sold
+            - available
+            - pending
+            - sold
       xml:
         name: timecurve
     ApiResponse:

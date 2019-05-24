@@ -2,13 +2,13 @@ apiVersion: skaffold/v1beta7
 kind: Config
 build:
   artifacts:
-  - image: eu.gcr.io/buc-personal-banking/timecurve-manager:latest
-    docker:
-      dockerfile: .
-  - image: gcr.io/cloudsql-docker/gce-proxy:1.11
-    docker:
-      dockerfile: .
+    - image: eu.gcr.io/buc-personal-banking/timecurve-manager:latest
+      docker:
+        dockerfile: .
+    - image: gcr.io/cloudsql-docker/gce-proxy:1.11
+      docker:
+        dockerfile: .
 deploy:
   kubectl:
     manifests:
-    - k8s\timecurve-manager.yaml
+      - k8s\timecurve-manager.yaml

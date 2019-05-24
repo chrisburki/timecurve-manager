@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class TimecurveObjectNotFoundException extends RuntimeException {
 
   private TimecurveObjectNotFoundException(String ident, String type) {
-      super("Timecurve Object with " + type +": " + ident + " does not exist");
+    super("Timecurve Object with " + type + ": " + ident + " does not exist");
   }
 
-  public static TimecurveObjectNotFoundException timecurveObjectNotFound(String ident, String type) {
-      return new TimecurveObjectNotFoundException(ident, type);
+  public static TimecurveObjectNotFoundException timecurveObjectNotFound(String ident,
+      String type) {
+    return new TimecurveObjectNotFoundException(ident, type);
   }
 
 }

@@ -5,16 +5,16 @@ import java.util.Optional;
 
 public interface TimecurveObjectRepository {
 
-    List<TimecurveObject> findAll();
+  List<TimecurveObject> findAll();
 
-    Optional<TimecurveObject> findById(Long id);
+  Optional<TimecurveObject> findById(Long id);
 
-    Optional<TimecurveObject> findByTag(String tag);
+  Optional<TimecurveObject> findByTag(String tag);
 
-    List<TimecurveObject> findByName(String name);
+  List<TimecurveObject> findByName(String name);
 
-    TimecurveObject save(TimecurveObject timecurveObject);
+  TimecurveObject save(TimecurveObject timecurveObject);
 
-    void delete(TimecurveObject timecurveObject);
+  void delete(TimecurveObject timecurveObject);
 
 }

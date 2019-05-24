@@ -32,22 +32,22 @@ spec:
           ports:
             - protocol: TCP
               containerPort: 8080
-          # The following environment variables will contain the database host,
-          # user and password to connect to the PostgreSQL instance.
-#          env:
-#            - name: POSTGRES_DB_HOST
-#              value: 127.0.0.1:5432
+            # The following environment variables will contain the database host,
+            # user and password to connect to the PostgreSQL instance.
+            #          env:
+            #            - name: POSTGRES_DB_HOST
+            #              value: 127.0.0.1:5432
             # [START cloudsql_secrets]
-#            - name: POSTGRES_DB_USER
-#              valueFrom:
-#                secretKeyRef:
-#                  name: cloudsql-db-credentials
-#                  key: username
-#            - name: POSTGRES_DB_PASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  name: cloudsql-db-credentials
-#                  key: password
+            #            - name: POSTGRES_DB_USER
+            #              valueFrom:
+            #                secretKeyRef:
+            #                  name: cloudsql-db-credentials
+            #                  key: username
+            #            - name: POSTGRES_DB_PASSWORD
+            #              valueFrom:
+            #                secretKeyRef:
+            #                  name: cloudsql-db-credentials
+            #                  key: password
             # [END cloudsql_secrets]
         # Change <INSTANCE_CONNECTION_NAME> here to include your GCP
         # project, the region of your Cloud SQL instance and the name
@@ -60,9 +60,9 @@ spec:
                     "-instances=buc-personal-banking:europe-west3:timecurves=tcp:5432",
                     "-credential_file=/secrets/cloudsql/credentials.json"]
           # [START cloudsql_security_context]
-#          securityContext:
-#            runAsUser: 2  # non-root user
-#            allowPrivilegeEscalation: false
+          #          securityContext:
+          #            runAsUser: 2  # non-root user
+          #            allowPrivilegeEscalation: false
           # [END cloudsql_security_context]
           volumeMounts:
             - name: my-secrets-volume

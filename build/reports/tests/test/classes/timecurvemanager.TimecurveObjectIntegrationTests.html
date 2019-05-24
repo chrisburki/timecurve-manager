@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.431s</div>
+<div class="counter">0.328s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,12 +79,12 @@
 </thead>
 <tr>
 <td class="success">givenTimecurveFindByNameAndLabel</td>
-<td class="success">0.078s</td>
+<td class="success">0.061s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">givenTimecurvesGetAll</td>
-<td class="success">0.353s</td>
+<td class="success">0.267s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -92,29 +92,29 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>22:05:37.617 [Test worker] DEBUG org.springframework.test.context.junit4.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:37.626 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
-22:05:37.636 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
-22:05:37.682 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [timecurvemanager.TimecurveObjectIntegrationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
-22:05:37.696 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [timecurvemanager.TimecurveObjectIntegrationTests], using SpringBootContextLoader
-22:05:37.701 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [timecurvemanager.TimecurveObjectIntegrationTests]: class path resource [timecurvemanager/TimecurveObjectIntegrationTests-context.xml] does not exist
-22:05:37.703 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [timecurvemanager.TimecurveObjectIntegrationTests]: class path resource [timecurvemanager/TimecurveObjectIntegrationTestsContext.groovy] does not exist
-22:05:37.703 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [timecurvemanager.TimecurveObjectIntegrationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-22:05:37.705 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [timecurvemanager.TimecurveObjectIntegrationTests]: TimecurveObjectIntegrationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-22:05:37.823 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:37.951 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\dev\timecurve\manager\build\classes\java\main\timecurvemanager\TimecurveManagerApplication.class]
-22:05:37.953 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration timecurvemanager.TimecurveManagerApplication for test class timecurvemanager.TimecurveObjectIntegrationTests
-22:05:38.099 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [timecurvemanager.TimecurveObjectIntegrationTests]: using defaults.
-22:05:38.101 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
-22:05:38.131 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6833e665, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6384ae79, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7b5be86c, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@4651fc9, org.springframework.test.context.support.DirtiesContextTestExecutionListener@7312c1ee, org.springframework.test.context.transaction.TransactionalTestExecutionListener@35a34e93, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@111fc8c3, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@3d28067e, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@5850bd84, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7728a7cb, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@189e203d, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@6578dea6]
-22:05:38.134 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:38.135 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:38.136 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:38.136 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:38.143 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@53d8ecc0 testClass = TimecurveObjectIntegrationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@3faa0231 testClass = TimecurveObjectIntegrationTests, locations = '{}', classes = '{class timecurvemanager.TimecurveManagerApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@e7e8512, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@7e3f8432, [ImportsContextCustomizer@4e6c8f6e key = [org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcSecurityAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebClientAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebDriverAutoConfiguration]], org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@4ad3c7f5, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@2b3114c1, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@4a5bd01e], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
-22:05:38.144 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:38.144 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [timecurvemanager.TimecurveObjectIntegrationTests]
-22:05:38.176 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=-1}
+<pre>07:09:25.717 [Test worker] DEBUG org.springframework.test.context.junit4.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:25.727 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+07:09:25.737 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+07:09:25.766 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [timecurvemanager.TimecurveObjectIntegrationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+07:09:25.778 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [timecurvemanager.TimecurveObjectIntegrationTests], using SpringBootContextLoader
+07:09:25.784 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [timecurvemanager.TimecurveObjectIntegrationTests]: class path resource [timecurvemanager/TimecurveObjectIntegrationTests-context.xml] does not exist
+07:09:25.785 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [timecurvemanager.TimecurveObjectIntegrationTests]: class path resource [timecurvemanager/TimecurveObjectIntegrationTestsContext.groovy] does not exist
+07:09:25.786 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [timecurvemanager.TimecurveObjectIntegrationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+07:09:25.788 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [timecurvemanager.TimecurveObjectIntegrationTests]: TimecurveObjectIntegrationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+07:09:25.889 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.006 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\dev\timecurve\manager\build\classes\java\main\timecurvemanager\TimecurveManagerApplication.class]
+07:09:26.008 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration timecurvemanager.TimecurveManagerApplication for test class timecurvemanager.TimecurveObjectIntegrationTests
+07:09:26.140 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [timecurvemanager.TimecurveObjectIntegrationTests]: using defaults.
+07:09:26.141 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+07:09:26.179 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@60c64555, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@1bb793cf, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@361ae5d4, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@7fb852d5, org.springframework.test.context.support.DirtiesContextTestExecutionListener@2d865c9a, org.springframework.test.context.transaction.TransactionalTestExecutionListener@a088b0e, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6bddfbde, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@564e328a, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@49b3d655, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7ad6496, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3aa7cb6, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2457d42b]
+07:09:26.183 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.184 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.185 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.186 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.194 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@26c34a8 testClass = TimecurveObjectIntegrationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@7ac17d7 testClass = TimecurveObjectIntegrationTests, locations = '{}', classes = '{class timecurvemanager.TimecurveManagerApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@e7e8512, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@acf0431, [ImportsContextCustomizer@176784 key = [org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcSecurityAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebClientAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebDriverAutoConfiguration]], org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@35bad8d, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@c45f57c, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@db5bb7b], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+07:09:26.195 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.195 [Test worker] DEBUG org.springframework.test.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [timecurvemanager.TimecurveObjectIntegrationTests]
+07:09:26.230 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=-1}
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -124,53 +124,54 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.4.RELEASE)
 
-2019-05-23 22:05:38.824  INFO 12116 --- [    Test worker] t.TimecurveObjectIntegrationTests        : Starting TimecurveObjectIntegrationTests on CHRIS-SURFACE with PID 12116 (started by chris in C:\dev\timecurve\manager)
-2019-05-23 22:05:38.831  INFO 12116 --- [    Test worker] t.TimecurveObjectIntegrationTests        : No active profile set, falling back to default profiles: default
-2019-05-23 22:05:41.344  INFO 12116 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-05-23 22:05:41.534  INFO 12116 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 163ms. Found 2 repository interfaces.
-2019-05-23 22:05:42.597  INFO 12116 --- [    Test worker] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b6b72f47] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-05-23 22:05:43.086  INFO 12116 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2019-05-23 22:05:43.475  INFO 12116 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2019-05-23 22:05:43.828  INFO 12116 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+2019-05-24 07:09:26.827  INFO 14932 --- [    Test worker] t.TimecurveObjectIntegrationTests        : Starting TimecurveObjectIntegrationTests on CHRIS-SURFACE with PID 14932 (started by chris in C:\dev\timecurve\manager)
+2019-05-24 07:09:26.830  INFO 14932 --- [    Test worker] t.TimecurveObjectIntegrationTests        : No active profile set, falling back to default profiles: default
+2019-05-24 07:09:29.158  INFO 14932 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-05-24 07:09:29.340  INFO 14932 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 158ms. Found 3 repository interfaces.
+2019-05-24 07:09:30.308  INFO 14932 --- [    Test worker] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$33ad276c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-24 07:09:30.779  INFO 14932 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-05-24 07:09:31.107  INFO 14932 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-05-24 07:09:31.299  INFO 14932 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-05-23 22:05:44.056  INFO 12116 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.9.Final}
-2019-05-23 22:05:44.063  INFO 12116 --- [    Test worker] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
-2019-05-23 22:05:44.208  INFO 12116 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-05-23 22:05:44.704  INFO 12116 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
-2019-05-23 22:05:45.724  INFO 12116 --- [    Test worker] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: timecurvemanager.infrastructure.persistence.event.EventEntity (class must be instantiated by Interceptor)
-2019-05-23 22:05:45.951  INFO 12116 --- [    Test worker] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@1ae47287'
-2019-05-23 22:05:45.957  INFO 12116 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-05-23 22:05:48.360  INFO 12116 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-23 22:05:48.490  WARN 12116 --- [    Test worker] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2019-05-23 22:05:50.316  INFO 12116 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2019-05-23 22:05:50.316  INFO 12116 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2019-05-23 22:05:50.368  INFO 12116 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
-2019-05-23 22:05:50.452  INFO 12116 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 136 ms
-2019-05-23 22:05:50.547  INFO 12116 --- [    Test worker] t.TimecurveObjectIntegrationTests        : Started TimecurveObjectIntegrationTests in 12.358 seconds (JVM running for 15.368)
-2019-05-23 22:05:50.682  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : Timecurves found with findAll():
-2019-05-23 22:05:50.682  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : -------------------------------
-2019-05-23 22:05:50.725  INFO 12116 --- [    Test worker] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
-2019-05-23 22:05:50.995  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=1, tenantId='AAA', tag='share1chf', name='Share 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
-2019-05-23 22:05:50.995  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=2, tenantId='AAA', tag='share2eur', name='Share 2 EUR', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
-2019-05-23 22:05:50.996  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=3, tenantId='AAA', tag='bond1chf', name='Bond 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
-2019-05-23 22:05:50.996  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=4, tenantId='AAA', tag='macc1eur', name='Money Account 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='CHF'}
-2019-05-23 22:05:50.996  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=5, tenantId='AAA', tag='macc2chf', name='Money Account 2 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='CHF'}
-2019-05-23 22:05:50.996  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : 
-2019-05-23 22:05:51.012  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject found with findById(1L):
-2019-05-23 22:05:51.012  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : --------------------------------
-2019-05-23 22:05:51.013  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=1, tenantId='AAA', tag='share1chf', name='Share 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
-2019-05-23 22:05:51.013  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : 
-2019-05-23 22:05:51.013  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject found with findByName('Share 1 CHF'):
-2019-05-23 22:05:51.014  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : --------------------------------------------
-2019-05-23 22:05:51.077  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=1, tenantId='AAA', tag='share1chf', name='Share 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
-2019-05-23 22:05:51.087  INFO 12116 --- [    Test worker] t.TimecurveManagerApplication            : 
-2019-05-23 22:05:51.135  INFO 12116 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2019-05-23 22:05:51.135  INFO 12116 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2019-05-23 22:05:51.142  INFO 12116 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 6 ms
-2019-05-23 22:05:51.482  INFO 12116 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2019-05-23 22:05:51.482  INFO 12116 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2019-05-23 22:05:51.505  INFO 12116 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 23 ms
+2019-05-24 07:09:31.452  INFO 14932 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.9.Final}
+2019-05-24 07:09:31.456  INFO 14932 --- [    Test worker] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2019-05-24 07:09:31.571  INFO 14932 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-05-24 07:09:31.884  INFO 14932 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-05-24 07:09:32.833  INFO 14932 --- [    Test worker] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: timecurvemanager.infrastructure.persistence.event.EventEntity (class must be instantiated by Interceptor)
+2019-05-24 07:09:32.854  INFO 14932 --- [    Test worker] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: timecurvemanager.infrastructure.persistence.event.EventItemEntity (class must be instantiated by Interceptor)
+2019-05-24 07:09:33.105  INFO 14932 --- [    Test worker] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@24d0fe7c'
+2019-05-24 07:09:33.114  INFO 14932 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-05-24 07:09:35.536  INFO 14932 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-24 07:09:35.690  WARN 14932 --- [    Test worker] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-05-24 07:09:37.326  INFO 14932 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2019-05-24 07:09:37.327  INFO 14932 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2019-05-24 07:09:37.370  INFO 14932 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2019-05-24 07:09:37.440  INFO 14932 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 113 ms
+2019-05-24 07:09:37.529  INFO 14932 --- [    Test worker] t.TimecurveObjectIntegrationTests        : Started TimecurveObjectIntegrationTests in 11.284 seconds (JVM running for 14.352)
+2019-05-24 07:09:37.659  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : Timecurves found with findAll():
+2019-05-24 07:09:37.660  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : -------------------------------
+2019-05-24 07:09:37.693  INFO 14932 --- [    Test worker] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2019-05-24 07:09:37.913  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=1, tenantId='AAA', tag='share1chf', name='Share 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
+2019-05-24 07:09:37.914  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=2, tenantId='AAA', tag='share2eur', name='Share 2 EUR', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
+2019-05-24 07:09:37.914  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=3, tenantId='AAA', tag='bond1chf', name='Bond 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
+2019-05-24 07:09:37.914  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=4, tenantId='AAA', tag='macc1eur', name='Money Account 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='CHF'}
+2019-05-24 07:09:37.914  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=5, tenantId='AAA', tag='macc2chf', name='Money Account 2 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='CHF'}
+2019-05-24 07:09:37.915  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : 
+2019-05-24 07:09:37.931  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject found with findById(1L):
+2019-05-24 07:09:37.932  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : --------------------------------
+2019-05-24 07:09:37.932  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=1, tenantId='AAA', tag='share1chf', name='Share 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
+2019-05-24 07:09:37.932  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : 
+2019-05-24 07:09:37.932  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject found with findByName('Share 1 CHF'):
+2019-05-24 07:09:37.932  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : --------------------------------------------
+2019-05-24 07:09:38.032  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : TimecurveObject{id=1, tenantId='AAA', tag='share1chf', name='Share 1 CHF', valueType=CURRENCY, valueTag='CHF', clearingReference='null'}
+2019-05-24 07:09:38.039  INFO 14932 --- [    Test worker] t.TimecurveManagerApplication            : 
+2019-05-24 07:09:38.080  INFO 14932 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2019-05-24 07:09:38.081  INFO 14932 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2019-05-24 07:09:38.087  INFO 14932 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 6 ms
+2019-05-24 07:09:38.343  INFO 14932 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2019-05-24 07:09:38.343  INFO 14932 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2019-05-24 07:09:38.350  INFO 14932 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 7 ms
 </pre>
 </span>
 </div>
@@ -182,7 +183,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 5.0</a> at 23.05.2019, 22:05:51</p>
+<a href="http://www.gradle.org">Gradle 5.0</a> at 24.05.2019, 07:09:38</p>
 </div>
 </div>
 </body>

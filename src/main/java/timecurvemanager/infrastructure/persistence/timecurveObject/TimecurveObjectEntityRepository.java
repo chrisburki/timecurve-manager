@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TimecurveObjectEntityRepository extends JpaRepository<TimecurveObjectEntity, Long> {
+public interface TimecurveObjectEntityRepository extends
+    JpaRepository<TimecurveObjectEntity, Long> {
 
-    Optional<TimecurveObjectEntity> findByTag(String tag);
+  Optional<TimecurveObjectEntity> findByTag(String tag);
 
-    List<TimecurveObjectEntity> findByName(String label);
+  List<TimecurveObjectEntity> findByName(String label);
 }

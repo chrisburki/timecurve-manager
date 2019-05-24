@@ -13,32 +13,34 @@ import java.util.stream.Collectors;
 @RequestMapping("/timecurve")
 public class TimecurveObjectController {
 
-    private final TimecurveObjectService timecurveObjectService;
+  private final TimecurveObjectService timecurveObjectService;
 
-    public TimecurveObjectController(TimecurveObjectService timecurveObjectService) {
-        this.timecurveObjectService = timecurveObjectService;
-    }
+  public TimecurveObjectController(TimecurveObjectService timecurveObjectService) {
+    this.timecurveObjectService = timecurveObjectService;
+  }
 
-    @GetMapping("/objects")
-    ResponseEntity<List<TimecurveObject>> listObjects() {
-        return new ResponseEntity<>(timecurveObjectService.listObjects().stream().collect(Collectors.toList()),HttpStatus.OK);
-    }
+  @GetMapping("/objects")
+  ResponseEntity<List<TimecurveObject>> listObjects() {
+    return new ResponseEntity<>(
+        timecurveObjectService.listObjects().stream().collect(Collectors.toList()), HttpStatus.OK);
+  }
 
-    @GetMapping("/objects/{anyIdentifier}")
-    ResponseEntity<TimecurveObject> getObjectById(@PathVariable("anyIdentifier") String anyIdentifier) {
-        return new ResponseEntity<>(timecurveObjectService.getTimecuve(anyIdentifier), HttpStatus.OK);
-    }
+  @GetMapping("/objects/{anyIdentifier}")
+  ResponseEntity<TimecurveObject> getObjectById(
+      @PathVariable("anyIdentifier") String anyIdentifier) {
+    return new ResponseEntity<>(timecurveObjectService.getTimecuve(anyIdentifier), HttpStatus.OK);
+  }
 
-    @PostMapping("/objects")
-    ResponseEntity<TimecurveObject> createObject(@RequestBody TimecurveObject timecurveObject) {
-        TimecurveObject result = timecurveObjectService.addTimecurve(timecurveObject);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+  @PostMapping("/objects")
+  ResponseEntity<TimecurveObject> createObject(@RequestBody TimecurveObject timecurveObject) {
+    TimecurveObject result = timecurveObjectService.addTimecurve(timecurveObject);
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
 
-    // readiness probe
-    @RequestMapping(value="/objects/ready", method = RequestMethod.GET)
-    ResponseEntity<String> readyObject() {
-        return ResponseEntity.status(HttpStatus.OK).body("Service is ready");
-    }
+  // readiness probe
+  @RequestMapping(value = "/objects/ready", method = RequestMethod.GET)
+  ResponseEntity<String> readyObject() {
+    return ResponseEntity.status(HttpStatus.OK).body("Service is ready");
+  }
 
 }

@@ -10,15 +10,18 @@ import javax.transaction.Transactional;
 
 public class ApprovedBalanceService {
 
-    /*
-     * getApprovedBalance
-     * ******************
-     * return approved balance. Only supported for itemTypes with no items*/
-    public ApprovedBalance getApprovedBalance(Long timecurveObjectId, EventDimension dimension, EventItemType itemType) {return null;}
+  /*
+   * getApprovedBalance
+   * ******************
+   * return approved balance. Only supported for itemTypes with no items*/
+  public ApprovedBalance getApprovedBalance(Long timecurveObjectId, EventDimension dimension,
+      EventItemType itemType) {
+    return null;
+  }
 
-    @Transactional
-    public ApprovedBalance addEvent(Event event) {
-        return null;
-    }
+  @Transactional
+  public ApprovedBalance addEvent(Event event) {
+    return null;
+  }
 
 }

@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 
 public class ApprovedBalance {
 
-    private Long timecurveObjectId;
+  private Long timecurveObjectId;
 
-    private EventDimension dimension;
+  private EventDimension dimension;
 
-    private EventItemType itemType;
+  private EventItemType itemType;
 
-    private Long itemId;
+  private Long itemId;
 
-    private BigDecimal value1;
+  private BigDecimal value1;
 
 }
