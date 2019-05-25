@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="timecurvemanager.EventEntitryTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-05-24T05:09:25" hostname="CHRIS-SURFACE" time="0.088">
+<testsuite name="timecurvemanager.EventEntitryTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-05-25T08:36:54" hostname="CHRIS-SURFACE" time="0.086">
   <properties/>
-  <testcase name="shouldFindEventEntityList" classname="timecurvemanager.EventEntitryTests" time="0.081"/>
-  <testcase name="shouldInsertEventEntity" classname="timecurvemanager.EventEntitryTests" time="0.006"/>
+  <testcase name="shouldFindEventEntityList" classname="timecurvemanager.EventEntitryTests" time="0.078"/>
+  <testcase name="shouldInsertEventEntity" classname="timecurvemanager.EventEntitryTests" time="0.007"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

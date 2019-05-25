@@ -46,6 +46,8 @@ public class EventEntitryTests {
     EventEntity entity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status, useCase,
         date1, date2);
     List<EventEntity> entityList = Arrays.asList(entity);
+
+    // Test 1
     when(entityRepository
         .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay"))
         .thenReturn(entityList);
@@ -53,6 +55,7 @@ public class EventEntitryTests {
         .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay");
     assertThat(returnedList1.size()).isEqualTo(1);
 
+    // Test 2
     when(entityRepository
         .findByDimensionAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay"))
         .thenReturn(entityList);
@@ -63,6 +66,8 @@ public class EventEntitryTests {
     when(entityRepository
         .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1,
             date2, date1, date2, "pay")).thenReturn(entityList);
+
+    // Test 3
     List<EventEntity> returnedList3 = entityRepository
         .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1,
             date2, date1, date2, "pay");
