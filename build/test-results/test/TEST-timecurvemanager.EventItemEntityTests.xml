@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="timecurvemanager.EventItemEntityTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-05-25T08:36:54" hostname="CHRIS-SURFACE" time="0.003">
+<testsuite name="timecurvemanager.EventItemEntityTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-05-28T19:42:40" hostname="CHRIS-SURFACE" time="0.002">
   <properties/>
   <testcase name="shouldInsertEventItemEntity" classname="timecurvemanager.EventItemEntityTests" time="0.001"/>
   <testcase name="shouldFindEventItemEntityList" classname="timecurvemanager.EventItemEntityTests" time="0.001"/>

@@ -51,9 +51,9 @@ public class TimecurveObjectEntityTests {
     assertThat(returnedEntity1.size()).isEqualTo(1);
 
     Optional<TimecurveObjectEntity> entityOptional = Optional.of(entity);
-    when(entityRepository.findByTag("Object 1")).thenReturn(entityOptional);
+    when(entityRepository.findByTag(tag)).thenReturn(entityOptional);
     Optional<TimecurveObjectEntity> returnedEntity2 = entityRepository.findByTag(tag);
-    assertThat(returnedEntity1.size()).isEqualTo(1);
+    assertThat(returnedEntity2).isEqualTo(entityOptional);
   }
 
 }

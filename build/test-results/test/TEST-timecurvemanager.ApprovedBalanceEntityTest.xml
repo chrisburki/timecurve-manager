@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="timecurvemanager.ApprovedBalanceEntityTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-05-28T19:42:40" hostname="CHRIS-SURFACE" time="0.096">
+  <properties/>
+  <testcase name="shouldInsertEventItemEntity" classname="timecurvemanager.ApprovedBalanceEntityTest" time="0.091"/>
+  <testcase name="shouldFindApprovedBalanceEntity" classname="timecurvemanager.ApprovedBalanceEntityTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

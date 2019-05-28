@@ -28,7 +28,7 @@ public class EventService {
     return null;
   }
 
-  public Collection<EventItem> listEventItems(Long timecurveObjectId, EventDimension dimension,
+  public Collection<EventItem> listEventItems(Long timecurveId, EventDimension dimension,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2,
       EventItemType itemType) {
     return null;
