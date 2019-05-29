@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntity;
+import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent;
 import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityRepository;
 
 @DataJpaTest
@@ -28,20 +29,21 @@ public class ApprovedBalanceEntityTest {
 
   @Test
   public void shouldInsertEventItemEntity() {
-    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(dimension,
-        timecurveId, itemType, itemId,
+    ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId);
+    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(balanceEntityIdent,
         value1);
     when(balanceRepository.save(any(ApprovedBalanceEntity.class))).then(returnsFirstArg());
     ApprovedBalanceEntity savedEntity = balanceRepository.save(entity);
-    assertThat(savedEntity.getTimecurveId()).isNotNull();
+    assertThat(savedEntity.getApprovedBalanceEntityIdent().getTimecurveId()).isNotNull();
   }
 
   @Test
   public void shouldFindApprovedBalanceEntity() {
-    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(dimension, timecurveId, itemType, itemId, value1);
+    ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId);
+    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(balanceEntityIdent, value1);
     Optional<ApprovedBalanceEntity> entityOptional = Optional.of(entity);
-    when(balanceRepository.findByDimensionAndTimecurveIdAndItemTypeAndItemId(dimension, timecurveId, itemType, itemId)).thenReturn(entityOptional);
-    Optional<ApprovedBalanceEntity> returnedEntity = balanceRepository.findByDimensionAndTimecurveIdAndItemTypeAndItemId(dimension, timecurveId, itemType, itemId);
+    when(balanceRepository.findByApprovedBalanceEntityIdent(balanceEntityIdent)).thenReturn(entityOptional);
+    Optional<ApprovedBalanceEntity> returnedEntity = balanceRepository.findByApprovedBalanceEntityIdent(balanceEntityIdent);
     assertThat(returnedEntity).isEqualTo(entityOptional);
 
   }

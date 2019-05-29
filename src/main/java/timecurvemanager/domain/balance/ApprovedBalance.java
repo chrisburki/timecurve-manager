@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class ApprovedBalance {
 
-  private Long id;
+//  private Long id;
 
   private EventDimension dimension;
 
@@ -19,9 +19,8 @@ public class ApprovedBalance {
 
   private BigDecimal value1;
 
-  public ApprovedBalance(Long id, EventDimension dimension, Long timecurveId,
+  public ApprovedBalance(EventDimension dimension, Long timecurveId,
       EventItemType itemType, Long itemId, BigDecimal value1) {
-    this.id = id;
     this.dimension = dimension;
     this.timecurveId = timecurveId;
     this.itemType = itemType;
@@ -29,9 +28,9 @@ public class ApprovedBalance {
     this.value1 = value1;
   }
 
-  public Long getId() {
-    return id;
-  }
+//  public Long getId() {
+//    return id;
+//  }
 
   public EventDimension getDimension() {
     return dimension;
@@ -56,8 +55,7 @@ public class ApprovedBalance {
   @Override
   public String toString() {
     return "ApprovedBalance{" +
-        "id=" + id +
-        ", dimension=" + dimension +
+        "dimension=" + dimension +
         ", timecurveId=" + timecurveId +
         ", itemType=" + itemType +
         ", itemId=" + itemId +

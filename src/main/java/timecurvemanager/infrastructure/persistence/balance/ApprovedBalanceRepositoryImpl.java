@@ -1,11 +1,13 @@
 package timecurvemanager.infrastructure.persistence.balance;
 
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 import timecurvemanager.domain.balance.ApprovedBalance;
 import timecurvemanager.domain.balance.ApprovedBalanceRepository;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 
+@Component
 public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository {
 
   private final ApprovedBalanceEntityRepository approvedBalanceRepository;
@@ -21,7 +23,9 @@ public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository 
   @Override
   public Optional<ApprovedBalance> findByDimensionAndTimecurveIdAndItemTypeAndItemId(
       EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId) {
-    return Optional.empty();
+    return approvedBalanceMapper.mapOptionalEntityToDomain(approvedBalanceRepository
+        .findByApprovedBalanceEntityIdent(
+            new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId)));
   }
 
   @Override

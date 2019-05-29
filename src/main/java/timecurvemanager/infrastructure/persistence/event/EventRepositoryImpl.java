@@ -3,10 +3,12 @@ package timecurvemanager.infrastructure.persistence.event;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventRepository;
 
+@Component
 public class EventRepositoryImpl implements EventRepository {
 
   private final EventEntityRepository eventEntityRepository;

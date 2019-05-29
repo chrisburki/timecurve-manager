@@ -2,9 +2,6 @@ package timecurvemanager.infrastructure.persistence.balance;
 
 import java.math.BigDecimal;
 import javax.persistence.*;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
-
 
 @Entity
 @Table(name = "approved_balance"
@@ -13,10 +10,10 @@ import timecurvemanager.domain.event.EventItemType;
 })
 public class ApprovedBalanceEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  @EmbeddedId
+  private ApprovedBalanceEntityIdent approvedBalanceEntityIdent;
 
+  /*
   private EventDimension dimension;
 
   @Column(name = "timecurve_id")
@@ -27,50 +24,29 @@ public class ApprovedBalanceEntity {
 
   @Column(name = "item_id")
   private Long itemId;
-
+*/
   private BigDecimal value1;
 
-  public ApprovedBalanceEntity(EventDimension dimension, Long timecurveId,
-      EventItemType itemType, Long itemId, BigDecimal value1) {
-    this.dimension = dimension;
-    this.timecurveId = timecurveId;
-    this.itemType = itemType;
-    this.itemId = itemId;
+  public ApprovedBalanceEntity(
+      timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent approvedBalanceEntityIdent,
+      BigDecimal value1) {
+    this.approvedBalanceEntityIdent = approvedBalanceEntityIdent;
     this.value1 = value1;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public EventDimension getDimension() {
-    return dimension;
-  }
-
-  public Long getTimecurveId() {
-    return timecurveId;
-  }
-
-  public EventItemType getItemType() {
-    return itemType;
-  }
-
-  public Long getItemId() {
-    return itemId;
+  public timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent getApprovedBalanceEntityIdent() {
+    return approvedBalanceEntityIdent;
   }
 
   public BigDecimal getValue1() {
     return value1;
   }
 
+
   @Override
   public String toString() {
     return "ApprovedBalanceEntity{" +
-        "id=" + id +
-        ", dimension=" + dimension +
-        ", timecurveId=" + timecurveId +
-        ", itemType=" + itemType +
-        ", itemId=" + itemId +
+        "approvedBalanceEntityIdent=" + approvedBalanceEntityIdent +
         ", value1=" + value1 +
         '}';
   }
