@@ -15,7 +15,7 @@ public class TimecurveObjectRepositoryImpl implements TimecurveObjectRepository 
 
   public TimecurveObjectRepositoryImpl(
       TimecurveObjectEntityRepository timecurveObjectEntityRepository,
-      TimecurveObjectMapper timecurveObjectMapper/*, TimecurveObjectModelMapper timecurveObjectModelMapper*/) {
+      TimecurveObjectMapper timecurveObjectMapper) {
     this.timecurveObjectEntityRepository = timecurveObjectEntityRepository;
     this.timecurveObjectMapper = timecurveObjectMapper;
   }

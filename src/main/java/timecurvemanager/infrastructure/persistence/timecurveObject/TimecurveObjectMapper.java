@@ -12,7 +12,7 @@ public class TimecurveObjectMapper {
 
   public TimecurveObjectEntity mapDomainToEntity(TimecurveObject object) {
     return new TimecurveObjectEntity(object.getTenantId(), object.getTag(), object.getName(),
-        object.getValueType(), object.getValueTag(), object.getClearingReference());
+        object.getValueType(), object.getValueTag(), object.getClearingReference(), object.getNeedBalanceApproval());
   }
 
   public List<TimecurveObjectEntity> mapDomainToEntityList(List<TimecurveObject> objectList) {
@@ -23,7 +23,7 @@ public class TimecurveObjectMapper {
   public TimecurveObject mapEntityToDomain(TimecurveObjectEntity entity) {
     return new TimecurveObject(entity.getId(), entity.getTenantId(), entity.getTag(),
         entity.getName(), entity.getValueType(), entity.getValueTag(),
-        entity.getClearingReference());
+        entity.getClearingReference(), entity.getNeedBalanceApproval());
   }
 
   public List<TimecurveObject> mapEntityToDomainList(List<TimecurveObjectEntity> entityList) {
@@ -38,7 +38,7 @@ public class TimecurveObjectMapper {
       TimecurveObjectEntity entity = timecurveEntity.get();
       return Optional.of(new TimecurveObject(entity.getId(), entity.getTenantId(), entity.getTag(),
           entity.getName(), entity.getValueType(), entity.getValueTag(),
-          entity.getClearingReference()));
+          entity.getClearingReference(), entity.getNeedBalanceApproval()));
     } else {
       return Optional.empty();
     }

@@ -28,17 +28,22 @@ public class TimecurveObjectEntity {
   @Column(name = "clearing_reference")
   private String clearingReference;
 
+  @Column(name = "need_balance_approval")
+  private Boolean needBalanceApproval;
+
   protected TimecurveObjectEntity() {
   }
 
   public TimecurveObjectEntity(String tenantId, String tag, String name,
-      TimecurveObjectValueType valueType, String valueTag, String clearingReference) {
+      TimecurveObjectValueType valueType, String valueTag, String clearingReference,
+      Boolean needBalanceApproval) {
     this.tenantId = tenantId;
     this.tag = tag;
     this.name = name;
     this.valueType = valueType;
     this.valueTag = valueTag;
     this.clearingReference = clearingReference;
+    this.needBalanceApproval = needBalanceApproval;
   }
 
   public Long getId() {
@@ -69,6 +74,10 @@ public class TimecurveObjectEntity {
     return clearingReference;
   }
 
+  public Boolean getNeedBalanceApproval() {
+    return needBalanceApproval;
+  }
+
   @Override
   public String toString() {
     return "TimecurveObjectEntity{" +
@@ -79,6 +88,7 @@ public class TimecurveObjectEntity {
         ", valueType=" + valueType +
         ", valueTag='" + valueTag + '\'' +
         ", clearingReference='" + clearingReference + '\'' +
+        ", needBalanceApproval=" + needBalanceApproval +
         '}';
   }
 }

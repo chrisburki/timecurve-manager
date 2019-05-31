@@ -3,6 +3,7 @@ package timecurvemanager;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Example;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
@@ -49,28 +50,28 @@ public class EventEntitryTests {
 
     // Test 1
     when(entityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay"))
+        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay")))
         .thenReturn(entityList);
     List<EventEntity> returnedList1 = entityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay");
+        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay"));
     assertThat(returnedList1.size()).isEqualTo(1);
 
     // Test 2
     when(entityRepository
-        .findByDimensionAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay"))
+        .findByDimensionAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay")))
         .thenReturn(entityList);
     List<EventEntity> returnedList2 = entityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, "pay");
+        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay"));
     assertThat(returnedList2.size()).isEqualTo(1);
 
     when(entityRepository
         .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1,
-            date2, date1, date2, "pay")).thenReturn(entityList);
+            date2, date1, date2, Example.of("pay"))).thenReturn(entityList);
 
     // Test 3
     List<EventEntity> returnedList3 = entityRepository
         .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1,
-            date2, date1, date2, "pay");
+            date2, date1, date2, Example.of("pay"));
     assertThat(returnedList3.size()).isEqualTo(1);
   }
 }

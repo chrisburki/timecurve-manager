@@ -30,12 +30,13 @@ public class TimecurveObjectEntityTests {
   private final TimecurveObjectValueType objectValueType = TimecurveObjectValueType.CURRENCY;
   private final String valueTag = "CHF";
   private final String clearingRef = "CHF";
+  private final Boolean needBalanceApproval = true;
 
 
   @Test
   public void shouldInsertTimecurveEntity() {
     TimecurveObjectEntity entity = new TimecurveObjectEntity(tenantId, tag, name, objectValueType,
-        valueTag, clearingRef);
+        valueTag, clearingRef, needBalanceApproval);
     when(entityRepository.save(any(TimecurveObjectEntity.class))).then(returnsFirstArg());
     TimecurveObjectEntity savedEntity = entityRepository.save(entity);
     assertThat(savedEntity.getTag()).isNotNull();
@@ -44,7 +45,7 @@ public class TimecurveObjectEntityTests {
   @Test
   public void shouldFindTimecurveEntity() {
     TimecurveObjectEntity entity = new TimecurveObjectEntity(tenantId, tag, name, objectValueType,
-        valueTag, clearingRef);
+        valueTag, clearingRef, needBalanceApproval);
     List<TimecurveObjectEntity> entityList = Arrays.asList(entity);
     when(entityRepository.findByName("Object 1")).thenReturn(entityList);
     List<TimecurveObjectEntity> returnedEntity1 = entityRepository.findByName(name);

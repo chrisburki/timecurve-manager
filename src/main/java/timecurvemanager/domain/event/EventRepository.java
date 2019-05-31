@@ -1,5 +1,6 @@
 package timecurvemanager.domain.event;
 
+import org.springframework.data.domain.Example;
 import timecurvemanager.domain.timecurveObject.TimecurveObject;
 
 import java.time.LocalDate;
@@ -15,14 +16,14 @@ public interface EventRepository {
   Optional<Event> findByEventExtId(Long eventExtId);
 
   List<Event> findByDimensionAndDate1BetweenAndUseCase(EventDimension dimension, LocalDate fromDate,
-      LocalDate toDate, String useCase);
+      LocalDate toDate, Example<String>  useCase);
 
   List<Event> findByDimensionAndDate2BetweenAndUseCase(EventDimension dimension, LocalDate fromDate,
-      LocalDate toDate, String useCase);
+      LocalDate toDate, Example<String>  useCase);
 
   List<Event> findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension dimension,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2,
-      String useCase);
+      Example<String> useCase);
 
   Event save(Event event);
 }

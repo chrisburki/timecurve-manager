@@ -18,8 +18,12 @@ public class TimecurveObject {
 
   private String clearingReference;
 
+  private Boolean needBalanceApproval;
+
+
   public TimecurveObject(Long id, String tenantId, String tag, String name,
-      TimecurveObjectValueType valueType, String valueTag, String clearingReference) {
+      TimecurveObjectValueType valueType, String valueTag, String clearingReference,
+      Boolean needBalanceApproval) {
     this.id = id;
     this.tenantId = tenantId;
     this.tag = tag;
@@ -27,6 +31,7 @@ public class TimecurveObject {
     this.valueType = valueType;
     this.valueTag = valueTag;
     this.clearingReference = clearingReference;
+    this.needBalanceApproval = needBalanceApproval;
   }
 
   public Long getId() {
@@ -57,6 +62,10 @@ public class TimecurveObject {
     return clearingReference;
   }
 
+  public Boolean getNeedBalanceApproval() {
+    return needBalanceApproval;
+  }
+
   @Override
   public String toString() {
     return "TimecurveObject{" +
@@ -67,6 +76,7 @@ public class TimecurveObject {
         ", valueType=" + valueType +
         ", valueTag='" + valueTag + '\'' +
         ", clearingReference='" + clearingReference + '\'' +
+        ", needBalanceApproval=" + needBalanceApproval +
         '}';
   }
 

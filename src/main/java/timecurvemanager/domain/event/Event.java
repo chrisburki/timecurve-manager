@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Event {
 
+  //@todo: handle gsn
+
   private Long id;
 
   private Long eventExtId;

@@ -58,13 +58,13 @@ public class TimecurveObjectIntegrationTests {
   public void givenTimecurvesGetAll() throws Exception {
 
     TimecurveObject timecurveObject1 = new TimecurveObject(null, "T1", "L1", "NESN",
-        TimecurveObjectValueType.CURRENCY, "CHF", null);
+        TimecurveObjectValueType.CURRENCY, "CHF", null, true);
     repository.save(timecurveObject1);
     TimecurveObject timecurveObject2 = new TimecurveObject(null, "T2", "L2", "ROGN",
-        TimecurveObjectValueType.CURRENCY, "CHF", null);
+        TimecurveObjectValueType.CURRENCY, "CHF", null, false);
     repository.save(timecurveObject2);
     TimecurveObject timecurveObject3 = new TimecurveObject(null, "T3", "L3", "ABBN",
-        TimecurveObjectValueType.CURRENCY, "CHF", null);
+        TimecurveObjectValueType.CURRENCY, "CHF", null, true);
     repository.save(timecurveObject3);
 
     mockMvc.perform(get("/timecurve/objects")
@@ -83,7 +83,7 @@ public class TimecurveObjectIntegrationTests {
   public void givenTimecurveFindByNameAndLabel() {
     TimecurveObject timecurveObject = new TimecurveObject(null, "AAA",
         "REF:AAA-BUC;CCY:CHF;ASSET:NESN;DIM:STD", "AAA-BUC NESN CHF",
-        TimecurveObjectValueType.CURRENCY, "CHF", "CHF");
+        TimecurveObjectValueType.CURRENCY, "CHF", "CHF", true);
     repository.save(timecurveObject);
 
     List<TimecurveObject> findByLastName = repository.findByName(timecurveObject.getName());

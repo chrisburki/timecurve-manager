@@ -3,6 +3,8 @@ package timecurvemanager.domain.event;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+//@Todo: replace primary key id with event, rowNr
+
 public class EventItem {
 
   private Long id;

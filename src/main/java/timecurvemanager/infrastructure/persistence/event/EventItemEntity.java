@@ -10,11 +10,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "event_item"
-    , indexes = {
+//    , indexes = {
 //        @Index(name = "idx_item_event_entity", columnList = "eventEntity", unique = false),
-    @Index(name = "idx_item_timecurve_date1", columnList = "timecurve_id, date1", unique = false),
-    @Index(name = "idx_item_timecurve_date2", columnList = "timecurve_id, date2", unique = false)
-}
+//    @Index(name = "idx_item_timecurve_date1", columnList = "timecurve_id, date1", unique = false),
+//    @Index(name = "idx_item_timecurve_date2", columnList = "timecurve_id, date2", unique = false)
+//}
 )
 public class EventItemEntity {
 
@@ -57,6 +57,9 @@ public class EventItemEntity {
   private BigDecimal tover2;
 
   private BigDecimal tover3;
+
+  public EventItemEntity() {
+  }
 
   public EventItemEntity(EventEntity eventEntity, Integer rowNr, String tenantId,
       EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,

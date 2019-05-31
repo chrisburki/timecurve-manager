@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "event", indexes = {
     @Index(name = "idx_event_id", columnList = "event_ext_id, sequence_nr", unique = true),
-    @Index(name = "idx_event_date1", columnList = "date1", unique = false),
-    @Index(name = "idx_event_date2", columnList = "date2", unique = false)
+//    @Index(name = "idx_event_date1", columnList = "date1", unique = false),
+//    @Index(name = "idx_event_date2", columnList = "date2", unique = false)
 })
 public class EventEntity {
 
@@ -37,6 +37,9 @@ public class EventEntity {
   private LocalDate date1;
 
   private LocalDate date2;
+
+  public EventEntity() {
+  }
 
   public EventEntity(Long eventExtId, Integer sequenceNr, String tenantId, EventDimension dimension,
       EventStatus status, String useCase, LocalDate date1, LocalDate date2) {

@@ -3,6 +3,7 @@ package timecurvemanager.infrastructure.persistence.event;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
@@ -39,14 +40,14 @@ public class EventRepositoryImpl implements EventRepository {
 
   @Override
   public List<Event> findByDimensionAndDate1BetweenAndUseCase(EventDimension dimension,
-      LocalDate fromDate, LocalDate toDate, String useCase) {
+      LocalDate fromDate, LocalDate toDate, Example<String> useCase) {
     return eventMapper.mapEntityToDomainList(eventEntityRepository
         .findByDimensionAndDate1BetweenAndUseCase(dimension, fromDate, toDate, useCase));
   }
 
   @Override
   public List<Event> findByDimensionAndDate2BetweenAndUseCase(EventDimension dimension,
-      LocalDate fromDate, LocalDate toDate, String useCase) {
+      LocalDate fromDate, LocalDate toDate, Example<String> useCase) {
     return eventMapper.mapEntityToDomainList(eventEntityRepository
         .findByDimensionAndDate2BetweenAndUseCase(dimension, fromDate, toDate, useCase));
   }
@@ -54,7 +55,7 @@ public class EventRepositoryImpl implements EventRepository {
   @Override
   public List<Event> findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(
       EventDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,
-      LocalDate toDate2, String useCase) {
+      LocalDate toDate2, Example<String> useCase) {
     return eventMapper.mapEntityToDomainList(eventEntityRepository
         .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(dimension, fromDate1, toDate1,
             fromDate2, toDate2, useCase));
