@@ -10,7 +10,11 @@ import javax.persistence.*;
 })
 public class ApprovedBalanceEntity {
 
-  @EmbeddedId
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  Long id;
+
+//  @EmbeddedId
   private ApprovedBalanceEntityIdent approvedBalanceEntityIdent;
 
   /*
@@ -28,13 +32,17 @@ public class ApprovedBalanceEntity {
   private BigDecimal value1;
 
   public ApprovedBalanceEntity(
-      timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent approvedBalanceEntityIdent,
+      ApprovedBalanceEntityIdent approvedBalanceEntityIdent,
       BigDecimal value1) {
     this.approvedBalanceEntityIdent = approvedBalanceEntityIdent;
     this.value1 = value1;
   }
 
-  public timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent getApprovedBalanceEntityIdent() {
+  public Long getId() {
+    return id;
+  }
+
+  public ApprovedBalanceEntityIdent getApprovedBalanceEntityIdent() {
     return approvedBalanceEntityIdent;
   }
 
@@ -46,7 +54,8 @@ public class ApprovedBalanceEntity {
   @Override
   public String toString() {
     return "ApprovedBalanceEntity{" +
-        "approvedBalanceEntityIdent=" + approvedBalanceEntityIdent +
+        "id=" + id +
+        ", approvedBalanceEntityIdent=" + approvedBalanceEntityIdent +
         ", value1=" + value1 +
         '}';
   }

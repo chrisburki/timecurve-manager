@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface ApprovedBalanceEntityRepository extends
     JpaRepository<ApprovedBalanceEntity, ApprovedBalanceEntityIdent> {
 
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<ApprovedBalanceEntity> findByApprovedBalanceEntityIdent(
       ApprovedBalanceEntityIdent approvedBalanceEntityIdent);
+
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  Optional<ApprovedBalanceEntity> findById(Long id);
 
 }

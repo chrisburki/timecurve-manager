@@ -2,6 +2,8 @@ package timecurvemanager.domain.event;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import timecurvemanager.domain.balance.ApprovedBalance;
+import timecurvemanager.domain.timecurveObject.TimecurveObject;
 
 //@Todo: replace primary key id with event, rowNr
 
@@ -17,7 +19,7 @@ public class EventItem {
 
   private EventDimension dimension;
 
-  private Long timecurveId;
+  private TimecurveObject timecurve;
 
   private EventItemType itemType;
 
@@ -39,16 +41,19 @@ public class EventItem {
 
   private BigDecimal tover3;
 
-  public EventItem(Long id, Event event, Integer rowNr, String tenantId, EventDimension dimension,
-      Long timecurveId, EventItemType itemType, Long itemId, LocalDate date1, LocalDate date2,
-      BigDecimal value1, BigDecimal value2, BigDecimal value3, BigDecimal tover1, BigDecimal tover2,
-      BigDecimal tover3) {
+  private ApprovedBalance approvedBalance;
+
+  public EventItem(Long id, Event event, Integer rowNr, String tenantId,
+      EventDimension dimension, TimecurveObject timecurve,
+      EventItemType itemType, Long itemId, LocalDate date1, LocalDate date2,
+      BigDecimal value1, BigDecimal value2, BigDecimal value3, BigDecimal tover1,
+      BigDecimal tover2, BigDecimal tover3, ApprovedBalance approvedBalance) {
     this.id = id;
     this.event = event;
     this.rowNr = rowNr;
     this.tenantId = tenantId;
     this.dimension = dimension;
-    this.timecurveId = timecurveId;
+    this.timecurve = timecurve;
     this.itemType = itemType;
     this.itemId = itemId;
     this.date1 = date1;
@@ -59,6 +64,7 @@ public class EventItem {
     this.tover1 = tover1;
     this.tover2 = tover2;
     this.tover3 = tover3;
+    this.approvedBalance = approvedBalance;
   }
 
   public Long getId() {
@@ -81,8 +87,8 @@ public class EventItem {
     return dimension;
   }
 
-  public Long getTimecurveId() {
-    return timecurveId;
+  public TimecurveObject getTimecurve() {
+    return timecurve;
   }
 
   public EventItemType getItemType() {
@@ -125,6 +131,10 @@ public class EventItem {
     return tover3;
   }
 
+  public ApprovedBalance getApprovedBalance() {
+    return approvedBalance;
+  }
+
   @Override
   public String toString() {
     return "EventItem{" +
@@ -133,7 +143,7 @@ public class EventItem {
         ", rowNr=" + rowNr +
         ", tenantId='" + tenantId + '\'' +
         ", dimension=" + dimension +
-        ", timecurveId=" + timecurveId +
+        ", timecurve=" + timecurve +
         ", itemType=" + itemType +
         ", itemId=" + itemId +
         ", date1=" + date1 +
@@ -144,6 +154,7 @@ public class EventItem {
         ", tover1=" + tover1 +
         ", tover2=" + tover2 +
         ", tover3=" + tover3 +
+        ", approvedBalance=" + approvedBalance +
         '}';
   }
 }

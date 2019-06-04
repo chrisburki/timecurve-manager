@@ -26,9 +26,9 @@ public class TimecurveManagerApplication {
     return (args) -> {
       // save a couple of timecurves
       repository.save(new TimecurveObject(null, "AAA", "share1chf", "Share 1 CHF",
-          TimecurveObjectValueType.CURRENCY, "CHF", null, false));
+          TimecurveObjectValueType.SECURITY, "CHF", null, false));
       repository.save(new TimecurveObject(null, "AAA", "share2eur", "Share 2 EUR",
-          TimecurveObjectValueType.CURRENCY, "CHF", null, false));
+          TimecurveObjectValueType.SECURITY, "CHF", null, false));
       repository.save(new TimecurveObject(null, "AAA", "bond1chf", "Bond 1 CHF",
           TimecurveObjectValueType.CURRENCY, "CHF", null, true));
       repository.save(new TimecurveObject(null, "AAA", "macc1eur", "Money Account 1 CHF",

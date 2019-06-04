@@ -21,6 +21,11 @@ public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository 
   }
 
   @Override
+  public Optional<ApprovedBalance> findById(Long id) {
+    return approvedBalanceMapper.mapOptionalEntityToDomain(approvedBalanceRepository.findById(id));
+  }
+
+  @Override
   public Optional<ApprovedBalance> findByDimensionAndTimecurveIdAndItemTypeAndItemId(
       EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId) {
     return approvedBalanceMapper.mapOptionalEntityToDomain(approvedBalanceRepository

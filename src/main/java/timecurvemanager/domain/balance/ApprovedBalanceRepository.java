@@ -6,6 +6,8 @@ import timecurvemanager.domain.event.EventItemType;
 
 public interface ApprovedBalanceRepository {
 
+  Optional<ApprovedBalance> findById(Long id);
+
   Optional<ApprovedBalance> findByDimensionAndTimecurveIdAndItemTypeAndItemId(EventDimension dimension,
       Long timecurveId, EventItemType itemType, Long itemId);
 

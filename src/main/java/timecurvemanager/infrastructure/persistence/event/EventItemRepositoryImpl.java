@@ -9,6 +9,8 @@ import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.timecurveObject.TimecurveObject;
+import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectMapper;
 
 @Component
 public class EventItemRepositoryImpl implements EventItemRepository {
@@ -16,14 +18,17 @@ public class EventItemRepositoryImpl implements EventItemRepository {
   private final EventItemEntityRepository eventItemEntityRepository;
   private final EventItemMapper eventItemMapper;
   private final EventMapper eventMapper;
+  private final TimecurveObjectMapper timecurveMapper;
 
   public EventItemRepositoryImpl(
       EventItemEntityRepository eventItemEntityRepository,
       EventItemMapper eventItemMapper,
-      EventMapper eventMapper) {
+      EventMapper eventMapper,
+      TimecurveObjectMapper timecurveMapper) {
     this.eventItemEntityRepository = eventItemEntityRepository;
     this.eventItemMapper = eventItemMapper;
     this.eventMapper = eventMapper;
+    this.timecurveMapper = timecurveMapper;
   }
 
   @Override
@@ -44,27 +49,27 @@ public class EventItemRepositoryImpl implements EventItemRepository {
   }
 
   @Override
-  public List<EventItem> findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate1Between(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
+  public List<EventItem> findByDimensionAndTimecurveAndItemTypeAndItemIdAndDate1Between(
+      EventDimension dimension, TimecurveObject timecurve, EventItemType itemType, Long itemId,
       LocalDate fromDate, LocalDate toDate) {
-    return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository
-        .findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate1Between(dimension, timecurveId, itemType, itemId, fromDate, toDate));
+    return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository.findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(
+        dimension, timecurveMapper.mapDomainToEntity(timecurve), itemType,itemId,fromDate,toDate));
   }
 
   @Override
-  public List<EventItem> findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate2Between(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
+  public List<EventItem> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(
+      EventDimension dimension, TimecurveObject timecurve, EventItemType itemType, Long itemId,
       LocalDate fromDate, LocalDate toDate) {
-    return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository
-        .findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate2Between(dimension, timecurveId, itemType, itemId, fromDate, toDate));
+    return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository.findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(
+        dimension, timecurveMapper.mapDomainToEntity(timecurve), itemType,itemId,fromDate,toDate));
   }
 
   @Override
-  public List<EventItem> findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
+  public List<EventItem> findByDimensionAndTimecurveAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
+      EventDimension dimension, TimecurveObject timecurve, EventItemType itemType, Long itemId,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2) {
-    return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository
-        .findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(dimension, timecurveId, itemType, itemId, fromDate1, toDate1, fromDate2, toDate2));
+    return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository.findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
+        dimension, timecurveMapper.mapDomainToEntity(timecurve), itemType,itemId,fromDate1,toDate1, fromDate2,toDate2));
   }
 
   @Override

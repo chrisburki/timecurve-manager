@@ -7,6 +7,7 @@ import timecurvemanager.domain.event.EventItemType;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectEntity;
 
 @Entity
 @Table(name = "event_item"
@@ -33,8 +34,8 @@ public class EventItemEntity {
 
   private EventDimension dimension;
 
-  @Column(name = "timecurve_id")
-  private Long timecurveId;
+  @ManyToOne
+  private TimecurveObjectEntity timecurveEntity;
 
   @Column(name = "item_type")
   private EventItemType itemType;
@@ -62,14 +63,15 @@ public class EventItemEntity {
   }
 
   public EventItemEntity(EventEntity eventEntity, Integer rowNr, String tenantId,
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
-      LocalDate date1, LocalDate date2, BigDecimal value1, BigDecimal value2, BigDecimal value3,
-      BigDecimal tover1, BigDecimal tover2, BigDecimal tover3) {
+      EventDimension dimension,
+      TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
+      LocalDate date1, LocalDate date2, BigDecimal value1, BigDecimal value2,
+      BigDecimal value3, BigDecimal tover1, BigDecimal tover2, BigDecimal tover3) {
     this.eventEntity = eventEntity;
     this.rowNr = rowNr;
     this.tenantId = tenantId;
     this.dimension = dimension;
-    this.timecurveId = timecurveId;
+    this.timecurveEntity = timecurveEntity;
     this.itemType = itemType;
     this.itemId = itemId;
     this.date1 = date1;
@@ -102,8 +104,8 @@ public class EventItemEntity {
     return dimension;
   }
 
-  public Long getTimecurveId() {
-    return timecurveId;
+  public TimecurveObjectEntity getTimecurveEntity() {
+    return timecurveEntity;
   }
 
   public EventItemType getItemType() {
@@ -154,7 +156,7 @@ public class EventItemEntity {
         ", rowNr=" + rowNr +
         ", tenantId='" + tenantId + '\'' +
         ", dimension=" + dimension +
-        ", timecurveId=" + timecurveId +
+        ", timecurveEntity=" + timecurveEntity +
         ", itemType=" + itemType +
         ", itemId=" + itemId +
         ", date1=" + date1 +

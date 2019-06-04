@@ -7,22 +7,24 @@ import timecurvemanager.domain.event.EventItemType;
 
 import java.time.LocalDate;
 import java.util.List;
+import timecurvemanager.domain.timecurveObject.TimecurveObject;
+import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectEntity;
 
 @Repository
 public interface EventItemEntityRepository extends JpaRepository<EventItemEntity, Long> {
 
   List<EventItemEntity> findByEventEntity(EventEntity eventEntity);
 
-  List<EventItemEntity> findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate1Between(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
+  List<EventItemEntity> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(
+      EventDimension dimension, TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
       LocalDate fromDate, LocalDate toDate);
 
-  List<EventItemEntity> findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate2Between(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
+  List<EventItemEntity> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(
+      EventDimension dimension, TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
       LocalDate fromDate, LocalDate toDate);
 
-  List<EventItemEntity> findByDimensionAndTimecurveIdAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId,
+  List<EventItemEntity> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
+      EventDimension dimension, TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2);
 
 }

@@ -1,5 +1,7 @@
 package timecurvemanager.application;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 import static timecurvemanager.domain.event.EventNotFoundException.EventNotFound;
+
 import timecurvemanager.domain.event.EventRepository;
 
 public class EventService {
@@ -35,7 +38,8 @@ public class EventService {
 
   /* Search for latest version of event(s) based on event id - external*/
   public Event getEventByEventId(Long eventId) {
-    return eventRepository.findByEventExtId(eventId).orElseThrow(() -> EventNotFound(eventId, extEventId));
+    return eventRepository.findByEventExtId(eventId)
+        .orElseThrow(() -> EventNotFound(eventId, extEventId));
   }
 
   public Collection<Event> listEvents(EventDimension dimension, LocalDate fromDate1,
@@ -43,13 +47,16 @@ public class EventService {
     Boolean data1NotNull = fromDate1 != null || toDate1 != null;
     Boolean data2NotNull = fromDate2 != null || toDate2 != null;
     ExampleMatcher matcher = ExampleMatcher.matching().withIncludeNullValues().withIgnoreCase();
-    Example<String> useCaseMatch = Example.of(usecase,matcher);
+    Example<String> useCaseMatch = Example.of(usecase, matcher);
     if (data1NotNull && data2NotNull) {
-      return eventRepository.findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(dimension,fromDate1, toDate1, fromDate2, toDate2, useCaseMatch);
+      return eventRepository
+          .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(dimension, fromDate1, toDate1,
+              fromDate2, toDate2, useCaseMatch);
     } else if (data1NotNull) {
-      return eventRepository.findByDimensionAndDate1BetweenAndUseCase(dimension, fromDate1, toDate1, useCaseMatch);
+      return eventRepository
+          .findByDimensionAndDate1BetweenAndUseCase(dimension, fromDate1, toDate1, useCaseMatch);
     } else {
-      return eventRepository.findByDimensionAndDate2BetweenAndUseCase(dimension,fromDate2,toDate2,
+      return eventRepository.findByDimensionAndDate2BetweenAndUseCase(dimension, fromDate2, toDate2,
           useCaseMatch);
     }
   }
@@ -60,18 +67,25 @@ public class EventService {
     return null;
   }
 
+  private void buildClearing(EventItem eventItem) {
+
+  }
+
+  private void checkClearing(Event event) {
+    HashMap<String, BigDecimal> clearingMap = new HashMap<>();
+    event.getEventItems().forEach(eventItem -> {
+      buildClearing(eventItem);
+    });
+  }
+
   /*
    * addEvent
    * ********
-   * Search for existing event. If existing reverse items and reinsert new ones. Additional check clearing consistency*/
+   * Search for existing event. If existing reverse items and reinsert new ones. Additional check clearing consistency and update AprovedBalance*/
   @Transactional
   public Event addEvent(Event event) {
     return null;
   }
 
-  public void checkClearing(Event event) {
-  }
-
-  ;
 
 }
