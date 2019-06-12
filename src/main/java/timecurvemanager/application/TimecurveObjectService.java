@@ -1,18 +1,18 @@
 package timecurvemanager.application;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import timecurvemanager.domain.timecurveObject.TimecurveObject;
-import timecurvemanager.domain.timecurveObject.TimecurveObjectRepository;
+import static timecurvemanager.domain.timecurveobject.TimecurveObjectAddException.timecurveObjectAddException;
+import static timecurvemanager.domain.timecurveobject.TimecurveObjectGeneralException.timecurveObjectGeneralException;
+import static timecurvemanager.domain.timecurveobject.TimecurveObjectNotCompleteException.timecurveObjectNotComplete;
+import static timecurvemanager.domain.timecurveobject.TimecurveObjectNotFoundException.timecurveObjectNotFound;
 
 import java.util.Collection;
 import java.util.Optional;
 
-import static timecurvemanager.domain.timecurveObject.TimecurveObjectAddException.timecurveObjectAddException;
-import static timecurvemanager.domain.timecurveObject.TimecurveObjectGeneralException.timecurveObjectGeneralException;
-import static timecurvemanager.domain.timecurveObject.TimecurveObjectNotCompleteException.timecurveObjectNotComplete;
-import static timecurvemanager.domain.timecurveObject.TimecurveObjectNotFoundException.timecurveObjectNotFound;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import timecurvemanager.domain.timecurveobject.TimecurveObject;
+import timecurvemanager.domain.timecurveobject.TimecurveObjectRepository;
 
 @Service
 public class TimecurveObjectService {
@@ -33,8 +33,8 @@ public class TimecurveObjectService {
 
   public TimecurveObject getTimecuve(String anyIdentifier) {
     try {
-      long lId = Long.parseLong(anyIdentifier);
-      return getById(lId);
+      Long l = Long.parseLong(anyIdentifier);
+      return getById(l);
     } catch (NumberFormatException | NullPointerException nfe) {
       return getByTag(anyIdentifier);
     }
@@ -66,7 +66,7 @@ public class TimecurveObjectService {
       throw timecurveObjectNotComplete(timecurveObject.getId(), typeTag);
     }
 
-    // search for existing timecurveObject and return if existing
+    // search for existing TimecurveObject and return if existing
     Optional<TimecurveObject> timecurveSearch = timecurveObjectRepository
         .findByTag(timecurveObject.getTag());
     if (timecurveSearch.isPresent()) {
@@ -74,9 +74,9 @@ public class TimecurveObjectService {
     }
 
     // create UUID
-//        if (timecurveObject.getObjectId() == null) {
-//            timecurveObject.setObjectId(UUID.randomUUID().toString());
-//        }
+    // if (TimecurveObject.getObjectId() == null) {
+    //   TimecurveObject.setObjectId(UUID.randomUUID().toString());
+    // }
 
     // check for null
     try {
@@ -88,7 +88,7 @@ public class TimecurveObjectService {
       throw timecurveObjectGeneralException(e.getMessage());
     }
 
-    // save timecurveObject
+    // save TimecurveObject
     try {
       return timecurveObjectRepository.save(timecurveObject);
     } catch (DataAccessException ex) {

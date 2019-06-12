@@ -1,13 +1,19 @@
 package timecurvemanager.infrastructure.api;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import timecurvemanager.application.TimecurveObjectService;
-import timecurvemanager.domain.timecurveObject.TimecurveObject;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import timecurvemanager.application.TimecurveObjectService;
+import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
 @RestController
 @RequestMapping("/timecurve")
@@ -33,7 +39,8 @@ public class TimecurveObjectController {
 
   @PostMapping("/objects")
   ResponseEntity<TimecurveObject> createObject(@RequestBody TimecurveObject timecurveObject) {
-    TimecurveObject result = timecurveObjectService.addTimecurve(timecurveObject);
+    TimecurveObject result = timecurveObjectService
+        .addTimecurve(timecurveObject);
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
 

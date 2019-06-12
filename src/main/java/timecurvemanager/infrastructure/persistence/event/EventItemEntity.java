@@ -1,13 +1,21 @@
 package timecurvemanager.infrastructure.persistence.event;
 
-import timecurvemanager.domain.event.Event;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectEntity;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntity;
 
 @Entity
 @Table(name = "event_item"
@@ -34,7 +42,8 @@ public class EventItemEntity {
 
   private EventDimension dimension;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "timecurve_id", referencedColumnName = "id")
   private TimecurveObjectEntity timecurveEntity;
 
   @Column(name = "item_type")
@@ -59,15 +68,16 @@ public class EventItemEntity {
 
   private BigDecimal tover3;
 
+  /*
   public EventItemEntity() {
   }
+*/
 
-  public EventItemEntity(EventEntity eventEntity, Integer rowNr, String tenantId,
+  public EventItemEntity(Integer rowNr, String tenantId,
       EventDimension dimension,
       TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
       LocalDate date1, LocalDate date2, BigDecimal value1, BigDecimal value2,
       BigDecimal value3, BigDecimal tover1, BigDecimal tover2, BigDecimal tover3) {
-    this.eventEntity = eventEntity;
     this.rowNr = rowNr;
     this.tenantId = tenantId;
     this.dimension = dimension;
@@ -82,6 +92,10 @@ public class EventItemEntity {
     this.tover1 = tover1;
     this.tover2 = tover2;
     this.tover3 = tover3;
+  }
+
+  public void setEventEntity(EventEntity eventEntity) {
+    this.eventEntity = eventEntity;
   }
 
   public Long getId() {

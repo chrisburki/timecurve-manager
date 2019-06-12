@@ -9,8 +9,8 @@ import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.domain.event.EventItemType;
-import timecurvemanager.domain.timecurveObject.TimecurveObject;
-import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectMapper;
+import timecurvemanager.domain.timecurveobject.TimecurveObject;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectMapper;
 
 @Component
 public class EventItemRepositoryImpl implements EventItemRepository {
@@ -72,9 +72,4 @@ public class EventItemRepositoryImpl implements EventItemRepository {
         dimension, timecurveMapper.mapDomainToEntity(timecurve), itemType,itemId,fromDate1,toDate1, fromDate2,toDate2));
   }
 
-  @Override
-  public EventItem save(EventItem eventItem) {
-    return eventItemMapper.mapEntityToDomain(eventItemEntityRepository
-        .save(eventItemMapper.mapDomainToEntity(eventItem)));
-  }
 }

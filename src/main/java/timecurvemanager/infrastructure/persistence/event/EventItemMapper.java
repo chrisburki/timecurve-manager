@@ -4,25 +4,31 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectMapper;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectMapper;
 
 @Component
 public class EventItemMapper {
 
-  private final EventMapper eventMapper;
   private final TimecurveObjectMapper timecurveMapper;
 
-  public EventItemMapper(EventMapper eventMapper,
-      TimecurveObjectMapper timecurveMapper) {
-    this.eventMapper = eventMapper;
+  public EventItemMapper(TimecurveObjectMapper timecurveMapper) {
     this.timecurveMapper = timecurveMapper;
   }
 
+  private Event mapEventEntityToDomain(EventEntity entity) {
+    return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
+        entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
+        entity.getDate1(), entity.getDate2(), null);
+  }
+
+
   public EventItemEntity mapDomainToEntity(EventItem item) {
 
-    return new EventItemEntity(eventMapper.mapDomainToEntity(item.getEvent()), item.getRowNr(),
-        item.getTenantId(), item.getDimension(), timecurveMapper.mapDomainToEntity(item.getTimecurve()), item.getItemType(),
+    return new EventItemEntity(item.getRowNr(),
+        item.getTenantId(), item.getDimension(),
+        timecurveMapper.mapDomainToEntity(item.getTimecurve()), item.getItemType(),
         item.getItemId(), item.getDate1(), item.getDate2(), item.getValue1(), item.getValue2(),
         item.getValue3(), item.getTover1(), item.getTover2(), item.getTover3());
   }
@@ -33,8 +39,9 @@ public class EventItemMapper {
   }
 
   public EventItem mapEntityToDomain(EventItemEntity entity) {
-    return new EventItem(entity.getId(), eventMapper.mapEntityToDomain(entity.getEventEntity()),
-        entity.getRowNr(), entity.getTenantId(), entity.getDimension(), timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()),
+    return new EventItem(entity.getId(), mapEventEntityToDomain(entity.getEventEntity()),
+        entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
+        timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()),
         entity.getItemType(), entity.getItemId(), entity.getDate1(), entity.getDate2(),
         entity.getValue1(), entity.getValue2(), entity.getValue3(), entity.getTover1(),
         entity.getTover2(), entity.getTover3(), null);
@@ -51,9 +58,10 @@ public class EventItemMapper {
     if (eventItemEntity.isPresent()) {
       EventItemEntity entity = eventItemEntity.get();
       return Optional
-          .of(new EventItem(entity.getId(), eventMapper.mapEntityToDomain(entity.getEventEntity()),
+          .of(new EventItem(entity.getId(), mapEventEntityToDomain(entity.getEventEntity()),
               entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
-              timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()), entity.getItemType(), entity.getItemId(), entity.getDate1(),
+              timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()), entity.getItemType(),
+              entity.getItemId(), entity.getDate1(),
               entity.getDate2(), entity.getValue1(), entity.getValue2(), entity.getValue3(),
               entity.getTover1(), entity.getTover2(), entity.getTover3(), null));
     } else {

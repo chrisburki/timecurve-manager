@@ -3,7 +3,7 @@ package timecurvemanager.domain.event;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import timecurvemanager.domain.balance.ApprovedBalance;
-import timecurvemanager.domain.timecurveObject.TimecurveObject;
+import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
 //@Todo: replace primary key id with event, rowNr
 

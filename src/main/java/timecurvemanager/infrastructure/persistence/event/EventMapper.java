@@ -9,10 +9,22 @@ import timecurvemanager.domain.event.Event;
 @Component
 public class EventMapper {
 
+  private final EventItemMapper eventItemMapper;
+
+  public EventMapper(
+      EventItemMapper eventItemMapper) {
+    this.eventItemMapper = eventItemMapper;
+  }
+
   public EventEntity mapDomainToEntity(Event event) {
-    return new EventEntity(event.getEventExtId(), event.getSequenceNr(), event.getTenantId(),
+    EventEntity entity = new EventEntity(event.getEventExtId(), event.getSequenceNr(),
+        event.getTenantId(),
         event.getDimension(), event.getStatus(), event.getUseCase(), event.getDate1(),
         event.getDate2());
+    event.getEventItems().forEach(i -> {
+      entity.addEventItem(eventItemMapper.mapDomainToEntity(i));
+    });
+    return entity;
   }
 
   public List<EventEntity> mapDomainToEntityList(List<Event> objectList) {

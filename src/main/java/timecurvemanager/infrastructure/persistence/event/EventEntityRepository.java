@@ -1,13 +1,13 @@
 package timecurvemanager.infrastructure.persistence.event;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import timecurvemanager.domain.event.EventDimension;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface EventEntityRepository extends JpaRepository<EventEntity, Long> {

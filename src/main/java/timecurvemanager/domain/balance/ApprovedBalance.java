@@ -1,9 +1,9 @@
 package timecurvemanager.domain.balance;
 
+import java.math.BigDecimal;
+
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
-
-import java.math.BigDecimal;
 
 public class ApprovedBalance {
 

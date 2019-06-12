@@ -1,10 +1,10 @@
 package timecurvemanager.domain.event;
 
-
 import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
-import timecurvemanager.domain.timecurveObject.TimecurveObject;
+import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
 public interface EventItemRepository {
 
@@ -25,7 +25,5 @@ public interface EventItemRepository {
   List<EventItem> findByDimensionAndTimecurveAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
       EventDimension dimension, TimecurveObject timecurve, EventItemType itemType, Long itemId,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2);
-
-  EventItem save(EventItem eventItem);
 
 }

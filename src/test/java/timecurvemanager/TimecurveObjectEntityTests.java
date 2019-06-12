@@ -1,21 +1,20 @@
 package timecurvemanager;
 
-
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.timecurveObject.TimecurveObjectValueType;
-import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectEntity;
-import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectEntityRepository;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntity;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntityRepository;
 
 @DataJpaTest
 public class TimecurveObjectEntityTests {

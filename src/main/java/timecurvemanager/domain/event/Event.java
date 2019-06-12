@@ -1,12 +1,15 @@
 package timecurvemanager.domain.event;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Event {
 
   //@todo: handle gsn
 
+
+  //@todo: external only eventExtId needed (for adding), id, sequenceNr is derived from already existing ones
   private Long id;
 
   private Long eventExtId;
@@ -40,6 +43,11 @@ public class Event {
     this.date1 = date1;
     this.date2 = date2;
     this.eventItems = eventItems;
+    this.eventItems = new ArrayList<>();
+  }
+
+  public void addEventItem(EventItem eventItem) {
+    this.eventItems.add(eventItem);
   }
 
   public Long getId() {

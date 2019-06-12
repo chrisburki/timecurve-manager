@@ -1,10 +1,22 @@
 package timecurvemanager.infrastructure.persistence.event;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventStatus;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "event", indexes = {
@@ -38,6 +50,9 @@ public class EventEntity {
 
   private LocalDate date2;
 
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventEntity", orphanRemoval = true)
+  private List<EventItemEntity> eventItems = new ArrayList<>();
+
   public EventEntity() {
   }
 
@@ -51,6 +66,11 @@ public class EventEntity {
     this.useCase = useCase;
     this.date1 = date1;
     this.date2 = date2;
+  }
+
+  public void addEventItem(EventItemEntity eventItem) {
+    this.eventItems.add(eventItem);
+    eventItem.setEventEntity(this);
   }
 
   public Long getId() {
@@ -89,6 +109,10 @@ public class EventEntity {
     return date2;
   }
 
+  public List<EventItemEntity> getEventItems() {
+    return eventItems;
+  }
+
   @Override
   public String toString() {
     return "EventEntity{" +
@@ -101,6 +125,7 @@ public class EventEntity {
         ", useCase='" + useCase + '\'' +
         ", date1=" + date1 +
         ", date2=" + date2 +
+        ", eventItems=" + eventItems +
         '}';
   }
 }

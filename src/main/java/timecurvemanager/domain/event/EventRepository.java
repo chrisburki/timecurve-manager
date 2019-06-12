@@ -1,11 +1,10 @@
 package timecurvemanager.domain.event;
 
-import org.springframework.data.domain.Example;
-import timecurvemanager.domain.timecurveObject.TimecurveObject;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Example;
 
 public interface EventRepository {
 

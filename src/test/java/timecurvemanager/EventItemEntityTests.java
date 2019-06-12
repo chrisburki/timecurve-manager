@@ -15,11 +15,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.domain.event.EventStatus;
-import timecurvemanager.domain.timecurveObject.TimecurveObjectValueType;
+import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntityRepository;
-import timecurvemanager.infrastructure.persistence.timecurveObject.TimecurveObjectEntity;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntity;
 
 @DataJpaTest
 public class EventItemEntityTests {
@@ -65,7 +65,7 @@ public class EventItemEntityTests {
     TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, tag, name,
         objectValueType,
         valueTag, clearingRef, needBalanceApproval);
-    EventItemEntity entity = new EventItemEntity(eventEntity, rowNr, tenantId, dimension,
+    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension,
         timecurveEntity, itemType, itemId,
         date1, date2, value1, value2, value3, tover1, tover2, tover3);
     when(entityRepository.save(any(EventItemEntity.class))).then(returnsFirstArg());
@@ -81,7 +81,7 @@ public class EventItemEntityTests {
     TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, tag, name,
         objectValueType,
         valueTag, clearingRef, needBalanceApproval);
-    EventItemEntity entity = new EventItemEntity(eventEntity, rowNr, tenantId, dimension,
+    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension,
         timecurveEntity, itemType, itemId,
         date1, date2, value1, value2, value3, tover1, tover2, tover3);
     List<EventItemEntity> entityList = Arrays.asList(entity);

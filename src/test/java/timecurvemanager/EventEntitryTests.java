@@ -1,5 +1,14 @@
 package timecurvemanager;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -8,15 +17,6 @@ import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventEntityRepository;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @DataJpaTest
 public class EventEntitryTests {

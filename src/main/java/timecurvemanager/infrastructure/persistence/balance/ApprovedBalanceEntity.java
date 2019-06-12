@@ -1,20 +1,25 @@
 package timecurvemanager.infrastructure.persistence.balance;
 
 import java.math.BigDecimal;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "approved_balance"
-    , indexes = {
-    @Index(name = "approved_balance_idx", columnList = "dimension, timecurve_id, item_type, item_id", unique = true)
-})
+@Table(name = "approved_balance",
+    indexes = {
+        @Index(name = "approved_balance_idx", columnList = "dimension, timecurve_id, item_type, item_id", unique = true)
+    })
 public class ApprovedBalanceEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   Long id;
 
-//  @EmbeddedId
+  //  @EmbeddedId
   private ApprovedBalanceEntityIdent approvedBalanceEntityIdent;
 
   /*
