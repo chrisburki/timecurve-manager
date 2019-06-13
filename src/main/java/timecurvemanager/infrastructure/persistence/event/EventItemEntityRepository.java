@@ -3,6 +3,7 @@ package timecurvemanager.infrastructure.persistence.event;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import timecurvemanager.domain.event.EventDimension;
@@ -17,17 +18,17 @@ public interface EventItemEntityRepository extends JpaRepository<EventItemEntity
 
   List<EventItemEntity> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(
       EventDimension dimension, TimecurveObjectEntity timecurveEntity, EventItemType itemType,
-      Long itemId,
+      Example<Long> itemId,
       LocalDate fromDate, LocalDate toDate);
 
   List<EventItemEntity> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(
       EventDimension dimension, TimecurveObjectEntity timecurveEntity, EventItemType itemType,
-      Long itemId,
+      Example<Long> itemId,
       LocalDate fromDate, LocalDate toDate);
 
   List<EventItemEntity> findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
       EventDimension dimension, TimecurveObjectEntity timecurveEntity, EventItemType itemType,
-      Long itemId,
+      Example<Long> itemId,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2);
 
 }

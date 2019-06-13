@@ -48,7 +48,7 @@ public class EventService {
   }
 
   /* Search for latest version of event(s) based on event id - external*/
-  public Event getEventByEventId(Long eventId) {
+  public Event getEventByEventExtId(Long eventId) {
     return eventRepository.findByEventExtId(eventId)
         .orElseThrow(() -> eventNotFound(eventId, extEventId));
   }
@@ -58,6 +58,9 @@ public class EventService {
       LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String usecase) {
     Boolean data1NotNull = fromDate1 != null || toDate1 != null;
     Boolean data2NotNull = fromDate2 != null || toDate2 != null;
+    //@todo: add validations
+
+    // to ingore case and null values
     ExampleMatcher matcher = ExampleMatcher.matching().withIncludeNullValues().withIgnoreCase();
     Example<String> useCaseMatch = Example.of(usecase, matcher);
     if (data1NotNull && data2NotNull) {

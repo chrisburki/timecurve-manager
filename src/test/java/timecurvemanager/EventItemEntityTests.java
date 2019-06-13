@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Example;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.domain.event.EventStatus;
@@ -90,22 +91,22 @@ public class EventItemEntityTests {
     when(entityRepository
         .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(dimension,
             timecurveEntity,
-            itemType, itemId, date1, date1)).thenReturn(entityList);
+            itemType, Example.of(itemId), date1, date1)).thenReturn(entityList);
     List<EventItemEntity> returnedList1 = entityRepository
         .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(dimension,
             timecurveEntity,
-            itemType, itemId, date1, date1);
+            itemType, Example.of(itemId), date1, date1);
     assertThat(returnedList1.size()).isEqualTo(1);
 
     // Test 2
     when(entityRepository
         .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(dimension,
             timecurveEntity,
-            itemType, itemId, date1, date1)).thenReturn(entityList);
+            itemType, Example.of(itemId), date1, date1)).thenReturn(entityList);
     List<EventItemEntity> returnedList2 = entityRepository
         .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(dimension,
             timecurveEntity,
-            itemType, itemId, date2, date2);
+            itemType, Example.of(itemId), date2, date2);
     assertThat(returnedList2.size()).isEqualTo(1);
 
     // Test 2
@@ -113,12 +114,12 @@ public class EventItemEntityTests {
         .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
             dimension,
             timecurveEntity,
-            itemType, itemId, date1, date1, date2, date2)).thenReturn(entityList);
+            itemType, Example.of(itemId), date1, date1, date2, date2)).thenReturn(entityList);
     List<EventItemEntity> returnedList3 = entityRepository
         .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
             dimension,
             timecurveEntity,
-            itemType, itemId, date1, date1, date2, date2);
+            itemType, Example.of(itemId), date1, date1, date2, date2);
     assertThat(returnedList2.size()).isEqualTo(1);
 
   }

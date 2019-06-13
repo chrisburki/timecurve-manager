@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="timecurvemanager.TimecurveObjectEntityTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-06-12T06:22:06" hostname="CHRIS-SURFACE" time="0.008">
+<testsuite name="timecurvemanager.TimecurveObjectEntityTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-06-13T04:19:39" hostname="CHRIS-SURFACE" time="0.005">
   <properties/>
-  <testcase name="shouldFindTimecurveEntity" classname="timecurvemanager.TimecurveObjectEntityTests" time="0.002"/>
-  <testcase name="shouldInsertTimecurveEntity" classname="timecurvemanager.TimecurveObjectEntityTests" time="0.005"/>
+  <testcase name="shouldFindTimecurveEntity" classname="timecurvemanager.TimecurveObjectEntityTests" time="0.001"/>
+  <testcase name="shouldInsertTimecurveEntity" classname="timecurvemanager.TimecurveObjectEntityTests" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
