@@ -13,9 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventStatus;
-
 
 
 @Entity
@@ -24,6 +26,9 @@ import timecurvemanager.domain.event.EventStatus;
 //    @Index(name = "idx_event_date1", columnList = "date1", unique = false),
 //    @Index(name = "idx_event_date2", columnList = "date2", unique = false)
 })
+@Getter
+@NoArgsConstructor
+@ToString
 public class EventEntity {
 
   @Id
@@ -53,9 +58,6 @@ public class EventEntity {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventEntity", orphanRemoval = true)
   private List<EventItemEntity> eventItems = new ArrayList<>();
 
-  public EventEntity() {
-  }
-
   public EventEntity(Long eventExtId, Integer sequenceNr, String tenantId, EventDimension dimension,
       EventStatus status, String useCase, LocalDate date1, LocalDate date2) {
     this.eventExtId = eventExtId;
@@ -73,59 +75,4 @@ public class EventEntity {
     eventItem.setEventEntity(this);
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public Long getEventExtId() {
-    return eventExtId;
-  }
-
-  public Integer getSequenceNr() {
-    return sequenceNr;
-  }
-
-  public String getTenantId() {
-    return tenantId;
-  }
-
-  public EventDimension getDimension() {
-    return dimension;
-  }
-
-  public EventStatus getStatus() {
-    return status;
-  }
-
-  public String getUseCase() {
-    return useCase;
-  }
-
-  public LocalDate getDate1() {
-    return date1;
-  }
-
-  public LocalDate getDate2() {
-    return date2;
-  }
-
-  public List<EventItemEntity> getEventItems() {
-    return eventItems;
-  }
-
-  @Override
-  public String toString() {
-    return "EventEntity{" +
-        "id=" + id +
-        ", eventExtId=" + eventExtId +
-        ", sequenceNr=" + sequenceNr +
-        ", tenantId='" + tenantId + '\'' +
-        ", dimension=" + dimension +
-        ", status=" + status +
-        ", useCase='" + useCase + '\'' +
-        ", date1=" + date1 +
-        ", date2=" + date2 +
-        ", eventItems=" + eventItems +
-        '}';
-  }
 }

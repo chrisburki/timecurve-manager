@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="timecurvemanager.ApprovedBalanceEntityTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-06-13T04:19:39" hostname="CHRIS-SURFACE" time="0.085">
+<testsuite name="timecurvemanager.ApprovedBalanceEntityTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-06-17T19:25:52" hostname="CHRIS-SURFACE" time="0.093">
   <properties/>
-  <testcase name="shouldInsertEventItemEntity" classname="timecurvemanager.ApprovedBalanceEntityTest" time="0.078"/>
-  <testcase name="shouldFindApprovedBalanceEntity" classname="timecurvemanager.ApprovedBalanceEntityTest" time="0.006"/>
+  <testcase name="shouldInsertEventItemEntity" classname="timecurvemanager.ApprovedBalanceEntityTest" time="0.087"/>
+  <testcase name="shouldFindApprovedBalanceEntity" classname="timecurvemanager.ApprovedBalanceEntityTest" time="0.005"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

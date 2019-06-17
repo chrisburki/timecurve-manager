@@ -12,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 
@@ -25,6 +29,9 @@ import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObje
 //    @Index(name = "idx_item_timecurve_date2", columnList = "timecurve_id, date2", unique = false)
 //}
 )
+@Getter
+@NoArgsConstructor
+@ToString
 public class EventItemEntity {
 
   @Id
@@ -32,6 +39,7 @@ public class EventItemEntity {
   private Long id;
 
   @ManyToOne
+  @Setter
   private EventEntity eventEntity;
 
   @Column(name = "row_nr")
@@ -68,11 +76,6 @@ public class EventItemEntity {
 
   private BigDecimal tover3;
 
-  /*
-  public EventItemEntity() {
-  }
-*/
-
   public EventItemEntity(Integer rowNr, String tenantId,
       EventDimension dimension,
       TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
@@ -92,95 +95,5 @@ public class EventItemEntity {
     this.tover1 = tover1;
     this.tover2 = tover2;
     this.tover3 = tover3;
-  }
-
-  public void setEventEntity(EventEntity eventEntity) {
-    this.eventEntity = eventEntity;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public EventEntity getEventEntity() {
-    return eventEntity;
-  }
-
-  public Integer getRowNr() {
-    return rowNr;
-  }
-
-  public String getTenantId() {
-    return tenantId;
-  }
-
-  public EventDimension getDimension() {
-    return dimension;
-  }
-
-  public TimecurveObjectEntity getTimecurveEntity() {
-    return timecurveEntity;
-  }
-
-  public EventItemType getItemType() {
-    return itemType;
-  }
-
-  public Long getItemId() {
-    return itemId;
-  }
-
-  public LocalDate getDate1() {
-    return date1;
-  }
-
-  public LocalDate getDate2() {
-    return date2;
-  }
-
-  public BigDecimal getValue1() {
-    return value1;
-  }
-
-  public BigDecimal getValue2() {
-    return value2;
-  }
-
-  public BigDecimal getValue3() {
-    return value3;
-  }
-
-  public BigDecimal getTover1() {
-    return tover1;
-  }
-
-  public BigDecimal getTover2() {
-    return tover2;
-  }
-
-  public BigDecimal getTover3() {
-    return tover3;
-  }
-
-  @Override
-  public String toString() {
-    return "EventItemEntity{" +
-        "id=" + id +
-        ", eventEntity=" + eventEntity +
-        ", rowNr=" + rowNr +
-        ", tenantId='" + tenantId + '\'' +
-        ", dimension=" + dimension +
-        ", timecurveEntity=" + timecurveEntity +
-        ", itemType=" + itemType +
-        ", itemId=" + itemId +
-        ", date1=" + date1 +
-        ", date2=" + date2 +
-        ", value1=" + value1 +
-        ", value2=" + value2 +
-        ", value3=" + value3 +
-        ", tover1=" + tover1 +
-        ", tover2=" + tover2 +
-        ", tover3=" + tover3 +
-        '}';
   }
 }

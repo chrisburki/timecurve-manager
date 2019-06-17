@@ -93,13 +93,14 @@ public class ApprovedBalanceService {
     return Optional.of(saveBalance(eventItem, newValue));
   }
 
+  // MAIN
   public void addEvent(Event event) {
 
     event.getEventItems().stream()
         // check if check on approved balance is needed (on itemType and on timecurve object)
         .filter(
-            f -> f.getItemType().buildApprovedBalance()
-                && f.getTimecurve().getNeedBalanceApproval())
+            item -> item.getItemType().buildApprovedBalance()
+                && item.getTimecurve().getNeedBalanceApproval())
         .forEach(e -> {
           updateBalance(e);
         });

@@ -3,10 +3,16 @@ package timecurvemanager.infrastructure.persistence.balance;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 
 @Embeddable
+@Getter
+@NoArgsConstructor
+@ToString
 public class ApprovedBalanceEntityIdent implements Serializable {
 
   private EventDimension dimension;
@@ -28,29 +34,4 @@ public class ApprovedBalanceEntityIdent implements Serializable {
     this.itemId = itemId;
   }
 
-  public EventDimension getDimension() {
-    return dimension;
-  }
-
-  public Long getTimecurveId() {
-    return timecurveId;
-  }
-
-  public EventItemType getItemType() {
-    return itemType;
-  }
-
-  public Long getItemId() {
-    return itemId;
-  }
-
-  @Override
-  public String toString() {
-    return "ApprovedBalanceEntityIdent{" +
-        "dimension=" + dimension +
-        ", timecurveId=" + timecurveId +
-        ", itemType=" + itemType +
-        ", itemId=" + itemId +
-        '}';
-  }
 }

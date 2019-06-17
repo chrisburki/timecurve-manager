@@ -110,13 +110,12 @@ public class TimecurveManagerApplication {
       // }
       log.info("");
 
-      TimecurveObjectEntity timecurveObject = new TimecurveObjectEntity(tenantId, tag, name,
+        TimecurveObjectEntity timecurveObject = new TimecurveObjectEntity(tenantId, tag, name,
           objectValueType,
           valueTag, clearingRef, needBalanceApproval);
-      log.info("object before: " + timecurveObject.getId());
 
       timecurveObjectEntityRepository.save(timecurveObject);
-      log.info("object after: " + timecurveObject.getId());
+      log.info("object id: " + timecurveObject.getId());
 
       EventEntity event = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
           useCase,
@@ -124,12 +123,9 @@ public class TimecurveManagerApplication {
       EventItemEntity eventItem = new EventItemEntity(rowNr, tenantId, dimension,
           timecurveObject, itemType, itemId,
           date1, date2, value1, value2, value3, tover1, tover2, tover3);
-      log.info("event before: " + event.getId());
       event.addEventItem(eventItem);
-      log.info("event afte add item: " + event.getId());
       eventRepository.save(event);
-      log.info("event after: " + event.getId());
-
+      log.info("event id: " + event.getId());
     };
   }
 

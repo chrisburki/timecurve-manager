@@ -1,84 +1,37 @@
 package timecurvemanager.domain.timecurveobject;
 
 import java.lang.reflect.Field;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@AllArgsConstructor
+@ToString
 public class TimecurveObject {
 
   private Long id;
 
+  @NotNull
   private String tenantId;
 
+  @NotNull
   private String tag;
 
+  @NotNull
   private String name;
 
+  @NotNull
   private TimecurveObjectValueType valueType;
 
+  @NotNull
   private String valueTag;
 
   private String clearingReference;
 
+  @NotNull
   private Boolean needBalanceApproval;
-
-
-  public TimecurveObject(Long id, String tenantId, String tag, String name,
-      TimecurveObjectValueType valueType, String valueTag, String clearingReference,
-      Boolean needBalanceApproval) {
-    this.id = id;
-    this.tenantId = tenantId;
-    this.tag = tag;
-    this.name = name;
-    this.valueType = valueType;
-    this.valueTag = valueTag;
-    this.clearingReference = clearingReference;
-    this.needBalanceApproval = needBalanceApproval;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getTenantId() {
-    return tenantId;
-  }
-
-  public String getTag() {
-    return tag;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public TimecurveObjectValueType getValueType() {
-    return valueType;
-  }
-
-  public String getValueTag() {
-    return valueTag;
-  }
-
-  public String getClearingReference() {
-    return clearingReference;
-  }
-
-  public Boolean getNeedBalanceApproval() {
-    return needBalanceApproval;
-  }
-
-  @Override
-  public String toString() {
-    return "TimecurveObject{" +
-        "id=" + id +
-        ", tenantId='" + tenantId + '\'' +
-        ", tag='" + tag + '\'' +
-        ", name='" + name + '\'' +
-        ", valueType=" + valueType +
-        ", valueTag='" + valueTag + '\'' +
-        ", clearingReference='" + clearingReference + '\'' +
-        ", needBalanceApproval=" + needBalanceApproval +
-        '}';
-  }
 
   public String validateForNull() throws IllegalArgumentException, IllegalAccessException {
     // Get the attributes of the class
@@ -87,7 +40,7 @@ public class TimecurveObject {
       // make the attribute accessible if it's a private one
       f.setAccessible(true);
 
-      // Get the value of the attibute of the instance received as parameter
+      // Get the value of the attribute of the instance received as parameter
       Object value = f.get(this);
       if (value == null) {
         return f.getName();

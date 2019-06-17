@@ -7,10 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
 
 @Entity
 @Table(name = "timecurve_object", indexes = @Index(name = "idx_timecurve_label", columnList = "tag", unique = true))
+@Getter
+@NoArgsConstructor
+@ToString
 public class TimecurveObjectEntity {
 
   @Id
@@ -36,9 +42,6 @@ public class TimecurveObjectEntity {
   @Column(name = "need_balance_approval")
   private Boolean needBalanceApproval;
 
-  protected TimecurveObjectEntity() {
-  }
-
   public TimecurveObjectEntity(String tenantId, String tag, String name,
       TimecurveObjectValueType valueType, String valueTag, String clearingReference,
       Boolean needBalanceApproval) {
@@ -51,50 +54,5 @@ public class TimecurveObjectEntity {
     this.needBalanceApproval = needBalanceApproval;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public String getTenantId() {
-    return tenantId;
-  }
-
-  public String getTag() {
-    return tag;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public TimecurveObjectValueType getValueType() {
-    return valueType;
-  }
-
-  public String getValueTag() {
-    return valueTag;
-  }
-
-  public String getClearingReference() {
-    return clearingReference;
-  }
-
-  public Boolean getNeedBalanceApproval() {
-    return needBalanceApproval;
-  }
-
-  @Override
-  public String toString() {
-    return "TimecurveObjectEntity{" +
-        "id=" + id +
-        ", tenantId='" + tenantId + '\'' +
-        ", tag='" + tag + '\'' +
-        ", name='" + name + '\'' +
-        ", valueType=" + valueType +
-        ", valueTag='" + valueTag + '\'' +
-        ", clearingReference='" + clearingReference + '\'' +
-        ", needBalanceApproval=" + needBalanceApproval +
-        '}';
-  }
 }
 

@@ -7,12 +7,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "approved_balance",
     indexes = {
         @Index(name = "approved_balance_idx", columnList = "dimension, timecurve_id, item_type, item_id", unique = true)
     })
+@Getter
+@NoArgsConstructor
+@ToString
 public class ApprovedBalanceEntity {
 
   @Id
@@ -43,25 +49,4 @@ public class ApprovedBalanceEntity {
     this.value1 = value1;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public ApprovedBalanceEntityIdent getApprovedBalanceEntityIdent() {
-    return approvedBalanceEntityIdent;
-  }
-
-  public BigDecimal getValue1() {
-    return value1;
-  }
-
-
-  @Override
-  public String toString() {
-    return "ApprovedBalanceEntity{" +
-        "id=" + id +
-        ", approvedBalanceEntityIdent=" + approvedBalanceEntityIdent +
-        ", value1=" + value1 +
-        '}';
-  }
 }

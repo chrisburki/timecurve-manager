@@ -112,6 +112,8 @@ https://spring.io/blog/2018/08/23/bootiful-gcp-relational-data-access-with-sprin
 https://reflectoring.io/unit-testing-spring-boot/
 https://github.com/eventuate-tram/eventuate-tram-sagas
 
+-- transaction handling
+https://dzone.com/articles/transaction-synchronization-and-spring-application
 
 
 
