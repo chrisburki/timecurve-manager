@@ -115,7 +115,7 @@ https://github.com/eventuate-tram/eventuate-tram-sagas
 -- transaction handling
 https://dzone.com/articles/transaction-synchronization-and-spring-application
 
-
+https://blog.restcase.com/5-basic-rest-api-design-guidelines/
 
 Log4j
     implementation('org.springframework.boot:spring-boot-starter-log4j2')

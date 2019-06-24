@@ -29,7 +29,8 @@ public class ApprovedBalanceEntityTest {
 
   @Test
   public void shouldInsertEventItemEntity() {
-    ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId);
+    ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension,
+        timecurveId, itemType, itemId);
     ApprovedBalanceEntity entity = new ApprovedBalanceEntity(balanceEntityIdent,
         value1);
     when(balanceRepository.save(any(ApprovedBalanceEntity.class))).then(returnsFirstArg());
@@ -39,11 +40,14 @@ public class ApprovedBalanceEntityTest {
 
   @Test
   public void shouldFindApprovedBalanceEntity() {
-    ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId);
+    ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension,
+        timecurveId, itemType, itemId);
     ApprovedBalanceEntity entity = new ApprovedBalanceEntity(balanceEntityIdent, value1);
     Optional<ApprovedBalanceEntity> entityOptional = Optional.of(entity);
-    when(balanceRepository.findByApprovedBalanceEntityIdent(balanceEntityIdent)).thenReturn(entityOptional);
-    Optional<ApprovedBalanceEntity> returnedEntity = balanceRepository.findByApprovedBalanceEntityIdent(balanceEntityIdent);
+    when(balanceRepository.findByApprovedBalanceEntityIdent(balanceEntityIdent))
+        .thenReturn(entityOptional);
+    Optional<ApprovedBalanceEntity> returnedEntity = balanceRepository
+        .findByApprovedBalanceEntityIdent(balanceEntityIdent);
     assertThat(returnedEntity).isEqualTo(entityOptional);
 
   }

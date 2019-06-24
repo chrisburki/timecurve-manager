@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -36,21 +37,28 @@ public class EventEntity {
   private Long id;
 
   @Column(name = "event_ext_id")
+  @NotNull
   private Long eventExtId;
 
   @Column(name = "sequence_nr")
+  @NotNull
   private Integer sequenceNr;
 
   @Column(name = "tenant_id")
+  @NotNull
   private String tenantId;
 
+  @NotNull
   private EventDimension dimension;
 
+  @NotNull
   private EventStatus status;
 
   @Column(name = "use_case")
+  @NotNull
   private String useCase;
 
+  @NotNull
   private LocalDate date1;
 
   private LocalDate date2;

@@ -3,6 +3,7 @@ package timecurvemanager.infrastructure.persistence.balance;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,12 +16,15 @@ import timecurvemanager.domain.event.EventItemType;
 @ToString
 public class ApprovedBalanceEntityIdent implements Serializable {
 
+  @NotNull
   private EventDimension dimension;
 
   @Column(name = "timecurve_id")
+  @NotNull
   private Long timecurveId;
 
   @Column(name = "item_type")
+  @NotNull
   private EventItemType itemType;
 
   @Column(name = "item_id")

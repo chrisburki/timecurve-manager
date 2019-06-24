@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Example;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
@@ -24,7 +23,7 @@ public class EventEntitryTests {
   private EventEntityRepository entityRepository = Mockito.mock(EventEntityRepository.class);
 
   // Test Data
-  private final Long eventExtId = 2L;
+  private final Long eventExtId = null;
   private final Integer seqNr = 1;
   private final String tenantId = "AAA";
   private final EventDimension dimension = EventDimension.SUBLEDGER;
@@ -39,7 +38,7 @@ public class EventEntitryTests {
         date1, date2);
     when(entityRepository.save(any(EventEntity.class))).then(returnsFirstArg());
     EventEntity savedEntity = entityRepository.save(entity);
-    assertThat(savedEntity.getEventExtId()).isNotNull();
+    assertThat(savedEntity.getTenantId()).isNotNull();
   }
 
   @Test
@@ -50,28 +49,11 @@ public class EventEntitryTests {
 
     // Test 1
     when(entityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay")))
+        .findQueryEvents(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase))
         .thenReturn(entityList);
-    List<EventEntity> returnedList1 = entityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay"));
-    assertThat(returnedList1.size()).isEqualTo(1);
+    List<EventEntity> returnedList4 = entityRepository
+        .findQueryEvents(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase);
+    assertThat(returnedList4.size()).isEqualTo(1);
 
-    // Test 2
-    when(entityRepository
-        .findByDimensionAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay")))
-        .thenReturn(entityList);
-    List<EventEntity> returnedList2 = entityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(EventDimension.SUBLEDGER, date1, date2, Example.of("pay"));
-    assertThat(returnedList2.size()).isEqualTo(1);
-
-    when(entityRepository
-        .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1,
-            date2, date1, date2, Example.of("pay"))).thenReturn(entityList);
-
-    // Test 3
-    List<EventEntity> returnedList3 = entityRepository
-        .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(EventDimension.SUBLEDGER, date1,
-            date2, date1, date2, Example.of("pay"));
-    assertThat(returnedList3.size()).isEqualTo(1);
   }
 }

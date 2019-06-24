@@ -6,29 +6,27 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventItem;
+import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntityRepository;
 import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectMapper;
 
 @Component
 public class EventItemMapper {
 
   private final TimecurveObjectMapper timecurveMapper;
+  private final TimecurveObjectEntityRepository timecurveObjectEntityRepository;
 
-  public EventItemMapper(TimecurveObjectMapper timecurveMapper) {
+  public EventItemMapper(TimecurveObjectMapper timecurveMapper,
+      TimecurveObjectEntityRepository timecurveObjectEntityRepository) {
     this.timecurveMapper = timecurveMapper;
+    this.timecurveObjectEntityRepository = timecurveObjectEntityRepository;
   }
-
-  private Event mapEventEntityToDomain(EventEntity entity) {
-    return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
-        entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-        entity.getDate1(), entity.getDate2(), null);
-  }
-
 
   public EventItemEntity mapDomainToEntity(EventItem item) {
 
     return new EventItemEntity(item.getRowNr(),
         item.getTenantId(), item.getDimension(),
-        timecurveMapper.mapDomainToEntity(item.getTimecurve()), item.getItemType(),
+        timecurveObjectEntityRepository.findById(item.getTimecurve().getId()).get(),
+        item.getItemType(),
         item.getItemId(), item.getDate1(), item.getDate2(), item.getValue1(), item.getValue2(),
         item.getValue3(), item.getTover1(), item.getTover2(), item.getTover3());
   }
@@ -36,6 +34,12 @@ public class EventItemMapper {
   public List<EventItemEntity> mapDomainToEntityList(List<EventItem> objectList) {
     return objectList.stream().map((eventItem) -> mapDomainToEntity(eventItem))
         .collect(Collectors.toList());
+  }
+
+  private Event mapEventEntityToDomain(EventEntity entity) {
+    return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
+        entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
+        entity.getDate1(), entity.getDate2());
   }
 
   public EventItem mapEntityToDomain(EventItemEntity entity) {

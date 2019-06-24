@@ -1,5 +1,6 @@
 package timecurvemanager.infrastructure.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class TimecurveObjectController {
   @GetMapping("/objects")
   ResponseEntity<List<TimecurveObject>> listObjects() {
     return new ResponseEntity<>(
-        timecurveObjectService.listObjects().stream().collect(Collectors.toList()), HttpStatus.OK);
+        new ArrayList<>(timecurveObjectService.listObjects()), HttpStatus.OK);
   }
 
   @GetMapping("/objects/{anyIdentifier}")

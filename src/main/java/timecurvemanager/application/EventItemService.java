@@ -1,18 +1,16 @@
 package timecurvemanager.application;
 
-import static timecurvemanager.domain.event.EventItemNotFoundException.EventItemNotFound;
+import static timecurvemanager.domain.event.EventItemNotFoundException.eventItemNotFound;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.domain.event.EventItemType;
-import timecurvemanager.domain.event.EventRepository;
 import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
 @Service
@@ -36,7 +34,7 @@ public class EventItemService {
 
   /* Search for existing event(s) based on id - primary key - probably not needed*/
   public EventItem getEventItemById(Long id) {
-    return itemRepository.findById(id).orElseThrow(() -> EventItemNotFound(id, primaryKey));
+    return itemRepository.findById(id).orElseThrow(() -> eventItemNotFound(id, primaryKey));
   }
 
   /* Search for latest version of event(s) based on event id - external*/

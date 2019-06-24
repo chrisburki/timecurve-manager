@@ -7,13 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
 
 @Entity
-@Table(name = "timecurve_object", indexes = @Index(name = "idx_timecurve_label", columnList = "tag", unique = true))
+@Table(name = "timecurve_object", indexes = @Index(name = "idx_timecurve_label",
+    columnList = "tag", unique = true))
 @Getter
 @NoArgsConstructor
 @ToString
@@ -24,22 +26,28 @@ public class TimecurveObjectEntity {
   private Long id;
 
   @Column(name = "tenant_id")
+  @NotNull
   private String tenantId;
 
+  @NotNull
   private String tag;
 
+  @NotNull
   private String name;
 
   @Column(name = "value_type")
+  @NotNull
   private TimecurveObjectValueType valueType;
 
   @Column(name = "value_tag")
+  @NotNull
   private String valueTag;
 
   @Column(name = "clearing_reference")
   private String clearingReference;
 
   @Column(name = "need_balance_approval")
+  @NotNull
   private Boolean needBalanceApproval;
 
   public TimecurveObjectEntity(String tenantId, String tag, String name,

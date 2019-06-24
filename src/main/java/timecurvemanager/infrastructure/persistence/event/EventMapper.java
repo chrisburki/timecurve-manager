@@ -35,7 +35,7 @@ public class EventMapper {
   public Event mapEntityToDomain(EventEntity entity) {
     return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
         entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-        entity.getDate1(), entity.getDate2(), null);
+        entity.getDate1(), entity.getDate2());
   }
 
   public List<Event> mapEntityToDomainList(List<EventEntity> entityList) {
@@ -50,7 +50,7 @@ public class EventMapper {
       EventEntity entity = eventEntity.get();
       return Optional.of(new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
           entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-          entity.getDate1(), entity.getDate2(), null));
+          entity.getDate1(), entity.getDate2()));
     } else {
       return Optional.empty();
     }

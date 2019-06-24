@@ -12,7 +12,8 @@ public class TimecurveObjectMapper {
 
   public TimecurveObjectEntity mapDomainToEntity(TimecurveObject object) {
     return new TimecurveObjectEntity(object.getTenantId(), object.getTag(), object.getName(),
-        object.getValueType(), object.getValueTag(), object.getClearingReference(), object.getNeedBalanceApproval());
+        object.getValueType(), object.getValueTag(), object.getClearingReference(),
+        object.getNeedBalanceApproval());
   }
 
   public List<TimecurveObjectEntity> mapDomainToEntityList(List<TimecurveObject> objectList) {

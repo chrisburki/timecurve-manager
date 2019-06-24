@@ -10,7 +10,7 @@ public class EventItemNotFoundException extends RuntimeException {
     super("Timecurve Object with " + type + ": " + ident.toString() + " does not exist");
   }
 
-  public static EventItemNotFoundException EventItemNotFound(Long ident, String type) {
+  public static EventItemNotFoundException eventItemNotFound(Long ident, String type) {
     return new EventItemNotFoundException(ident, type);
   }
 }

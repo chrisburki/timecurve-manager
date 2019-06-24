@@ -11,7 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,36 +42,45 @@ public class EventItemEntity {
 
   @ManyToOne
   @Setter
+  @NotNull
   private EventEntity eventEntity;
 
   @Column(name = "row_nr")
+  @NotNull
   private Integer rowNr;
 
   @Column(name = "tenant_id")
+  @NotNull
   private String tenantId;
 
+  @NotNull
   private EventDimension dimension;
 
-  @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "timecurve_id", referencedColumnName = "id")
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "timecurve_id", referencedColumnName = "id", nullable = false)
+  @NotNull
   private TimecurveObjectEntity timecurveEntity;
 
   @Column(name = "item_type")
+  @NotNull
   private EventItemType itemType;
 
   @Column(name = "item_id")
   private Long itemId;
 
+  @NotNull
   private LocalDate date1;
 
   private LocalDate date2;
 
+  @NotNull
   private BigDecimal value1;
 
   private BigDecimal value2;
 
   private BigDecimal value3;
 
+  @NotNull
   private BigDecimal tover1;
 
   private BigDecimal tover2;

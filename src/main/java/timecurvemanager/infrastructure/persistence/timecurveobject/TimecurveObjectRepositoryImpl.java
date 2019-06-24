@@ -47,7 +47,7 @@ public class TimecurveObjectRepositoryImpl implements TimecurveObjectRepository 
   @Override
   public TimecurveObject save(TimecurveObject timecurveObject) {
     return timecurveObjectMapper.mapEntityToDomain(timecurveObjectEntityRepository
-        .save(timecurveObjectMapper.mapDomainToEntity(timecurveObject)));
+        .saveAndFlush(timecurveObjectMapper.mapDomainToEntity(timecurveObject)));
   }
 
   @Override

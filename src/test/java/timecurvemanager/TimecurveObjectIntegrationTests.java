@@ -2,7 +2,6 @@ package timecurvemanager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -21,12 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import timecurvemanager.domain.timecurveobject.TimecurveObject;
 import timecurvemanager.domain.timecurveobject.TimecurveObjectRepository;
 import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
-import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntityRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,23 +29,18 @@ import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObje
 public class TimecurveObjectIntegrationTests {
 
   @Autowired
-  private WebApplicationContext applicationContext;
-
-  @Autowired
   private TimecurveObjectRepository repository;
 
   @Autowired
-  private TimecurveObjectEntityRepository entityRepository;
-
   private MockMvc mockMvc;
 
-  @Before
+  /*@Before
   public void setup() {
     this.mockMvc = MockMvcBuilders
         .webAppContextSetup(applicationContext)
         .build();
     // entityRepository.deleteAll();
-  }
+  }*/
 
   @Test
   public void givenTimecurvesGetAll() throws Exception {
@@ -63,7 +53,7 @@ public class TimecurveObjectIntegrationTests {
     timecurveObject2 = repository.save(timecurveObject2);
     TimecurveObject timecurveObject3 = new TimecurveObject(null, "T3", "L3", "ABBN",
         TimecurveObjectValueType.CURRENCY, "CHF", null, true);
-    timecurveObject3 = repository.save(timecurveObject3);
+    repository.save(timecurveObject3);
 
     mockMvc.perform(get("/timecurve/objects/" + timecurveObject1.getId())
         .contentType(MediaType.APPLICATION_JSON))
@@ -77,12 +67,6 @@ public class TimecurveObjectIntegrationTests {
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name", is(timecurveObject2.getName())))
-    ;
-
-    mockMvc.perform(get("/timecurve/objects")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-     //   .andExpect(jsonPath("$", hasSize(1)))
     ;
   }
 

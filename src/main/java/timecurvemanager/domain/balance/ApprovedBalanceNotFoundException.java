@@ -10,12 +10,14 @@ public class ApprovedBalanceNotFoundException extends RuntimeException {
 
   private ApprovedBalanceNotFoundException(EventDimension dimension, Long timecurveId,
       EventItemType itemType, Long itemId) {
-    super("Approved Balance not found for dimension: " + dimension + ", timecurveId: " + timecurveId + ", itemType: " + itemType + ", itemId: " + itemId);
+    super("Approved Balance not found for dimension: " + dimension + ", timecurveId: " + timecurveId
+        + ", itemType: " + itemType + ", itemId: " + itemId);
   }
 
-  public static ApprovedBalanceNotFoundException approvedBalanceNotFound(EventDimension dimension, Long timecurveId,
+  public static ApprovedBalanceNotFoundException approvedBalanceNotFound(EventDimension dimension,
+      Long timecurveId,
       EventItemType itemType, Long itemId) {
-    return new ApprovedBalanceNotFoundException(dimension,timecurveId,itemType,itemId);
+    return new ApprovedBalanceNotFoundException(dimension, timecurveId, itemType, itemId);
   }
 
 }

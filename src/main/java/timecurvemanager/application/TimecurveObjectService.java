@@ -78,15 +78,15 @@ public class TimecurveObjectService {
     //   TimecurveObject.setObjectId(UUID.randomUUID().toString());
     // }
 
-    // check for null
-    try {
-      fieldName = timecurveObject.validateForNull();
+    // check for null (not working)
+    /*try {
+      fieldName = timecurveObject.validateForNull(timecurveObject);
       if (fieldName != null) {
         throw timecurveObjectNotComplete(timecurveObject.getId(), fieldName);
       }
     } catch (IllegalArgumentException | IllegalAccessException e) {
       throw timecurveObjectGeneralException(e.getMessage());
-    }
+    }*/
 
     // save TimecurveObject
     try {

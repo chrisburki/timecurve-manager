@@ -11,8 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.transaction.Transactional;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
@@ -23,10 +22,14 @@ import timecurvemanager.domain.event.EventRepository;
 import timecurvemanager.domain.event.EventStatus;
 
 @Service
+@Slf4j
 public class EventService {
 
   private static final String primaryKey = "Primary Key (Id)";
   private static final String extEventId = "Event Id (external)";
+
+  private static final LocalDate minDate = LocalDate.MIN;
+  private static final LocalDate maxDate = LocalDate.MAX;
 
   private final EventRepository eventRepository;
   private final ApprovedBalanceService approvedBalanceService;
@@ -35,6 +38,13 @@ public class EventService {
       ApprovedBalanceService approvedBalanceService) {
     this.eventRepository = eventRepository;
     this.approvedBalanceService = approvedBalanceService;
+  }
+
+  /**
+   * Helper - nvl
+   */
+  public <T> T nvl(T arg0, T arg1) {
+    return (arg0 == null) ? arg1 : arg0;
   }
 
   /*
@@ -47,36 +57,40 @@ public class EventService {
     return eventRepository.findById(id).orElseThrow(() -> eventNotFound(id, primaryKey));
   }
 
-  /* Search for latest version of event(s) based on event id - external*/
+  /* Search for latest version of event based on event id - external*/
   public Event getEventByEventExtId(Long eventId) {
     return eventRepository.findByEventExtId(eventId)
         .orElseThrow(() -> eventNotFound(eventId, extEventId));
   }
 
+  /* Search for latest version of event and event items based on event id - external*/
+  public Event getEventItemsByEventExtId(Long eventId) {
+    return eventRepository.findEventItemByEventExtId(eventId)
+        .orElseThrow(() -> eventNotFound(eventId, extEventId));
+  }
+
   /* List events */
   public Collection<Event> listEvents(EventDimension dimension, LocalDate fromDate1,
-      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String usecase) {
-    Boolean data1NotNull = fromDate1 != null || toDate1 != null;
-    Boolean data2NotNull = fromDate2 != null || toDate2 != null;
-    //@todo: add validations
+      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase,
+      Boolean includeItems) {
 
-    // to ingore case and null values
-    ExampleMatcher matcher = ExampleMatcher.matching().withIncludeNullValues().withIgnoreCase();
-    Example<String> useCaseMatch = Example.of(usecase, matcher);
-    if (data1NotNull && data2NotNull) {
+    LocalDate fDate1 = nvl(fromDate1, LocalDate.MAX);
+    LocalDate tDate1 = nvl(toDate1, LocalDate.MIN);
+    LocalDate fDate2 = nvl(fromDate2, LocalDate.MAX);
+    LocalDate tDate2 = nvl(toDate2, LocalDate.MIN);
+
+    log.info("fromDate1: " + fDate1 + "toDate: " + tDate1 + "fromDate2: " + fDate2 + "toDate2: "
+        + tDate2);
+    if (includeItems) {
       return eventRepository
-          .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(dimension, fromDate1, toDate1,
-              fromDate2, toDate2, useCaseMatch);
-    } else if (data1NotNull) {
-      return eventRepository
-          .findByDimensionAndDate1BetweenAndUseCase(dimension, fromDate1, toDate1, useCaseMatch);
+          .findEventItemsQueryEvents(dimension, fDate1, tDate1, fDate2, tDate2, useCase);
     } else {
-      return eventRepository.findByDimensionAndDate2BetweenAndUseCase(dimension, fromDate2, toDate2,
-          useCaseMatch);
+      return eventRepository.findQueryEvents(dimension, fDate1, tDate1, fDate2, tDate2, useCase);
     }
   }
 
   /* List event items */
+  //@todo: implement later
   public Collection<EventItem> listEventItems(Long timecurveId, EventDimension dimension,
       LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2,
       EventItemType itemType) {
@@ -87,15 +101,6 @@ public class EventService {
    * addEvent
    * ********
    */
-
-  private void putEvent(Event event) {
-    /*get last event, event items (with highest sequenceNr*/
-    /*if found reverese it and insert new one with higher sequenceNr*/
-    //@todo: reverse if existing
-    //@todo: reverse if existing
-    eventRepository.save(event);
-  }
-
   /* Check Clearing (part of addEvent) */
   private void buildClearing(HashMap<String, BigDecimal> clearingMap, String clearingReference,
       BigDecimal value) {
@@ -119,20 +124,53 @@ public class EventService {
         });
   }
 
-  /* MAIN: Add Event. If existing reverse items and reinsert new ones. Additional check clearing consistency and update ApprovedBalance*/
+  private Event addEventExtId(Event event, Long eventExtId, Integer sequenceNr) {
+    event.setEventExtId(eventRepository.getNextEventExtId());
+    event.setSequenceNr(1);
+    return event;
+  }
+
+  private Event putEvent(Event event, Event lastEvent) {
+    /*reveres last event if not null*/
+    if (lastEvent != null) {
+      Event lastReversedEvent = new Event(
+          null, lastEvent.getEventExtId(), -lastEvent.getSequenceNr(), lastEvent.getTenantId(),
+          lastEvent.getDimension(), lastEvent.getStatus(), lastEvent.getUseCase(),
+          lastEvent.getDate1(), lastEvent.getDate2());
+      lastEvent.getEventItems().forEach(item -> {
+        lastReversedEvent.addEventItem(item);
+      });
+      eventRepository.save(lastReversedEvent);
+    }
+
+    /*insert new one with higher sequenceNr*/
+    return eventRepository.save(event);
+  }
+
+  /* MAIN: Add Event. If existing reverse items and reinsert new ones.
+     Additional check clearing consistency and update ApprovedBalance*/
   @Transactional
   public Event addEvent(Event event) {
     // 1. evaluate clearing
     evalClearing(event);
-    // 2. add event & items
-    putEvent(event);
-    // 3. update balance
+
+    // 2. find EventExtId and if not existing add one
+    Event lastEvent = null;
+    if (event.getEventExtId() == null) {
+      event = addEventExtId(event, eventRepository.getNextEventExtId(), 1);
+    } else {
+      lastEvent = getEventByEventExtId(event.getEventExtId());
+      event = addEventExtId(event, lastEvent.getEventExtId(), lastEvent.getSequenceNr() + 1);
+    }
+
+    // 3. add event & items
+    event = putEvent(event, lastEvent);
+
+    // 4. update balance
     //@todo: check for passing or reaching approved status
     if (event.getStatus() == EventStatus.APPROVED) {
       approvedBalanceService.addEvent(event);
     }
     return event;
   }
-
-
 }

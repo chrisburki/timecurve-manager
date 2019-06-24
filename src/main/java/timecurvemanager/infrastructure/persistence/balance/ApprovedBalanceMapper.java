@@ -21,7 +21,8 @@ public class ApprovedBalanceMapper {
   }
 
   public ApprovedBalance mapEntityToDomain(ApprovedBalanceEntity balance) {
-    return new ApprovedBalance(balance.getId(), balance.getApprovedBalanceEntityIdent().getDimension(),
+    return new ApprovedBalance(balance.getId(),
+        balance.getApprovedBalanceEntityIdent().getDimension(),
         balance.getApprovedBalanceEntityIdent().getTimecurveId(),
         balance.getApprovedBalanceEntityIdent().getItemType(),
         balance.getApprovedBalanceEntityIdent().getItemId(), balance.getValue1());
@@ -31,7 +32,8 @@ public class ApprovedBalanceMapper {
       Optional<ApprovedBalanceEntity> balanceEntity) {
     if (balanceEntity.isPresent()) {
       ApprovedBalanceEntity balance = balanceEntity.get();
-      return Optional.of(new ApprovedBalance(balance.getId(), balance.getApprovedBalanceEntityIdent().getDimension(),
+      return Optional.of(new ApprovedBalance(balance.getId(),
+          balance.getApprovedBalanceEntityIdent().getDimension(),
           balance.getApprovedBalanceEntityIdent().getTimecurveId(),
           balance.getApprovedBalanceEntityIdent().getItemType(),
           balance.getApprovedBalanceEntityIdent().getItemId(), balance.getValue1()));

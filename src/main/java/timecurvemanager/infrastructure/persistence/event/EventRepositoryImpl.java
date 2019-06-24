@@ -3,6 +3,7 @@ package timecurvemanager.infrastructure.persistence.event;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.event.Event;
@@ -10,20 +11,19 @@ import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventRepository;
 
 @Component
+@Slf4j
 public class EventRepositoryImpl implements EventRepository {
 
   private final EventEntityRepository eventEntityRepository;
   private final EventMapper eventMapper;
+  private final EventExtIdSequenceRepository eventExtIdSequenceRepository;
 
   public EventRepositoryImpl(EventEntityRepository eventEntityRepository,
-      EventMapper eventMapper) {
+      EventMapper eventMapper,
+      EventExtIdSequenceRepository eventExtIdSequenceRepository) {
     this.eventEntityRepository = eventEntityRepository;
     this.eventMapper = eventMapper;
-  }
-
-  @Override
-  public List<Event> findAll() {
-    return eventMapper.mapEntityToDomainList(eventEntityRepository.findAll());
+    this.eventExtIdSequenceRepository = eventExtIdSequenceRepository;
   }
 
   @Override
@@ -39,31 +39,36 @@ public class EventRepositoryImpl implements EventRepository {
   }
 
   @Override
-  public List<Event> findByDimensionAndDate1BetweenAndUseCase(EventDimension dimension,
-      LocalDate fromDate, LocalDate toDate, Example<String> useCase) {
-    return eventMapper.mapEntityToDomainList(eventEntityRepository
-        .findByDimensionAndDate1BetweenAndUseCase(dimension, fromDate, toDate, useCase));
+  public Optional<Event> findEventItemByEventExtId(Long eventExtId) {
+    return eventMapper.mapOptionalEntityToDomain(eventEntityRepository.findEventItemByEventExtId(eventExtId));
   }
 
   @Override
-  public List<Event> findByDimensionAndDate2BetweenAndUseCase(EventDimension dimension,
-      LocalDate fromDate, LocalDate toDate, Example<String> useCase) {
+  public List<Event> findQueryEvents(EventDimension dimension, LocalDate fromDate1,
+      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
+    log.info(
+        "fromDate1: " + fromDate1 + "toDate: " + toDate1 + "fromDate2: " + fromDate2 + "toDate2: "
+            + toDate2);
     return eventMapper.mapEntityToDomainList(eventEntityRepository
-        .findByDimensionAndDate2BetweenAndUseCase(dimension, fromDate, toDate, useCase));
+        .findQueryEvents(dimension, fromDate1, toDate1, fromDate2, toDate2, useCase));
   }
 
   @Override
-  public List<Event> findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(
-      EventDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,
-      LocalDate toDate2, Example<String> useCase) {
+  public List<Event> findEventItemsQueryEvents(EventDimension dimension, LocalDate fromDate1,
+      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
     return eventMapper.mapEntityToDomainList(eventEntityRepository
-        .findByDimensionAndDate1BetweenAndDate2BetweenAndUseCase(dimension, fromDate1, toDate1,
-            fromDate2, toDate2, useCase));
+        .findEventItemsQueryEvents(dimension, fromDate1, toDate1, fromDate2, toDate2, useCase));
   }
 
   @Override
   public Event save(Event event) {
     return eventMapper.mapEntityToDomain(eventEntityRepository
         .save(eventMapper.mapDomainToEntity(event)));
+  }
+
+  @Override
+  public Long getNextEventExtId() {
+    EventExtIdSequence extIdSequence = new EventExtIdSequence();
+    return eventExtIdSequenceRepository.save(extIdSequence).getId();
   }
 }

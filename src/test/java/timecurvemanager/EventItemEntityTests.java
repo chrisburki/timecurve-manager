@@ -30,7 +30,7 @@ public class EventItemEntityTests {
 
   // Test Data Event
   private final EventStatus status = EventStatus.OPEN;
-  private final Long eventExtId = 1L;
+  private final Long eventExtId = null;
   private final String useCase = "pay";
   private final Integer seqNr = 1;
 
