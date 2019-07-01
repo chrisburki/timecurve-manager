@@ -22,7 +22,6 @@ public class EventItemMapper {
   }
 
   public EventItemEntity mapDomainToEntity(EventItem item) {
-
     return new EventItemEntity(item.getRowNr(),
         item.getTenantId(), item.getDimension(),
         timecurveObjectEntityRepository.findById(item.getTimecurve().getId()).get(),
@@ -32,9 +31,20 @@ public class EventItemMapper {
   }
 
   public List<EventItemEntity> mapDomainToEntityList(List<EventItem> objectList) {
-    return objectList.stream().map((eventItem) -> mapDomainToEntity(eventItem))
+    return objectList.stream().map(eventItem -> mapDomainToEntity(eventItem))
         .collect(Collectors.toList());
   }
+
+  /* return EventItems given Event*/
+  public EventItem mapEntityAndEventToDomain(EventItemEntity entity, Event event) {
+    return new EventItem(entity.getId(), event,
+        entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
+        timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()),
+        entity.getItemType(), entity.getItemId(), entity.getDate1(), entity.getDate2(),
+        entity.getValue1(), entity.getValue2(), entity.getValue3(), entity.getTover1(),
+        entity.getTover2(), entity.getTover3(), null);
+  }
+
 
   private Event mapEventEntityToDomain(EventEntity entity) {
     return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),

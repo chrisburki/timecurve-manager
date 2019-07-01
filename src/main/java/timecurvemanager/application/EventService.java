@@ -6,17 +6,19 @@ import static timecurvemanager.domain.event.EventNotFoundException.eventNotFound
 import java.math.BigDecimal;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.HashMap;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.EventItemRepository;
 
 import timecurvemanager.domain.event.EventRepository;
 import timecurvemanager.domain.event.EventStatus;
@@ -32,18 +34,21 @@ public class EventService {
   private static final LocalDate maxDate = LocalDate.MAX;
 
   private final EventRepository eventRepository;
+  private final EventItemRepository eventItemRepository;
   private final ApprovedBalanceService approvedBalanceService;
 
   public EventService(EventRepository eventRepository,
+      EventItemRepository eventItemRepository,
       ApprovedBalanceService approvedBalanceService) {
     this.eventRepository = eventRepository;
+    this.eventItemRepository = eventItemRepository;
     this.approvedBalanceService = approvedBalanceService;
   }
 
-  /**
+  /*
    * Helper - nvl
    */
-  public <T> T nvl(T arg0, T arg1) {
+  private <T> T nvl(T arg0, T arg1) {
     return (arg0 == null) ? arg1 : arg0;
   }
 
@@ -58,43 +63,36 @@ public class EventService {
   }
 
   /* Search for latest version of event based on event id - external*/
-  public Event getEventByEventExtId(Long eventId) {
-    return eventRepository.findByEventExtId(eventId)
-        .orElseThrow(() -> eventNotFound(eventId, extEventId));
-  }
-
-  /* Search for latest version of event and event items based on event id - external*/
-  public Event getEventItemsByEventExtId(Long eventId) {
-    return eventRepository.findEventItemByEventExtId(eventId)
-        .orElseThrow(() -> eventNotFound(eventId, extEventId));
+  public Event getEventByEventExtId(Long eventId, Boolean inclItems) {
+    int cntItems = 0;
+    List<EventItem> eventItems = new ArrayList<>();
+    if (inclItems) {
+      eventItems = eventItemRepository.findQueryByEventExtId(eventId);
+      cntItems = eventItems.size();
+    }
+    if (cntItems == 0) {
+      return eventRepository.findQueryByEventExtId(eventId)
+          .orElseThrow(() -> eventNotFound(eventId, extEventId));
+    } else {
+      Event event = eventItems.get(0).getEvent();
+      eventItems.stream().forEach(eventItem -> {
+        eventItem.setEvent(null);
+        event.addEventItem2(eventItem);
+      });
+      return event;
+    }
   }
 
   /* List events */
   public Collection<Event> listEvents(EventDimension dimension, LocalDate fromDate1,
-      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase,
-      Boolean includeItems) {
+      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
 
     LocalDate fDate1 = nvl(fromDate1, LocalDate.MAX);
     LocalDate tDate1 = nvl(toDate1, LocalDate.MIN);
     LocalDate fDate2 = nvl(fromDate2, LocalDate.MAX);
     LocalDate tDate2 = nvl(toDate2, LocalDate.MIN);
 
-    log.info("fromDate1: " + fDate1 + "toDate: " + tDate1 + "fromDate2: " + fDate2 + "toDate2: "
-        + tDate2);
-    if (includeItems) {
-      return eventRepository
-          .findEventItemsQueryEvents(dimension, fDate1, tDate1, fDate2, tDate2, useCase);
-    } else {
-      return eventRepository.findQueryEvents(dimension, fDate1, tDate1, fDate2, tDate2, useCase);
-    }
-  }
-
-  /* List event items */
-  //@todo: implement later
-  public Collection<EventItem> listEventItems(Long timecurveId, EventDimension dimension,
-      LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2,
-      EventItemType itemType) {
-    return null;
+    return eventRepository.findQueryEvents(dimension, fDate1, tDate1, fDate2, tDate2, useCase);
   }
 
   /*
@@ -102,7 +100,8 @@ public class EventService {
    * ********
    */
   /* Check Clearing (part of addEvent) */
-  private void buildClearing(HashMap<String, BigDecimal> clearingMap, String clearingReference,
+  private void buildClearing(HashMap<String, BigDecimal> clearingMap, String
+      clearingReference,
       BigDecimal value) {
     clearingMap.put(clearingReference, clearingMap
         .getOrDefault(clearingReference, BigDecimal.ZERO).add(value));
@@ -125,8 +124,8 @@ public class EventService {
   }
 
   private Event addEventExtId(Event event, Long eventExtId, Integer sequenceNr) {
-    event.setEventExtId(eventRepository.getNextEventExtId());
-    event.setSequenceNr(1);
+    event.setEventExtId(eventExtId);
+    event.setSequenceNr(sequenceNr);
     return event;
   }
 
@@ -159,7 +158,7 @@ public class EventService {
     if (event.getEventExtId() == null) {
       event = addEventExtId(event, eventRepository.getNextEventExtId(), 1);
     } else {
-      lastEvent = getEventByEventExtId(event.getEventExtId());
+      lastEvent = getEventByEventExtId(event.getEventExtId(), false);
       event = addEventExtId(event, lastEvent.getEventExtId(), lastEvent.getSequenceNr() + 1);
     }
 

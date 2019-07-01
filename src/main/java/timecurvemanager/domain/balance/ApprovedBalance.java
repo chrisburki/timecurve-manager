@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class ApprovedBalance {
 
@@ -23,6 +26,7 @@ public class ApprovedBalance {
 
   private Long itemId;
 
+  @Setter
   private BigDecimal value1;
 
 }

@@ -13,7 +13,7 @@ public interface ApprovedBalanceEntityRepository extends
   Optional<ApprovedBalanceEntity> findByApprovedBalanceEntityIdent(
       ApprovedBalanceEntityIdent approvedBalanceEntityIdent);
 
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  // @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<ApprovedBalanceEntity> findById(Long id);
 
 }

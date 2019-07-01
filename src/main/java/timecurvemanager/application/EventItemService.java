@@ -16,8 +16,6 @@ import timecurvemanager.domain.timecurveobject.TimecurveObject;
 @Service
 public class EventItemService {
 
-  private static final String primaryKey = "Primary Key (Id)";
-
   private final EventItemRepository itemRepository;
   private final EventService eventService;
 
@@ -28,49 +26,37 @@ public class EventItemService {
   }
 
   /*
+   * Helper - nvl
+   */
+  private <T> T nvl(T arg0, T arg1) {
+    return (arg0 == null) ? arg1 : arg0;
+  }
+
+  /*
    * searchEvents
    * ************
    */
 
-  /* Search for existing event(s) based on id - primary key - probably not needed*/
-  public EventItem getEventItemById(Long id) {
-    return itemRepository.findById(id).orElseThrow(() -> eventItemNotFound(id, primaryKey));
-  }
-
   /* Search for latest version of event(s) based on event id - external*/
-  public Collection<EventItem> getEventItemsByEventId(Long eventId) {
-    return itemRepository.findByEvent(eventService.getEventById(eventId));
-  }
-
-  /* Search for latest version of event(s) based on event id - external*/
-  public Collection<EventItem> getEventItemsByEventExtId(Long extEventId) {
-    return itemRepository.findByEvent(eventService.getEventByEventExtId(extEventId));
+  public Collection<EventItem> getEventItemsByEventExtId(Long eventId) {
+    return itemRepository.findQueryByEventExtId(eventId);
   }
 
   /* List events items */
-  public Collection<EventItem> listEventItems(EventDimension dimension, TimecurveObject timecurve,
+  public Collection<EventItem> listEventItems(EventDimension dimension, Long objectId,
       EventItemType itemType, Long itemId, LocalDate fromDate1,
-      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2) {
+      LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
     Boolean data1NotNull = fromDate1 != null || toDate1 != null;
     Boolean data2NotNull = fromDate2 != null || toDate2 != null;
     //@todo: add validations
 
-    // to ingore case and null values
-    ExampleMatcher matcher = ExampleMatcher.matching().withIncludeNullValues();
-    Example<Long> itemIdMatch = Example.of(itemId, matcher);
+    LocalDate fDate1 = nvl(fromDate1, LocalDate.MAX);
+    LocalDate tDate1 = nvl(toDate1, LocalDate.MIN);
+    LocalDate fDate2 = nvl(fromDate2, LocalDate.MAX);
+    LocalDate tDate2 = nvl(toDate2, LocalDate.MIN);
 
-    if (data1NotNull && data2NotNull) {
-      return itemRepository
-          .findByDimensionAndTimecurveAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(dimension,
-              timecurve, itemType, itemIdMatch, fromDate1, toDate1, fromDate2, toDate2);
-    } else if (data1NotNull) {
-      return itemRepository
-          .findByDimensionAndTimecurveAndItemTypeAndItemIdAndDate1Between(dimension, timecurve,
-              itemType, itemIdMatch, fromDate1, toDate1);
-    } else {
-      return itemRepository
-          .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(dimension,
-              timecurve, itemType, itemIdMatch, fromDate2, toDate2);
-    }
+    return itemRepository
+        .findQueryEventItems(dimension, objectId, itemType, itemId, fDate1, tDate1, fDate2, tDate2,
+            useCase);
   }
 }

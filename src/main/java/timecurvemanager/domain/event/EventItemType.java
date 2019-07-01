@@ -1,8 +1,8 @@
 package timecurvemanager.domain.event;
 
 public enum EventItemType {
-  BASIC("subledger", "sublg", "Sub Ledger", false, true),
-  IFRS("blocking", "block", "Blocking", true, false),
+  BASIC("basic", "basic", "Basic", false, true),
+  IFRS("ifrs", "ifrs", "IFRS", true, false),
   AVERAGE("average", "avg", "Average Book Values", false, false),
   FIFO("fifo", "fifo", "First In First Out", true, false);
 

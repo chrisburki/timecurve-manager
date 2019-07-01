@@ -87,41 +87,19 @@ public class EventItemEntityTests {
         date1, date2, value1, value2, value3, tover1, tover2, tover3);
     List<EventItemEntity> entityList = Arrays.asList(entity);
 
-    // Test 1
-    when(entityRepository
-        .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(dimension,
-            timecurveEntity,
-            itemType, Example.of(itemId), date1, date1)).thenReturn(entityList);
-    List<EventItemEntity> returnedList1 = entityRepository
-        .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1Between(dimension,
-            timecurveEntity,
-            itemType, Example.of(itemId), date1, date1);
-    assertThat(returnedList1.size()).isEqualTo(1);
 
-    // Test 2
+    // Test
     when(entityRepository
-        .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(dimension,
-            timecurveEntity,
-            itemType, Example.of(itemId), date1, date1)).thenReturn(entityList);
-    List<EventItemEntity> returnedList2 = entityRepository
-        .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate2Between(dimension,
-            timecurveEntity,
-            itemType, Example.of(itemId), date2, date2);
-    assertThat(returnedList2.size()).isEqualTo(1);
-
-    // Test 2
-    when(entityRepository
-        .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
+        .findQueryEventItems(
             dimension,
-            timecurveEntity,
-            itemType, Example.of(itemId), date1, date1, date2, date2)).thenReturn(entityList);
-    List<EventItemEntity> returnedList3 = entityRepository
-        .findByDimensionAndTimecurveEntityAndItemTypeAndItemIdAndDate1BetweenAndDate2Between(
+            timecurveEntity.getId(),
+            itemType, itemId, date1, date1, date2, date2, null)).thenReturn(entityList);
+    List<EventItemEntity> returnedList = entityRepository
+        .findQueryEventItems(
             dimension,
-            timecurveEntity,
-            itemType, Example.of(itemId), date1, date1, date2, date2);
-    assertThat(returnedList2.size()).isEqualTo(1);
+            timecurveEntity.getId(),
+            itemType, itemId, date1, date1, date2, date2, null);
+    assertThat(returnedList.size()).isEqualTo(1);
 
   }
-
 }

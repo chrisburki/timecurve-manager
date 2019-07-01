@@ -49,10 +49,10 @@ public class EventEntitryTests {
 
     // Test 1
     when(entityRepository
-        .findQueryEvents(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase))
+        .findByFilterCriteria(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase))
         .thenReturn(entityList);
     List<EventEntity> returnedList4 = entityRepository
-        .findQueryEvents(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase);
+        .findByFilterCriteria(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase);
     assertThat(returnedList4.size()).isEqualTo(1);
 
   }

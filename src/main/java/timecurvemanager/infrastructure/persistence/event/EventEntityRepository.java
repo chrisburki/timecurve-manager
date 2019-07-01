@@ -1,54 +1,48 @@
 package timecurvemanager.infrastructure.persistence.event;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import timecurvemanager.domain.event.EventDimension;
 
 @Repository
-public interface EventEntityRepository extends JpaRepository<EventEntity, Long> {
+public interface EventEntityRepository extends JpaRepository<EventEntity, Long>,
+    JpaSpecificationExecutor<EventEntity> {
 
   @Query("select e from EventEntity e "
       + "where e.eventExtId = :eventExtId "
       + "and e.sequenceNr = (select max(f.sequenceNr) from EventEntity f where f.eventExtId = :eventExtId)")
-  Optional<EventEntity> findByEventExtId(@Param("eventExtId") Long eventExtId);
+  Optional<EventEntity> findQueryByEventExtId(@Param("eventExtId") Long eventExtId);
 
-  @Query("select e "
-      + "from EventEntity e "
-      + ",EventItemEntity i "
-      + "where e.eventExtId = :eventExtId "
-      + "and e.sequenceNr = (select max(f.sequenceNr) from EventEntity f where f.eventExtId = :eventExtId)"
-      + "and i.eventEntity = e.id")
-  Optional<EventEntity> findEventItemByEventExtId(@Param("eventExtId") Long eventExtId);
+  default List<EventEntity> findByFilterCriteria(
+      EventDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,
+      LocalDate toDate2, String useCase
+  ) {
+    return findAll((root, criteriaQuery, criteriaBuilder) -> {
+      List<Predicate> predicates = new ArrayList<Predicate>();
+      predicates.add(root.get("dimension").in(dimension));
+      predicates.add(criteriaBuilder.between(root.get("date1"), fromDate1, toDate1));
+      predicates.add(criteriaBuilder.between(root.get("date2"), fromDate2, toDate2));
+      if (useCase != null) {
+        predicates.add(criteriaBuilder.equal(root.get("useCase"), useCase));
+      }
+//      if (internalKey != null) {
+//        predicates.add(criteriaBuilder.like(root.get("internalKey"), "%" + internalKey + "%"));
+//      }
+//      if (currencyIsoKeyList != null && !currencyIsoKeyList.isEmpty()) {
+//        predicates.add(root.get("currencyIsoKey").in(currencyIsoKeyList));
+//      }
 
-  @Query("select e "
-      + "from EventEntity e "
-      + "where e.dimension = :dimension"
-      + "  and (:useCase is null or e.useCase = :useCase)"
-      + "  and e.date1 between :fromDate1 and :toDate1"
-      + "  and e.date2 between :fromDate2 and :toDate2"
-  )
-  List<EventEntity> findQueryEvents(
-      @Param("dimension") EventDimension dimension, @Param("fromDate1") LocalDate fromDate1,
-      @Param("toDate1") LocalDate toDate1, @Param("fromDate2") LocalDate fromDate2,
-      @Param("toDate2") LocalDate toDate2, @Param("useCase") String useCase);
-
-  @Query("select e "
-      + "from EventEntity e "
-      + ",EventItemEntity i "
-      + "where e.dimension = :dimension"
-      + "  and (:useCase is null or e.useCase = :useCase)"
-      + "  and e.date1 between :fromDate1 and :toDate1"
-      + "  and e.date2 between :fromDate2 and :toDate2"
-      + "  and i.eventEntity = e.id"
-  )
-  List<EventEntity> findEventItemsQueryEvents(
-      @Param("dimension") EventDimension dimension, @Param("fromDate1") LocalDate fromDate1,
-      @Param("toDate1") LocalDate toDate1, @Param("fromDate2") LocalDate fromDate2,
-      @Param("toDate2") LocalDate toDate2, @Param("useCase") String useCase);
+      return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+    });
+  }
 }

@@ -1,0 +1,69 @@
+{
+    "id": null,
+    "eventExtId": null,
+    "sequenceNr": null,
+    "tenantId": "AAA",
+    "dimension": "SUBLEDGER",
+    "status": "APPROVED",
+    "useCase": "pay",
+    "date1": "2019-06-27",
+    "date2": "2019-06-27",
+    "eventItems": [
+        {
+            "id": null,
+            "event": null,
+            "rowNr": 1,
+            "tenantId": "AAA",
+            "dimension": "SUBLEDGER",
+            "timecurve": {
+                "id": 6,
+                "tenantId": "AAA",
+                "tag": "TAG1",
+                "name": "Object 1",
+                "valueType": "CURRENCY",
+                "valueTag": "CHF",
+                "clearingReference": "CHF",
+                "needBalanceApproval": true
+            },
+            "itemType": "BASIC",
+            "itemId": 1,
+            "date1": "2019-06-27",
+            "date2": "2019-06-27",
+            "value1": 2000,
+            "value2": null,
+            "value3": null,
+            "tover1": 2000,
+            "tover2": null,
+            "tover3": null,
+            "approvedBalance": null
+        },
+        {
+            "id": null,
+            "event": null,
+            "rowNr": 2,
+            "tenantId": "AAA",
+            "dimension": "SUBLEDGER",
+            "timecurve": {
+                "id": 7,
+                "tenantId": "AAA",
+                "tag": "TAG2",
+                "name": "Object 2",
+                "valueType": "CURRENCY",
+                "valueTag": "CHF",
+                "clearingReference": "CHF",
+                "needBalanceApproval": false
+            },
+            "itemType": "BASIC",
+            "itemId": 1,
+            "date1": "2019-06-27",
+            "date2": "2019-06-27",
+            "value1": -2000,
+            "value2": null,
+            "value3": null,
+            "tover1": -2000,
+            "tover2": null,
+            "tover3": null,
+            "approvedBalance": null
+        }
+    ]
+}

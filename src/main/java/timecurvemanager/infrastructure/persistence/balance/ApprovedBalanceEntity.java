@@ -45,9 +45,10 @@ public class ApprovedBalanceEntity {
   @NotNull
   private BigDecimal value1;
 
-  public ApprovedBalanceEntity(
+  public ApprovedBalanceEntity(Long id,
       ApprovedBalanceEntityIdent approvedBalanceEntityIdent,
       BigDecimal value1) {
+    this.id = id;
     this.approvedBalanceEntityIdent = approvedBalanceEntityIdent;
     this.value1 = value1;
   }

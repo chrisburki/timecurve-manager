@@ -1,7 +1,6 @@
 package timecurvemanager.application;
 
 import static timecurvemanager.domain.timecurveobject.TimecurveObjectAddException.timecurveObjectAddException;
-import static timecurvemanager.domain.timecurveobject.TimecurveObjectGeneralException.timecurveObjectGeneralException;
 import static timecurvemanager.domain.timecurveobject.TimecurveObjectNotCompleteException.timecurveObjectNotComplete;
 import static timecurvemanager.domain.timecurveobject.TimecurveObjectNotFoundException.timecurveObjectNotFound;
 

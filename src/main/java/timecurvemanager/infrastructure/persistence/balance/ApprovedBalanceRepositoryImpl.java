@@ -36,6 +36,7 @@ public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository 
   @Override
   public ApprovedBalance save(ApprovedBalance balance) {
     return approvedBalanceMapper.mapEntityToDomain(approvedBalanceRepository
-        .save(approvedBalanceMapper.mapDomainToEntity(balance)));
+        .saveAndFlush(approvedBalanceMapper.mapDomainToEntity(balance)));
   }
+
 }

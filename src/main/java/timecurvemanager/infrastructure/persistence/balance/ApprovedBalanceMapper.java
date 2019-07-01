@@ -15,7 +15,7 @@ public class ApprovedBalanceMapper {
   }
 
   public ApprovedBalanceEntity mapDomainToEntity(ApprovedBalance balance) {
-    return new ApprovedBalanceEntity(approvedBalanceIdentMapper
+    return new ApprovedBalanceEntity(balance.getId(), approvedBalanceIdentMapper
         .mapDomainToEntity(balance.getDimension(), balance.getTimecurveId(), balance.getItemType(),
             balance.getItemId()), balance.getValue1());
   }

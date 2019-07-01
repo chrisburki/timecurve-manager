@@ -14,12 +14,10 @@ Time curve service is a service to managing balance curves. It provides
 
 
 ## Service Diagram
-* Event Service (horizontal scaling)
-* Event Tagging Service (singleton)
-* Time Curve Object (horizontal scaling)
+* Event Manager Service (Timecurve Objec, Event & Approved Balance)
+* GSN Service (singleton)
 * Time Curve Balances and Turnovers (horizontal scaling)
 
-One common persistence for all services
 
 ## Service Apis
 ### Time Curve Event
@@ -111,11 +109,12 @@ https://cloud.google.com/sdk/gcloud/reference/sql/databases/create
 https://spring.io/blog/2018/08/23/bootiful-gcp-relational-data-access-with-spring-cloud-gcp-2-8
 https://reflectoring.io/unit-testing-spring-boot/
 https://github.com/eventuate-tram/eventuate-tram-sagas
+https://blog.ippon.tech/boost-the-performance-of-your-spring-data-jpa-application/
+https://blog.restcase.com/5-basic-rest-api-design-guidelines/
 
 -- transaction handling
 https://dzone.com/articles/transaction-synchronization-and-spring-application
 
-https://blog.restcase.com/5-basic-rest-api-design-guidelines/
 
 Log4j
     implementation('org.springframework.boot:spring-boot-starter-log4j2')

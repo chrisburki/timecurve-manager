@@ -31,7 +31,7 @@ public class ApprovedBalanceEntityTest {
   public void shouldInsertEventItemEntity() {
     ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension,
         timecurveId, itemType, itemId);
-    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(balanceEntityIdent,
+    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(null,balanceEntityIdent,
         value1);
     when(balanceRepository.save(any(ApprovedBalanceEntity.class))).then(returnsFirstArg());
     ApprovedBalanceEntity savedEntity = balanceRepository.save(entity);
@@ -42,7 +42,7 @@ public class ApprovedBalanceEntityTest {
   public void shouldFindApprovedBalanceEntity() {
     ApprovedBalanceEntityIdent balanceEntityIdent = new ApprovedBalanceEntityIdent(dimension,
         timecurveId, itemType, itemId);
-    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(balanceEntityIdent, value1);
+    ApprovedBalanceEntity entity = new ApprovedBalanceEntity(null, balanceEntityIdent, value1);
     Optional<ApprovedBalanceEntity> entityOptional = Optional.of(entity);
     when(balanceRepository.findByApprovedBalanceEntityIdent(balanceEntityIdent))
         .thenReturn(entityOptional);

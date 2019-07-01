@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@NoArgsConstructor
 @ToString
 public class Event {
 
@@ -47,6 +49,10 @@ public class Event {
   public void addEventItem(EventItem eventItem) {
     this.eventItems.add(eventItem);
     eventItem.setEvent(this);
+  }
+
+  public void addEventItem2(EventItem eventItem) {
+    this.eventItems.add(eventItem);
   }
 
   public Event(Long id, Long eventExtId, Integer sequenceNr,

@@ -23,7 +23,7 @@ import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
 @Slf4j
 public class TimecurveManagerApplication {
 
-//  private static final Logger log = LoggerFactory.getLogger(TimecurveManagerApplication.class);
+  // private static final Logger log = LoggerFactory.getLogger(TimecurveManagerApplication.class);
 
   public static void main(String[] args) {
     SpringApplication.run(TimecurveManagerApplication.class);
@@ -40,8 +40,10 @@ public class TimecurveManagerApplication {
     final Integer seqNr = 1;
 
     // Test Data TimecurveObject
-    final String tag = "TAG1";
-    final String name = "Object 1";
+    final String tag1 = "TAG1";
+    final String tag2 = "TAG2";
+    final String name1 = "Object 1";
+    final String name2 = "Object 2";
     final TimecurveObjectValueType objectValueType = TimecurveObjectValueType.CURRENCY;
     final String valueTag = "CHF";
     final String clearingRef = "CHF";
@@ -51,7 +53,6 @@ public class TimecurveManagerApplication {
     final Integer rowNr = 1;
     final String tenantId = "AAA";
     final EventDimension dimension = EventDimension.SUBLEDGER;
-    final Long timecurveId = 1L;
     final EventItemType itemType = EventItemType.BASIC;
     final Long itemId = 1L;
     final LocalDate date1 = LocalDate.now();
@@ -61,7 +62,7 @@ public class TimecurveManagerApplication {
     final BigDecimal value1 = new BigDecimal(1000);
     final BigDecimal value2 = null;
     final BigDecimal value3 = null;
-    final BigDecimal tover1 = new BigDecimal(100);
+    final BigDecimal tover1 = new BigDecimal(1000);
     final BigDecimal tover2 = null;
     final BigDecimal tover3 = null;
 
@@ -76,7 +77,7 @@ public class TimecurveManagerApplication {
               TimecurveObjectValueType.SECURITY, valueTag, null, false));
       timecurveObjectService
           .addTimecurve(new TimecurveObject(null, tenantId, "bond1chf", "Bond 1 CHF",
-              TimecurveObjectValueType.CURRENCY, valueTag, null, true));
+              TimecurveObjectValueType.CURRENCY, valueTag, null, false));
       timecurveObjectService
           .addTimecurve(new TimecurveObject(null, tenantId, "macc1eur", "Money Account 1 CHF",
               TimecurveObjectValueType.CURRENCY, valueTag, clearingRef, true));
@@ -110,25 +111,31 @@ public class TimecurveManagerApplication {
       // }
       log.info("");
 
-      TimecurveObject timecurveObject = timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, tag, name,
+      TimecurveObject timecurveObject1 = timecurveObjectService
+          .addTimecurve(new TimecurveObject(null, tenantId, tag1, name1,
               objectValueType,
               valueTag, clearingRef, needBalanceApproval));
-      log.info("object id: " + timecurveObject.getId());
+      log.info("object id: " + timecurveObject1.getId());
+
+      TimecurveObject timecurveObject2 = timecurveObjectService
+          .addTimecurve(new TimecurveObject(null, tenantId, tag2, name2,
+              objectValueType,
+              valueTag, clearingRef, !needBalanceApproval));
+      log.info("object id: " + timecurveObject1.getId());
 
       // Event1
       Event event = new Event(null, null, seqNr, tenantId, dimension, status,
           useCase1, date1, date2);
 
       EventItem eventItem1 = new EventItem(null, null, rowNr, tenantId, dimension,
-          timecurveObject, itemType, itemId,
-          date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2, tover3, null);
+          timecurveObject1, itemType, itemId,
+          date1, date2, value1, value2, value3, tover1, tover2, tover3, null);
 
       event.addEventItem(eventItem1);
 
       EventItem eventItem2 = new EventItem(null, null, rowNr + 1, tenantId, dimension,
-          timecurveObject, itemType, itemId,
-          date1, date2, value1, value2, value3, tover1, tover2, tover3, null);
+          timecurveObject2, itemType, itemId,
+          date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2, tover3, null);
       event.addEventItem(eventItem2);
       log.info("eventItem2 eventextid: " + eventItem2.getEvent().getEventExtId());
       event = eventService.addEvent(event);
@@ -139,12 +146,12 @@ public class TimecurveManagerApplication {
           useCase2, date3, date4);
 
       EventItem eventItem21 = new EventItem(null, null, rowNr, tenantId, dimension,
-          timecurveObject, itemType, itemId, date3, date4, value1.negate(), value2, value3,
+          timecurveObject2, itemType, itemId, date3, date4, value1.negate(), value2, value3,
           tover1.negate(), tover2, tover3, null);
       event.addEventItem(eventItem21);
 
       EventItem eventItem22 = new EventItem(null, null, rowNr + 1, tenantId, dimension,
-          timecurveObject, itemType, itemId, date3, date4, value1, value2, value3, tover1, tover2,
+          timecurveObject1, itemType, itemId, date3, date4, value1, value2, value3, tover1, tover2,
           tover3, null);
       event.addEventItem(eventItem22);
       log.info("eventItem2 eventextid: " + eventItem2.getEvent().getEventExtId());

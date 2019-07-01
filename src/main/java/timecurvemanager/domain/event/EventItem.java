@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import timecurvemanager.domain.balance.ApprovedBalance;
@@ -14,6 +15,7 @@ import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class EventItem {
 
