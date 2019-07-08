@@ -32,10 +32,10 @@ public class TimecurveObjectController {
         new ArrayList<>(timecurveObjectService.listObjects()), HttpStatus.OK);
   }
 
-  @GetMapping("/objects/{anyIdentifier}")
+  @GetMapping("/objects/{id}")
   ResponseEntity<TimecurveObject> getObjectById(
-      @PathVariable("anyIdentifier") String anyIdentifier) {
-    return new ResponseEntity<>(timecurveObjectService.getTimecuve(anyIdentifier), HttpStatus.OK);
+      @PathVariable("id") Long id) {
+    return new ResponseEntity<>(timecurveObjectService.getById(id), HttpStatus.OK);
   }
 
   @PostMapping("/objects")

@@ -31,13 +31,6 @@ public class TimecurveObjectRepositoryImpl implements TimecurveObjectRepository 
         .mapOptionalEntityToDomain(timecurveObjectEntityRepository.findById(id));
   }
 
-
-  @Override
-  public Optional<TimecurveObject> findByTag(String tag) {
-    return timecurveObjectMapper
-        .mapOptionalEntityToDomain(timecurveObjectEntityRepository.findByTag(tag));
-  }
-
   @Override
   public List<TimecurveObject> findByName(String name) {
     return timecurveObjectMapper

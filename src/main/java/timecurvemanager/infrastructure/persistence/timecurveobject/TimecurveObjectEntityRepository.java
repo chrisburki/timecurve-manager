@@ -10,7 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface TimecurveObjectEntityRepository extends
     JpaRepository<TimecurveObjectEntity, Long> {
 
-  Optional<TimecurveObjectEntity> findByTag(String tag);
-
   List<TimecurveObjectEntity> findByName(String label);
 }

@@ -10,14 +10,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import timecurvemanager.application.EventService;
+import timecurvemanager.application.PositionService;
 import timecurvemanager.application.TimecurveObjectService;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.domain.event.EventStatus;
+import timecurvemanager.domain.position.Position;
+import timecurvemanager.domain.position.PositionValueType;
 import timecurvemanager.domain.timecurveobject.TimecurveObject;
-import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
+
+//@todo: add position tcObject history table
 
 @SpringBootApplication
 @Slf4j
@@ -32,7 +36,7 @@ public class TimecurveManagerApplication {
 
   @Bean
   public CommandLineRunner demo(TimecurveObjectService timecurveObjectService,
-      EventService eventService) {
+      EventService eventService, PositionService positionService) {
     // Test Data Event
     final EventStatus status = EventStatus.OPEN;
     final String useCase1 = "pay";
@@ -40,12 +44,8 @@ public class TimecurveManagerApplication {
     final Integer seqNr = 1;
 
     // Test Data TimecurveObject
-    final String tag1 = "TAG1";
-    final String tag2 = "TAG2";
     final String name1 = "Object 1";
     final String name2 = "Object 2";
-    final TimecurveObjectValueType objectValueType = TimecurveObjectValueType.CURRENCY;
-    final String valueTag = "CHF";
     final String clearingRef = "CHF";
     final Boolean needBalanceApproval = true;
 
@@ -67,23 +67,27 @@ public class TimecurveManagerApplication {
     final BigDecimal tover3 = null;
 
     return (args) -> {
-      // save a couple of timecurves
+      positionService.addPosition(
+          new Position(null, tenantId, "1C", "1#CHF#MACC", "CHF Money Account for Container 1",
+              PositionValueType.CURRENCY, "CHF"));
 
+      positionService.addPosition(
+          new Position(null, tenantId, "2C", "2#CHF#MACC", "CHF Money Account for Container 2",
+              PositionValueType.CURRENCY, "CHF"));
+
+      // save a couple of timecurves
       timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "share1chf", "Share 1 CHF",
-              TimecurveObjectValueType.SECURITY, valueTag, null, false));
+          .addTimecurve(new TimecurveObject(null, tenantId, "Share 1 CHF", null, false));
       timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "share2eur", "Share 2 EUR",
-              TimecurveObjectValueType.SECURITY, valueTag, null, false));
+          .addTimecurve(new TimecurveObject(null, tenantId, "Share 2 EUR", null, false));
       timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "bond1chf", "Bond 1 CHF",
-              TimecurveObjectValueType.CURRENCY, valueTag, null, false));
+          .addTimecurve(new TimecurveObject(null, tenantId, "Bond 1 CHF", null, false));
       timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "macc1eur", "Money Account 1 CHF",
-              TimecurveObjectValueType.CURRENCY, valueTag, clearingRef, true));
+          .addTimecurve(
+              new TimecurveObject(null, tenantId, "Money Account 1 CHF", clearingRef, true));
       timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "macc2chf", "Money Account 2 CHF",
-              TimecurveObjectValueType.CURRENCY, valueTag, clearingRef, true));
+          .addTimecurve(
+              new TimecurveObject(null, tenantId, "Money Account 2 CHF", clearingRef, true));
 
       // fetch all timecurves
       log.info("Timecurves found with findAll():");
@@ -96,31 +100,17 @@ public class TimecurveManagerApplication {
       // fetch an individual TimecurveObject by ID
       log.info("TimecurveObject found with findById(1L):");
       log.info("--------------------------------");
-      log.info(timecurveObjectService.getById(1L).toString());
-      log.info("");
-
-      // fetch timecurves by last name
-      //   log.info("TimecurveObject found with findByName('Share 1 CHF'):");
-      //   log.info("--------------------------------------------");
-      //   timecurveRepository.findByName("Share 1 CHF").forEach(bauer -> {
-      //   log.info(bauer.toString());
-      // });
-      timecurveObjectService.getByTag("macc1eur").toString();
-      // for (TimecurveObject macc1 : repository.findByLastName("macc1eur")) {
-      // log.info(macc1.toString());
-      // }
+//      log.info(timecurveObjectService.getById(1L).toString());
       log.info("");
 
       TimecurveObject timecurveObject1 = timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, tag1, name1,
-              objectValueType,
-              valueTag, clearingRef, needBalanceApproval));
+          .addTimecurve(
+              new TimecurveObject(null, tenantId, name1, clearingRef, needBalanceApproval));
       log.info("object id: " + timecurveObject1.getId());
 
       TimecurveObject timecurveObject2 = timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, tag2, name2,
-              objectValueType,
-              valueTag, clearingRef, !needBalanceApproval));
+          .addTimecurve(
+              new TimecurveObject(null, tenantId, name2, clearingRef, !needBalanceApproval));
       log.info("object id: " + timecurveObject1.getId());
 
       // Event1

@@ -9,8 +9,6 @@ public interface TimecurveObjectRepository {
 
   Optional<TimecurveObject> findById(Long id);
 
-  Optional<TimecurveObject> findByTag(String tag);
-
   List<TimecurveObject> findByName(String name);
 
   TimecurveObject save(TimecurveObject timecurveObject);

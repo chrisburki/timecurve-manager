@@ -30,6 +30,9 @@ configurations {
     runtimeClasspath {
         extendsFrom developmentOnly
     }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 dependencies {

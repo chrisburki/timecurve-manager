@@ -1,7 +1,6 @@
 package timecurvemanager.domain.timecurveobject;
 
 import java.lang.reflect.Field;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,16 +18,7 @@ public class TimecurveObject {
   private String tenantId;
 
   // @NotNull
-  private String tag;
-
-  // @NotNull
   private String name;
-
-  // @NotNull
-  private TimecurveObjectValueType valueType;
-
-  // @NotNull
-  private String valueTag;
 
   private String clearingReference;
 

@@ -11,9 +11,8 @@ import timecurvemanager.domain.timecurveobject.TimecurveObject;
 public class TimecurveObjectMapper {
 
   public TimecurveObjectEntity mapDomainToEntity(TimecurveObject object) {
-    return new TimecurveObjectEntity(object.getTenantId(), object.getTag(), object.getName(),
-        object.getValueType(), object.getValueTag(), object.getClearingReference(),
-        object.getNeedBalanceApproval());
+    return new TimecurveObjectEntity(object.getTenantId(), object.getName(),
+        object.getClearingReference(), object.getNeedBalanceApproval());
   }
 
   public List<TimecurveObjectEntity> mapDomainToEntityList(List<TimecurveObject> objectList) {
@@ -22,23 +21,21 @@ public class TimecurveObjectMapper {
   }
 
   public TimecurveObject mapEntityToDomain(TimecurveObjectEntity entity) {
-    return new TimecurveObject(entity.getId(), entity.getTenantId(), entity.getTag(),
-        entity.getName(), entity.getValueType(), entity.getValueTag(),
-        entity.getClearingReference(), entity.getNeedBalanceApproval());
+    return new TimecurveObject(entity.getId(), entity.getTenantId(),
+        entity.getName(), entity.getClearingReference(), entity.getNeedBalanceApproval());
   }
 
   public List<TimecurveObject> mapEntityToDomainList(List<TimecurveObjectEntity> entityList) {
     return entityList.stream()
-        .map((timecurveObjectEntity) -> mapEntityToDomain(timecurveObjectEntity))
+        .map((objectEntity) -> mapEntityToDomain(objectEntity))
         .collect(Collectors.toList());
   }
 
   public Optional<TimecurveObject> mapOptionalEntityToDomain(
-      Optional<TimecurveObjectEntity> timecurveEntity) {
-    if (timecurveEntity.isPresent()) {
-      TimecurveObjectEntity entity = timecurveEntity.get();
-      return Optional.of(new TimecurveObject(entity.getId(), entity.getTenantId(), entity.getTag(),
-          entity.getName(), entity.getValueType(), entity.getValueTag(),
+      Optional<TimecurveObjectEntity> objectEntity) {
+    if (objectEntity.isPresent()) {
+      TimecurveObjectEntity entity = objectEntity.get();
+      return Optional.of(new TimecurveObject(entity.getId(), entity.getTenantId(), entity.getName(),
           entity.getClearingReference(), entity.getNeedBalanceApproval()));
     } else {
       return Optional.empty();

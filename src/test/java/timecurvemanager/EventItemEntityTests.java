@@ -12,11 +12,9 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Example;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.domain.event.EventStatus;
-import timecurvemanager.domain.timecurveobject.TimecurveObjectValueType;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntityRepository;
@@ -35,10 +33,7 @@ public class EventItemEntityTests {
   private final Integer seqNr = 1;
 
   // Test Data TimecurveObject
-  private final String tag = "TAG1";
   private final String name = "Object 1";
-  private final TimecurveObjectValueType objectValueType = TimecurveObjectValueType.CURRENCY;
-  private final String valueTag = "CHF";
   private final String clearingRef = "CHF";
   private final Boolean needBalanceApproval = true;
 
@@ -46,7 +41,6 @@ public class EventItemEntityTests {
   private final Integer rowNr = 1;
   private final String tenantId = "AAA";
   private final EventDimension dimension = EventDimension.SUBLEDGER;
-  private final Long timecurveId = 1L;
   private final EventItemType itemType = EventItemType.BASIC;
   private final Long itemId = 1L;
   private final LocalDate date1 = LocalDate.now();
@@ -63,9 +57,7 @@ public class EventItemEntityTests {
     EventEntity eventEntity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
         useCase,
         date1, date2);
-    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, tag, name,
-        objectValueType,
-        valueTag, clearingRef, needBalanceApproval);
+    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef, needBalanceApproval);
     EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension,
         timecurveEntity, itemType, itemId,
         date1, date2, value1, value2, value3, tover1, tover2, tover3);
@@ -79,9 +71,7 @@ public class EventItemEntityTests {
     EventEntity eventEntity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
         useCase,
         date1, date2);
-    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, tag, name,
-        objectValueType,
-        valueTag, clearingRef, needBalanceApproval);
+    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef, needBalanceApproval);
     EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension,
         timecurveEntity, itemType, itemId,
         date1, date2, value1, value2, value3, tover1, tover2, tover3);
