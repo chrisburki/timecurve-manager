@@ -46,16 +46,21 @@ public class PositionEntity {
   @NotNull
   private String valueTag;
 
+  @Column(name = "do_balance_check")
+  @NotNull
+  private Boolean doBalanceCheck;
+
   public PositionEntity(@NotNull String tenantId,
       @NotNull String containerId, @NotNull String tag,
       @NotNull String name,
       @NotNull PositionValueType valueType,
-      @NotNull String valueTag) {
+      @NotNull String valueTag, @NotNull Boolean doBalanceCheck) {
     this.tenantId = tenantId;
     this.containerId = containerId;
     this.tag = tag;
     this.name = name;
     this.valueType = valueType;
     this.valueTag = valueTag;
+    this.doBalanceCheck = doBalanceCheck;
   }
 }

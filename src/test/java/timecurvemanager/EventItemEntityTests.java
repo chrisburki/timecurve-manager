@@ -55,12 +55,11 @@ public class EventItemEntityTests {
   @Test
   public void shouldInsertEventItemEntity() {
     EventEntity eventEntity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
-        useCase,
-        date1, date2);
-    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef, needBalanceApproval);
-    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension,
-        timecurveEntity, itemType, itemId,
-        date1, date2, value1, value2, value3, tover1, tover2, tover3);
+        useCase, date1, date2);
+    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef,
+        needBalanceApproval);
+    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
+        itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3);
     when(entityRepository.save(any(EventItemEntity.class))).then(returnsFirstArg());
     EventItemEntity savedEntity = entityRepository.save(entity);
     assertThat(savedEntity.getRowNr()).isNotNull();
@@ -69,26 +68,21 @@ public class EventItemEntityTests {
   @Test
   public void shouldFindEventItemEntityList() {
     EventEntity eventEntity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
-        useCase,
-        date1, date2);
-    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef, needBalanceApproval);
-    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension,
-        timecurveEntity, itemType, itemId,
-        date1, date2, value1, value2, value3, tover1, tover2, tover3);
+        useCase, date1, date2);
+    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef,
+        needBalanceApproval);
+    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
+        itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3);
     List<EventItemEntity> entityList = Arrays.asList(entity);
-
 
     // Test
     when(entityRepository
         .findQueryEventItems(
-            dimension,
-            timecurveEntity.getId(),
-            itemType, itemId, date1, date1, date2, date2, null)).thenReturn(entityList);
+            dimension, timecurveEntity.getId(), itemType, itemId, date1, date1, date2, date2, null))
+        .thenReturn(entityList);
     List<EventItemEntity> returnedList = entityRepository
         .findQueryEventItems(
-            dimension,
-            timecurveEntity.getId(),
-            itemType, itemId, date1, date1, date2, date2, null);
+            dimension, timecurveEntity.getId(), itemType, itemId, date1, date1, date2, date2, null);
     assertThat(returnedList.size()).isEqualTo(1);
 
   }

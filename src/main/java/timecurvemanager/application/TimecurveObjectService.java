@@ -44,7 +44,8 @@ public class TimecurveObjectService {
    * search for an existing based on the label. if not find create a new object and return it
    * (only used by Position Timecurve Relation Service resp. by Position Service)
    * */
-  public TimecurveObject addTimecurve(String tenantId, String name, String clearingReference, Boolean needBalanceApproval) {
+  public TimecurveObject addTimecurve(String tenantId, String name, String clearingReference,
+      Boolean needBalanceApproval) {
     TimecurveObject timecurveObject = new TimecurveObject(null, tenantId, name,
         clearingReference, needBalanceApproval);
 

@@ -4,6 +4,7 @@ import static timecurvemanager.domain.balance.ApprovedBalanceNotFoundException.a
 import static timecurvemanager.domain.balance.ApprovedBalanceSmallerZeroException.balanceSmallerZero;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import timecurvemanager.domain.balance.ApprovedBalance;
@@ -57,22 +58,30 @@ public class ApprovedBalanceService {
               eventItem.getTimecurve().getId(), eventItem.getItemType(), eventItem.getItemId())
           .orElse(new ApprovedBalance(null, eventItem.getDimension(),
               eventItem.getTimecurve().getId(), eventItem.getItemType(), eventItem.getItemId(),
-              BigDecimal.ZERO));
+              BigDecimal.ZERO, BigDecimal.ZERO));
     }
   }
 
-  private ApprovedBalance updateBalance(EventItem eventItem) {
+  private void addBalance(HashMap<String, ApprovedBalance> approvedBalanceMap,
+      EventItem eventItem) {
 
-    // get Approved Balance from EventItem
-    ApprovedBalance approvedBalance = getBalanceFromEventItem(eventItem);
+    String key = eventItem.getDimension() + ":" + eventItem.getTimecurve().getId() + ":" + eventItem
+        .getItemType().abbreviation() + ":" + eventItem.getItemId();
+
+    ApprovedBalance approvedBalance = approvedBalanceMap.get(key);
+    if (approvedBalance == null) {
+      approvedBalance = getBalanceFromEventItem(eventItem);
+    }
 
     //@todo: lock balance
 
     // update balance
     BigDecimal newValue = new BigDecimal(0)
         .add(approvedBalance.getValue1().add(eventItem.getValue1()));
+    BigDecimal newTover = new BigDecimal(0)
+        .add(approvedBalance.getTover1().add(eventItem.getValue1()));
 
-    log.info("NEW BAL: " + newValue);
+    log.info("NEW BAL: " + newValue + " NEW TOVER: " + newTover);
     // CHECKS
     // check if evenItem balance is equal to getted balance
 //    if (!(eventItem.getApprovedBalance() != null
@@ -81,26 +90,52 @@ public class ApprovedBalanceService {
 //      throw approvedBalanceChanged(eventItem.getApprovedBalance().getValue1(), newValue);
 //    }
 
-    // check for balance (should be done in a dedicated service)
-    if (newValue.compareTo(BigDecimal.ZERO) < 0) {
-      throw balanceSmallerZero(approvedBalance.getValue1(), eventItem.getValue1());
-    }
-
     approvedBalance.setValue1(newValue);
+    approvedBalance.setTover1(newTover);
+    approvedBalanceMap.put(key, approvedBalance);
+
+  }
+
+  private void updateBalance(ApprovedBalance approvedBalance) {
+    //@todo implement loop and update
+    // check for balance (should be done in a dedicated service)
+    if (approvedBalance.getValue1().compareTo(BigDecimal.ZERO) < 0) {
+      throw balanceSmallerZero(approvedBalance.getValue1(), approvedBalance.getTover1());
+    }
     // SAVE UPDATED BALANCE
-    return approvedBalanceRepository.save(approvedBalance);
+    log.info("UPDATE BALANCE: " + approvedBalance.getValue1() + " : " + approvedBalance.getTover1());
+    approvedBalanceRepository.save(approvedBalance);
   }
 
   // MAIN
-  public void addEvent(Event event) {
-    event.getEventItems().stream()
+  public void addEvent(Event newEvent, Event lastEvent) {
+
+    HashMap<String, ApprovedBalance> approvedBalanceMap = new HashMap<>();
+
+    // LAST EVENT
+    if (lastEvent != null) {
+      lastEvent.getEventItems().stream()
+          // check if check on approved balance is needed (on itemType and on timecurve object)
+          .filter(
+              item -> item.getItemType().buildApprovedBalance()
+                  && item.getTimecurve().getNeedBalanceApproval())
+          .forEach(e -> {
+            addBalance(approvedBalanceMap, e);
+          });
+    }
+
+    // NEW EVENT
+    newEvent.getEventItems().stream()
         // check if check on approved balance is needed (on itemType and on timecurve object)
         .filter(
             item -> item.getItemType().buildApprovedBalance()
                 && item.getTimecurve().getNeedBalanceApproval())
         .forEach(e -> {
-          updateBalance(e);
+          addBalance(approvedBalanceMap, e);
         });
+    approvedBalanceMap.entrySet().stream()
+        .filter(a -> a.getValue().getTover1().compareTo(BigDecimal.ZERO) != 0)
+        .forEach(f -> updateBalance(f.getValue()));
   }
 
 }

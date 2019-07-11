@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import timecurvemanager.domain.position.Position;
 import timecurvemanager.domain.position.PositionRepository;
+import timecurvemanager.domain.position.PositionValueType;
 import timecurvemanager.domain.timecurveobject.TimecurveObject;
+
+//@todo: add testing, testdata for position, timecurve, relations and events
 
 @Service
 public class PositionService {
@@ -22,10 +25,10 @@ public class PositionService {
 
 
   private final PositionRepository positionRepository;
-  private final PositionTimecurveRelationService relationService;
+  private final ObjectTimecurveRelationService relationService;
 
   public PositionService(PositionRepository positionRepository,
-      PositionTimecurveRelationService relationService) {
+      ObjectTimecurveRelationService relationService) {
     this.positionRepository = positionRepository;
     this.relationService = relationService;
   }
@@ -94,10 +97,24 @@ public class PositionService {
     }
   }
 
+  private String getClearingReference(Position position) {
+    if (position.getValueType() == PositionValueType.CURRENCY) {
+      return position.getValueTag();
+    } else {
+      return null;
+    }
+  }
+
+  private Boolean getNeedBalanceApproval(Position position) {
+    return position.getDoBalanceCheck() && position.getValueType() == PositionValueType.CURRENCY;
+  }
+
   @Transactional
   public TimecurveObject addTimecurveForPositionAndDate(Position position, LocalDate refDate) {
     // check for existng one, if not exists -> create a new Timecuve Object & Relation to Position
-    return relationService.addPositionTimecurveRelation(position, refDate).getTimecurve();
+    return relationService
+        .addObjectTimecurveRelation(position.getId(), refDate, position.getTenantId(),
+            getClearingReference(position), getNeedBalanceApproval(position), "pos").getTimecurve();
   }
 
   // only for manual corrections

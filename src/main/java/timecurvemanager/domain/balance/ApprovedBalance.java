@@ -29,4 +29,7 @@ public class ApprovedBalance {
   @Setter
   private BigDecimal value1;
 
+  @Setter
+  private BigDecimal tover1;
+
 }

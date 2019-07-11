@@ -1,5 +1,6 @@
 package timecurvemanager.infrastructure.persistence.balance;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.balance.ApprovedBalance;
@@ -25,7 +26,7 @@ public class ApprovedBalanceMapper {
         balance.getApprovedBalanceEntityIdent().getDimension(),
         balance.getApprovedBalanceEntityIdent().getTimecurveId(),
         balance.getApprovedBalanceEntityIdent().getItemType(),
-        balance.getApprovedBalanceEntityIdent().getItemId(), balance.getValue1());
+        balance.getApprovedBalanceEntityIdent().getItemId(), balance.getValue1(), BigDecimal.ZERO);
   }
 
   public Optional<ApprovedBalance> mapOptionalEntityToDomain(
@@ -36,7 +37,8 @@ public class ApprovedBalanceMapper {
           balance.getApprovedBalanceEntityIdent().getDimension(),
           balance.getApprovedBalanceEntityIdent().getTimecurveId(),
           balance.getApprovedBalanceEntityIdent().getItemType(),
-          balance.getApprovedBalanceEntityIdent().getItemId(), balance.getValue1()));
+          balance.getApprovedBalanceEntityIdent().getItemId(), balance.getValue1(),
+          BigDecimal.ZERO));
     } else {
       return Optional.empty();
     }

@@ -50,10 +50,10 @@ public class EventItemService {
     Boolean data2NotNull = fromDate2 != null || toDate2 != null;
     //@todo: add validations
 
-    LocalDate fDate1 = nvl(fromDate1, LocalDate.MAX);
-    LocalDate tDate1 = nvl(toDate1, LocalDate.MIN);
-    LocalDate fDate2 = nvl(fromDate2, LocalDate.MAX);
-    LocalDate tDate2 = nvl(toDate2, LocalDate.MIN);
+    LocalDate fDate1 = nvl(fromDate1, eventService.minDate);
+    LocalDate tDate1 = nvl(toDate1, eventService.maxDate);
+    LocalDate fDate2 = nvl(fromDate2, eventService.minDate);
+    LocalDate tDate2 = nvl(toDate2, eventService.maxDate);
 
     return itemRepository
         .findQueryEventItems(dimension, objectId, itemType, itemId, fDate1, tDate1, fDate2, tDate2,

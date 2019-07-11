@@ -11,8 +11,8 @@ public class PositionMapper {
 
   public PositionEntity mapDomainToEntity(Position position) {
     return new PositionEntity(position.getTenantId(), position.getContainerId(), position.getTag(),
-        position.getName(),
-        position.getValueType(), position.getValueTag());
+        position.getName(), position.getValueType(), position.getValueTag(),
+        position.getDoBalanceCheck());
   }
 
   public List<PositionEntity> mapDomainToEntityList(List<Position> positionList) {
@@ -23,7 +23,7 @@ public class PositionMapper {
   public Position mapEntityToDomain(PositionEntity entity) {
     return new Position(entity.getId(), entity.getTenantId(), entity.getContainerId(),
         entity.getTag(),
-        entity.getName(), entity.getValueType(), entity.getValueTag());
+        entity.getName(), entity.getValueType(), entity.getValueTag(), entity.getDoBalanceCheck());
   }
 
   public List<Position> mapEntityToDomainList(List<PositionEntity> entityList) {
@@ -37,8 +37,8 @@ public class PositionMapper {
     if (positionEntity.isPresent()) {
       PositionEntity entity = positionEntity.get();
       return Optional.of(new Position(entity.getId(), entity.getTenantId(), entity.getContainerId(),
-          entity.getTag(),
-          entity.getName(), entity.getValueType(), entity.getValueTag()));
+          entity.getTag(), entity.getName(), entity.getValueType(), entity.getValueTag(),
+          entity.getDoBalanceCheck()));
     } else {
       return Optional.empty();
     }

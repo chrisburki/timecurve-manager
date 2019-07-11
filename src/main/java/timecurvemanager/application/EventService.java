@@ -30,8 +30,8 @@ public class EventService {
   private static final String primaryKey = "Primary Key (Id)";
   private static final String extEventId = "Event Id (external)";
 
-  private static final LocalDate minDate = LocalDate.MIN;
-  private static final LocalDate maxDate = LocalDate.MAX;
+  public static final LocalDate minDate = LocalDate.of(1900,01,01);
+  public static final LocalDate maxDate = LocalDate.of(4712,12,31);
 
   private final EventRepository eventRepository;
   private final EventItemRepository eventItemRepository;
@@ -87,10 +87,10 @@ public class EventService {
   public Collection<Event> listEvents(EventDimension dimension, LocalDate fromDate1,
       LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
 
-    LocalDate fDate1 = nvl(fromDate1, LocalDate.MAX);
-    LocalDate tDate1 = nvl(toDate1, LocalDate.MIN);
-    LocalDate fDate2 = nvl(fromDate2, LocalDate.MAX);
-    LocalDate tDate2 = nvl(toDate2, LocalDate.MIN);
+    LocalDate fDate1 = nvl(fromDate1, minDate);
+    LocalDate tDate1 = nvl(toDate1, maxDate);
+    LocalDate fDate2 = nvl(fromDate2, minDate);
+    LocalDate tDate2 = nvl(toDate2, maxDate);
 
     return eventRepository.findQueryEvents(dimension, fDate1, tDate1, fDate2, tDate2, useCase);
   }
@@ -123,6 +123,34 @@ public class EventService {
         });
   }
 
+  private EventItem reverseItem(EventItem item) {
+    item.setIdToNull();
+    item.setValue1(item.getValue1().negate());
+    if (item.getValue2() != null) {
+      item.setValue2(item.getValue2().negate());
+    }
+    if (item.getValue3() != null) {
+      item.setValue3(item.getValue3().negate());
+    }
+    item.setTover1(item.getTover1().negate());
+    if (item.getValue2() != null) {
+      item.setTover2(item.getValue2().negate());
+    }
+    if (item.getValue3() != null) {
+      item.setTover3(item.getValue3().negate());
+    }
+    return item;
+  }
+
+  private Event getLastEvent(Long evtExtId) {
+    Event event = getEventByEventExtId(evtExtId, true);
+    log.info("LAST EVENT: " +event.getEventExtId() + " : "+ event.getSequenceNr());
+    event.setSequenceNr(-event.getSequenceNr());
+    event.setIdToNull();
+    event.getEventItems().forEach(eventItem -> reverseItem(eventItem));
+    return event;
+  }
+
   private Event addEventExtId(Event event, Long eventExtId, Integer sequenceNr) {
     event.setEventExtId(eventExtId);
     event.setSequenceNr(sequenceNr);
@@ -132,18 +160,23 @@ public class EventService {
   private Event putEvent(Event event, Event lastEvent) {
     /*reveres last event if not null*/
     if (lastEvent != null) {
-      Event lastReversedEvent = new Event(
-          null, lastEvent.getEventExtId(), -lastEvent.getSequenceNr(), lastEvent.getTenantId(),
-          lastEvent.getDimension(), lastEvent.getStatus(), lastEvent.getUseCase(),
-          lastEvent.getDate1(), lastEvent.getDate2());
-      lastEvent.getEventItems().forEach(item -> {
-        lastReversedEvent.addEventItem(item);
-      });
-      eventRepository.save(lastReversedEvent);
+      eventRepository.save(lastEvent);
     }
 
     /*insert new one with higher sequenceNr*/
     return eventRepository.save(event);
+  }
+
+  private Event relvUpdate(Event event) {
+    if (event != null && (event.getStatus().equals(EventStatus.APPROVED) || event
+        .getStatus().equals(EventStatus.BOOKED))) {
+      return event;
+    }
+    return null;
+  }
+
+  private void updateBalance(Event newEvent, Event lastEvent) {
+    approvedBalanceService.addEvent(newEvent, lastEvent);
   }
 
   /* MAIN: Add Event. If existing reverse items and reinsert new ones.
@@ -158,18 +191,17 @@ public class EventService {
     if (event.getEventExtId() == null) {
       event = addEventExtId(event, eventRepository.getNextEventExtId(), 1);
     } else {
-      lastEvent = getEventByEventExtId(event.getEventExtId(), false);
-      event = addEventExtId(event, lastEvent.getEventExtId(), lastEvent.getSequenceNr() + 1);
+      lastEvent = getLastEvent(event.getEventExtId());
+      log.info("NEW EVENT: " +lastEvent.getEventExtId() + " : "+ (-lastEvent.getSequenceNr() + 1));
+      event = addEventExtId(event, lastEvent.getEventExtId(), -lastEvent.getSequenceNr() + 1);
     }
 
     // 3. add event & items
     event = putEvent(event, lastEvent);
 
     // 4. update balance
-    //@todo: check for passing or reaching approved status
-    if (event.getStatus() == EventStatus.APPROVED) {
-      approvedBalanceService.addEvent(event);
-    }
+    updateBalance(relvUpdate(event), relvUpdate(lastEvent));
+
     return event;
   }
 }

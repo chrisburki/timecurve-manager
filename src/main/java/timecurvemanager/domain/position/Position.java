@@ -28,4 +28,7 @@ public class Position {
 
   // @NotNull
   private String valueTag;
+
+  // @NotNull
+  private Boolean doBalanceCheck;
 }

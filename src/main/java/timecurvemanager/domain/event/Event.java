@@ -15,8 +15,6 @@ import lombok.ToString;
 public class Event {
 
   //@todo: handle gsn
-  //@todo: external only eventExtId needed (for adding),
-  // id, sequenceNr is derived from already existing ones
 
   private Long id;
 
@@ -55,14 +53,49 @@ public class Event {
     this.eventItems.add(eventItem);
   }
 
+  public void setIdToNull() {
+    this.id = null;
+  }
+
+  // internal setting 1 (domain to entity)
+  public Event(Long eventExtId, Integer sequenceNr,
+      @NotNull String tenantId,
+      @NotNull EventDimension dimension,
+      @NotNull EventStatus status, @NotNull String useCase,
+      @NotNull LocalDate date1, @NotNull LocalDate date2) {
+    this.eventExtId = eventExtId;
+    this.sequenceNr = sequenceNr;
+    this.tenantId = tenantId;
+    this.dimension = dimension;
+    this.status = status;
+    this.useCase = useCase;
+    this.date1 = date1;
+    this.date2 = date2;
+  }
+
+  // internal setting 1 (entity to domain)
   public Event(Long id, Long eventExtId, Integer sequenceNr,
       @NotNull String tenantId,
       @NotNull EventDimension dimension,
       @NotNull EventStatus status, @NotNull String useCase,
-      @NotNull LocalDate date1, LocalDate date2) {
+      @NotNull LocalDate date1, @NotNull LocalDate date2) {
     this.id = id;
     this.eventExtId = eventExtId;
     this.sequenceNr = sequenceNr;
+    this.tenantId = tenantId;
+    this.dimension = dimension;
+    this.status = status;
+    this.useCase = useCase;
+    this.date1 = date1;
+    this.date2 = date2;
+  }
+
+  // for external setting
+  public Event(Long eventExtId, @NotNull String tenantId,
+      @NotNull EventDimension dimension,
+      @NotNull EventStatus status, @NotNull String useCase,
+      @NotNull LocalDate date1, @NotNull LocalDate date2) {
+    this.eventExtId = eventExtId;
     this.tenantId = tenantId;
     this.dimension = dimension;
     this.status = status;

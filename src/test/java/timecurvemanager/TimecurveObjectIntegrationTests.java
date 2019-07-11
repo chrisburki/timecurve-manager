@@ -68,7 +68,8 @@ public class TimecurveObjectIntegrationTests {
 
   @Test
   public void givenTimecurveFindByNameAndLabel() {
-    TimecurveObject timecurveObject = new TimecurveObject(null, "AAA", "AAA-BUC NESN CHF", "CHF", true);
+    TimecurveObject timecurveObject = new TimecurveObject(null, "AAA", "AAA-BUC NESN CHF", "CHF",
+        true);
     timecurveObject = repository.save(timecurveObject);
 
     List<TimecurveObject> findByLastName = repository.findByName(timecurveObject.getName());

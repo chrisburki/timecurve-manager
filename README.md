@@ -101,6 +101,11 @@ gcloud sql instances restart timecurves
 https://cloud.google.com/cloud-build/docs/quickstart-docker
 gcloud builds submit --tag eu.gcr.io/buc-personal-banking/timecurve-manager .
 
+### gcloud sdk
+https://cloud.google.com/sdk/gcloud/reference/components/update
+--update to latest version run in the sdk window: gcloud components update
+--to init: gcloud init
+
 --------------------------
 ## Helpers
 https://github.com/spring-cloud/spring-cloud-gcp/tree/master/spring-cloud-gcp-samples/spring-cloud-gcp-data-jpa-sample
@@ -114,6 +119,13 @@ https://blog.restcase.com/5-basic-rest-api-design-guidelines/
 
 -- transaction handling
 https://dzone.com/articles/transaction-synchronization-and-spring-application
+
+-- different datasources
+https://www.credera.com/blog/technology-insights/java/gradle-profiles-for-multi-project-spring-boot-applications/
+
+https://riptutorial.com/spring-boot/example/21856/dev-and-prod-environment-using-different-datasources
+https://itnext.io/switching-build-configurations-in-spring-boot-e7a607c6af82
+https://dzone.com/articles/setup-multiple-datasources-with-spring-boot-and-sp
 
 
 Log4j

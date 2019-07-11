@@ -21,8 +21,6 @@ import timecurvemanager.domain.position.Position;
 import timecurvemanager.domain.position.PositionValueType;
 import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
-//@todo: add position tcObject history table
-
 @SpringBootApplication
 @Slf4j
 public class TimecurveManagerApplication {
@@ -38,16 +36,9 @@ public class TimecurveManagerApplication {
   public CommandLineRunner demo(TimecurveObjectService timecurveObjectService,
       EventService eventService, PositionService positionService) {
     // Test Data Event
-    final EventStatus status = EventStatus.OPEN;
+    final EventStatus status = EventStatus.APPROVED;
     final String useCase1 = "pay";
     final String useCase2 = "xfer";
-    final Integer seqNr = 1;
-
-    // Test Data TimecurveObject
-    final String name1 = "Object 1";
-    final String name2 = "Object 2";
-    final String clearingRef = "CHF";
-    final Boolean needBalanceApproval = true;
 
     // Test Data EventItem
     final Integer rowNr = 1;
@@ -57,37 +48,33 @@ public class TimecurveManagerApplication {
     final Long itemId = 1L;
     final LocalDate date1 = LocalDate.now();
     final LocalDate date2 = LocalDate.now();
-    final LocalDate date3 = LocalDate.MAX;
+    final LocalDate date3 = LocalDate.of(2000,01,01);
     final LocalDate date4 = LocalDate.now().minus(Period.ofDays(100));
     final BigDecimal value1 = new BigDecimal(1000);
     final BigDecimal value2 = null;
     final BigDecimal value3 = null;
-    final BigDecimal tover1 = new BigDecimal(1000);
+    final BigDecimal tover1 = value1;
     final BigDecimal tover2 = null;
     final BigDecimal tover3 = null;
 
     return (args) -> {
-      positionService.addPosition(
-          new Position(null, tenantId, "1C", "1#CHF#MACC", "CHF Money Account for Container 1",
-              PositionValueType.CURRENCY, "CHF"));
+      // Position 0
+      Position position0 = new Position(null, tenantId, "DT", "DT#CHF#INT",
+          "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", false);
+      position0 = positionService.addPosition(position0);
+      TimecurveObject timecurveObject0 = positionService.addTimecurveForPositionAndDate(position0, LocalDate.of(2000, 1, 1));
 
-      positionService.addPosition(
-          new Position(null, tenantId, "2C", "2#CHF#MACC", "CHF Money Account for Container 2",
-              PositionValueType.CURRENCY, "CHF"));
+      // Position 1
+      Position position1 = new Position(null, tenantId, "C1", "C1#CHF#MACC",
+          "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", true);
+      position1 = positionService.addPosition(position1);
+      TimecurveObject timecurveObject1 = positionService.addTimecurveForPositionAndDate(position1, LocalDate.of(2000, 4, 8));
 
-      // save a couple of timecurves
-      timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "Share 1 CHF", null, false));
-      timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "Share 2 EUR", null, false));
-      timecurveObjectService
-          .addTimecurve(new TimecurveObject(null, tenantId, "Bond 1 CHF", null, false));
-      timecurveObjectService
-          .addTimecurve(
-              new TimecurveObject(null, tenantId, "Money Account 1 CHF", clearingRef, true));
-      timecurveObjectService
-          .addTimecurve(
-              new TimecurveObject(null, tenantId, "Money Account 2 CHF", clearingRef, true));
+      // Position 2
+      Position position2 = new Position(null, tenantId, "C2", "C2#CHF#MACC",
+          "CHF Money Account for Container 2", PositionValueType.CURRENCY, "CHF", true);
+      position2 = positionService.addPosition(position2);
+      TimecurveObject timecurveObject2 = positionService.addTimecurveForPositionAndDate(position2, LocalDate.of(2003, 3, 23));
 
       // fetch all timecurves
       log.info("Timecurves found with findAll():");
@@ -95,58 +82,56 @@ public class TimecurveManagerApplication {
       for (TimecurveObject timecurveObject : timecurveObjectService.listObjects()) {
         log.info(timecurveObject.toString());
       }
-      log.info("");
-
-      // fetch an individual TimecurveObject by ID
-      log.info("TimecurveObject found with findById(1L):");
-      log.info("--------------------------------");
-//      log.info(timecurveObjectService.getById(1L).toString());
-      log.info("");
-
-      TimecurveObject timecurveObject1 = timecurveObjectService
-          .addTimecurve(
-              new TimecurveObject(null, tenantId, name1, clearingRef, needBalanceApproval));
-      log.info("object id: " + timecurveObject1.getId());
-
-      TimecurveObject timecurveObject2 = timecurveObjectService
-          .addTimecurve(
-              new TimecurveObject(null, tenantId, name2, clearingRef, !needBalanceApproval));
-      log.info("object id: " + timecurveObject1.getId());
 
       // Event1
-      Event event = new Event(null, null, seqNr, tenantId, dimension, status,
+      Event event1 = new Event(null, tenantId, dimension, status,
           useCase1, date1, date2);
 
-      EventItem eventItem1 = new EventItem(null, null, rowNr, tenantId, dimension,
+      EventItem eventItem11 = new EventItem(null, rowNr, tenantId, dimension,
           timecurveObject1, itemType, itemId,
           date1, date2, value1, value2, value3, tover1, tover2, tover3, null);
 
-      event.addEventItem(eventItem1);
+      event1.addEventItem(eventItem11);
 
-      EventItem eventItem2 = new EventItem(null, null, rowNr + 1, tenantId, dimension,
-          timecurveObject2, itemType, itemId,
+      EventItem eventItem12 = new EventItem(null, rowNr + 1, tenantId, dimension,
+          timecurveObject0, itemType, itemId,
           date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2, tover3, null);
-      event.addEventItem(eventItem2);
-      log.info("eventItem2 eventextid: " + eventItem2.getEvent().getEventExtId());
-      event = eventService.addEvent(event);
-      log.info("event id: " + event.getId());
+      event1.addEventItem(eventItem12);
+      event1 = eventService.addEvent(event1);
+      log.info("event id: " + event1.getId() + " eventExtId: " + event1.getEventExtId());
 
-      // Event1
-      Event event2 = new Event(null, null, seqNr, tenantId, dimension, status,
+      // Event2
+      Event event2 = new Event(null, tenantId, dimension, status,
           useCase2, date3, date4);
 
-      EventItem eventItem21 = new EventItem(null, null, rowNr, tenantId, dimension,
-          timecurveObject2, itemType, itemId, date3, date4, value1.negate(), value2, value3,
-          tover1.negate(), tover2, tover3, null);
-      event.addEventItem(eventItem21);
+      EventItem eventItem21 = new EventItem(null, rowNr, tenantId, dimension,
+          timecurveObject0, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1).negate(), value2, value3,
+          BigDecimal.ONE.add(tover1).negate(), tover2, tover3, null);
+      event2.addEventItem(eventItem21);
 
-      EventItem eventItem22 = new EventItem(null, null, rowNr + 1, tenantId, dimension,
-          timecurveObject1, itemType, itemId, date3, date4, value1, value2, value3, tover1, tover2,
+      EventItem eventItem22 = new EventItem(null, rowNr + 1, tenantId, dimension,
+          timecurveObject2, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2, value3, BigDecimal.ONE.add(tover1), tover2,
           tover3, null);
-      event.addEventItem(eventItem22);
-      log.info("eventItem2 eventextid: " + eventItem2.getEvent().getEventExtId());
-      event = eventService.addEvent(event2);
-      log.info("event id: " + event.getId() + " eventExtId: " + event.getEventExtId());
+      event2.addEventItem(eventItem22);
+      event2 = eventService.addEvent(event2);
+      log.info("event id: " + event2.getId() + " eventExtId: " + event2.getEventExtId());
+
+      // Event3
+      Event event3 = new Event(event2.getEventExtId(), tenantId, dimension, status,
+          useCase2, date3, date4);
+
+      EventItem eventItem31 = new EventItem(null, rowNr, tenantId, dimension,
+          timecurveObject0, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1).negate(), value2, value3,
+          tover1.negate(), tover2, tover3, null);
+      event3.addEventItem(eventItem31);
+
+      EventItem eventItem32 = new EventItem(null, rowNr + 1, tenantId, dimension,
+          timecurveObject2, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2, value3, tover1, tover2,
+          tover3, null);
+      event3.addEventItem(eventItem32);
+      event3 = eventService.addEvent(event3);
+      log.info("event id: " + event3.getId() + " eventExtId: " + event3.getEventExtId());
     };
+
   }
 }
