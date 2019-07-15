@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,6 +32,8 @@ public class TimecurveManagerApplication {
     SpringApplication.run(TimecurveManagerApplication.class);
   }
 
+  @Value("${spring.profiles.active}")
+  private String activeProfile;
 
   @Bean
   public CommandLineRunner demo(TimecurveObjectService timecurveObjectService,
@@ -131,6 +134,8 @@ public class TimecurveManagerApplication {
       event3.addEventItem(eventItem32);
       event3 = eventService.addEvent(event3);
       log.info("event id: " + event3.getId() + " eventExtId: " + event3.getEventExtId());
+
+      log.info("Active Profile: " + activeProfile);
     };
 
   }

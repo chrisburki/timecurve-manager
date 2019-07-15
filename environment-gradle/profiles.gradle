@@ -1,0 +1,30 @@
+dependencies {
+    if (project.hasProperty('environment') && environment=='prod') {
+        runtimeOnly 'org.postgresql:postgresql'
+    } else if (project.hasProperty('environment') && environment=='dev') {
+        runtimeOnly 'com.h2database:h2'
+    } else {
+        runtimeOnly 'com.h2database:h2'
+    }
+}
+
+def prodProfiles='prod'
+def devProfiles='dev'
+def testProfiles='test'
+def propertyDrivenProfiles;
+
+if (project.hasProperty('environment') && environment=='prod') {
+    propertyDrivenProfiles = prodProfiles
+} else if (project.hasProperty('environment') && environment=='dev') {
+    propertyDrivenProfiles = devProfiles
+} else {
+    propertyDrivenProfiles = testProfiles
+}
+
+bootRun {
+    systemProperties = [
+        'spring.profiles.active': propertyDrivenProfiles
+    ]
+}
+
+println 'Including subproject ENVIRONEMENT-PROFILES: ' + environment + "; active profile: " + propertyDrivenProfiles
