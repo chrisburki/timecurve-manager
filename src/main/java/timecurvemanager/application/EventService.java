@@ -71,7 +71,7 @@ public class EventService {
       cntItems = eventItems.size();
     }
     if (cntItems == 0) {
-      return eventRepository.findQueryByEventExtId(eventId)
+      return eventRepository.findLastByEventExtId(eventId)
           .orElseThrow(() -> eventNotFound(eventId, extEventId));
     } else {
       Event event = eventItems.get(0).getEvent();
@@ -199,6 +199,7 @@ public class EventService {
     // 3. add event & items
     event = putEvent(event, lastEvent);
 
+    //@todo: implement in own service
     // 4. update balance
     updateBalance(relvUpdate(event), relvUpdate(lastEvent));
 

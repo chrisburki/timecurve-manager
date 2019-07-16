@@ -20,9 +20,8 @@ public class EventMapper {
 
   public EventEntity mapDomainToEntity(Event event) {
     EventEntity entity = new EventEntity(event.getEventExtId(), event.getSequenceNr(),
-        event.getTenantId(),
-        event.getDimension(), event.getStatus(), event.getUseCase(), event.getDate1(),
-        event.getDate2());
+        event.getOrderId(), event.getTenantId(), event.getDimension(), event.getStatus(),
+        event.getUseCase(), event.getDate1(), event.getDate2());
     event.getEventItems().forEach(item -> {
       entity.addEventItem(eventItemMapper.mapDomainToEntity(item));
     });
@@ -36,8 +35,8 @@ public class EventMapper {
 
   public Event mapEntityToDomain(EventEntity entity) {
     Event event = new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
-        entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-        entity.getDate1(), entity.getDate2());
+        entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
+        entity.getUseCase(), entity.getDate1(), entity.getDate2());
     entity.getEventItems().forEach(item -> {
       event.addEventItem2(eventItemMapper.mapEntityToDomain(item));
     });
@@ -46,8 +45,8 @@ public class EventMapper {
 
   public Event mapEntityToDomain2(EventEntity entity) {
     return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
-        entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-        entity.getDate1(), entity.getDate2());
+        entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
+        entity.getUseCase(), entity.getDate1(), entity.getDate2());
   }
 
   public List<Event> mapEntityToDomainList(List<EventEntity> entityList) {
@@ -61,8 +60,8 @@ public class EventMapper {
     if (eventEntity.isPresent()) {
       EventEntity entity = eventEntity.get();
       return Optional.of(new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
-          entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-          entity.getDate1(), entity.getDate2()));
+          entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
+          entity.getUseCase(), entity.getDate1(), entity.getDate2()));
     } else {
       return Optional.empty();
     }

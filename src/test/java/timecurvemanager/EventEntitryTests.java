@@ -25,6 +25,7 @@ public class EventEntitryTests {
   // Test Data
   private final Long eventExtId = null;
   private final Integer seqNr = 1;
+  private final String orderId = "pay_1";
   private final String tenantId = "AAA";
   private final EventDimension dimension = EventDimension.SUBLEDGER;
   private final EventStatus status = EventStatus.OPEN;
@@ -34,8 +35,8 @@ public class EventEntitryTests {
 
   @Test
   public void shouldInsertEventEntity() {
-    EventEntity entity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status, useCase,
-        date1, date2);
+    EventEntity entity = new EventEntity(eventExtId, seqNr, orderId, tenantId, dimension, status,
+        useCase, date1, date2);
     when(entityRepository.save(any(EventEntity.class))).then(returnsFirstArg());
     EventEntity savedEntity = entityRepository.save(entity);
     assertThat(savedEntity.getTenantId()).isNotNull();
@@ -43,8 +44,8 @@ public class EventEntitryTests {
 
   @Test
   public void shouldFindEventEntityList() {
-    EventEntity entity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status, useCase,
-        date1, date2);
+    EventEntity entity = new EventEntity(eventExtId, seqNr, orderId, tenantId, dimension, status,
+        useCase, date1, date2);
     List<EventEntity> entityList = Arrays.asList(entity);
 
     // Test 1

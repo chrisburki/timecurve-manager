@@ -21,7 +21,7 @@ public interface EventEntityRepository extends JpaRepository<EventEntity, Long>,
   @Query("select e from EventEntity e "
       + "where e.eventExtId = :eventExtId "
       + "and e.sequenceNr = (select max(f.sequenceNr) from EventEntity f where f.eventExtId = :eventExtId)")
-  Optional<EventEntity> findQueryByEventExtId(@Param("eventExtId") Long eventExtId);
+  Optional<EventEntity> findLastByEventExtId(@Param("eventExtId") Long eventExtId);
 
   default List<EventEntity> findByFilterCriteria(
       EventDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,

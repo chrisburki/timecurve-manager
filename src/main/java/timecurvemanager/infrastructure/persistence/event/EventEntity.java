@@ -44,6 +44,10 @@ public class EventEntity {
   @NotNull
   private Integer sequenceNr;
 
+  @Column(name = "order_id")
+  @NotNull
+  private String orderId;
+
   @Column(name = "tenant_id")
   @NotNull
   private String tenantId;
@@ -66,10 +70,11 @@ public class EventEntity {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventEntity", orphanRemoval = true)
   private List<EventItemEntity> eventItems = new ArrayList<>();
 
-  public EventEntity(Long eventExtId, Integer sequenceNr, String tenantId, EventDimension dimension,
+  public EventEntity(Long eventExtId, Integer sequenceNr, String orderId, String tenantId, EventDimension dimension,
       EventStatus status, String useCase, LocalDate date1, LocalDate date2) {
     this.eventExtId = eventExtId;
     this.sequenceNr = sequenceNr;
+    this.orderId = orderId;
     this.tenantId = tenantId;
     this.dimension = dimension;
     this.status = status;

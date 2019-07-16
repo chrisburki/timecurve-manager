@@ -32,9 +32,9 @@ public class EventRepositoryImpl implements EventRepository {
   }
 
   @Override
-  public Optional<Event> findQueryByEventExtId(Long eventExtId) {
+  public Optional<Event> findLastByEventExtId(Long eventExtId) {
     return eventMapper
-        .mapOptionalEntityToDomain(eventEntityRepository.findQueryByEventExtId(eventExtId));
+        .mapOptionalEntityToDomain(eventEntityRepository.findLastByEventExtId(eventExtId));
   }
 
   @Override

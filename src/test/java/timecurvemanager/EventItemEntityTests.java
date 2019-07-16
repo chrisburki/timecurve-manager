@@ -29,6 +29,7 @@ public class EventItemEntityTests {
   // Test Data Event
   private final EventStatus status = EventStatus.OPEN;
   private final Long eventExtId = null;
+  private final String orderId = "pay_1";
   private final String useCase = "pay";
   private final Integer seqNr = 1;
 
@@ -54,8 +55,8 @@ public class EventItemEntityTests {
 
   @Test
   public void shouldInsertEventItemEntity() {
-    EventEntity eventEntity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
-        useCase, date1, date2);
+    EventEntity eventEntity = new EventEntity(eventExtId, seqNr, orderId, tenantId, dimension,
+        status, useCase, date1, date2);
     TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef,
         needBalanceApproval);
     EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
@@ -67,8 +68,8 @@ public class EventItemEntityTests {
 
   @Test
   public void shouldFindEventItemEntityList() {
-    EventEntity eventEntity = new EventEntity(eventExtId, seqNr, tenantId, dimension, status,
-        useCase, date1, date2);
+    EventEntity eventEntity = new EventEntity(eventExtId, seqNr, orderId, tenantId, dimension,
+        status, useCase, date1, date2);
     TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef,
         needBalanceApproval);
     EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,

@@ -19,13 +19,10 @@ import timecurvemanager.domain.event.EventItemType;
 public class ApprovedBalanceService {
 
   private final ApprovedBalanceRepository approvedBalanceRepository;
-  private final TimecurveObjectService timecurveObjectService;
 
   public ApprovedBalanceService(
-      ApprovedBalanceRepository approvedBalanceRepository,
-      TimecurveObjectService timecurveObjectService) {
+      ApprovedBalanceRepository approvedBalanceRepository) {
     this.approvedBalanceRepository = approvedBalanceRepository;
-    this.timecurveObjectService = timecurveObjectService;
   }
 
   /*
@@ -73,8 +70,6 @@ public class ApprovedBalanceService {
       approvedBalance = getBalanceFromEventItem(eventItem);
     }
 
-    //@todo: lock balance
-
     // update balance
     BigDecimal newValue = new BigDecimal(0)
         .add(approvedBalance.getValue1().add(eventItem.getValue1()));
@@ -97,7 +92,6 @@ public class ApprovedBalanceService {
   }
 
   private void updateBalance(ApprovedBalance approvedBalance) {
-    //@todo implement loop and update
     // check for balance (should be done in a dedicated service)
     if (approvedBalance.getValue1().compareTo(BigDecimal.ZERO) < 0) {
       throw balanceSmallerZero(approvedBalance.getValue1(), approvedBalance.getTover1());
@@ -108,6 +102,7 @@ public class ApprovedBalanceService {
   }
 
   // MAIN
+  //@todo: do not per event but per Gsn and position
   public void addEvent(Event newEvent, Event lastEvent) {
 
     HashMap<String, ApprovedBalance> approvedBalanceMap = new HashMap<>();

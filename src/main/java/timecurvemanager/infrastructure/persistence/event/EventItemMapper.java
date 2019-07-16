@@ -48,8 +48,8 @@ public class EventItemMapper {
 
   private Event mapEventEntityToDomain(EventEntity entity) {
     return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
-        entity.getTenantId(), entity.getDimension(), entity.getStatus(), entity.getUseCase(),
-        entity.getDate1(), entity.getDate2());
+        entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
+        entity.getUseCase(), entity.getDate1(), entity.getDate2());
   }
 
   public EventItem mapEntityToDomain(EventItemEntity entity) {

@@ -8,7 +8,7 @@ public interface EventRepository {
 
   Optional<Event> findById(Long id);
 
-  Optional<Event> findQueryByEventExtId(Long eventExtId);
+  Optional<Event> findLastByEventExtId(Long eventExtId);
 
   List<Event> findQueryEvents(
       EventDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,
