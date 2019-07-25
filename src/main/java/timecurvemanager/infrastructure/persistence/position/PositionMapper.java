@@ -3,10 +3,12 @@ package timecurvemanager.infrastructure.persistence.position;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.position.Position;
 
 @Component
+@Slf4j
 public class PositionMapper {
 
   public PositionEntity mapDomainToEntity(Position position) {

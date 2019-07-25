@@ -8,9 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.stereotype.Service;
 import timecurvemanager.domain.balance.ApprovedBalance;
-import timecurvemanager.domain.timecurveobject.TimecurveObject;
+import timecurvemanager.domain.timecurve.Timecurve;
 
 //@todo: replace primary key id with event, rowNr
 
@@ -34,7 +33,7 @@ public class EventItem {
   private EventDimension dimension;
 
   @NotNull
-  private TimecurveObject timecurve;
+  private Timecurve timecurve;
 
   @NotNull
   private EventItemType itemType;
@@ -67,21 +66,20 @@ public class EventItem {
   @Setter
   private BigDecimal tover3;
 
+  private Long gsn;
+
   private ApprovedBalance approvedBalance;
 
   public void setIdToNull() {
     this.id = null;
   }
 
-  public EventItem(Event event, Integer rowNr,
-      @NotNull String tenantId,
-      @NotNull EventDimension dimension,
-      @NotNull TimecurveObject timecurve,
-      @NotNull EventItemType itemType, Long itemId,
-      @NotNull LocalDate date1, @NotNull LocalDate date2,
-      @NotNull BigDecimal value1, BigDecimal value2, BigDecimal value3,
-      @NotNull BigDecimal tover1, BigDecimal tover2, BigDecimal tover3,
-      ApprovedBalance approvedBalance) {
+  public EventItem(Event event, Integer rowNr, @NotNull String tenantId,
+      @NotNull EventDimension dimension, @NotNull Timecurve timecurve,
+      @NotNull EventItemType itemType, Long itemId, @NotNull LocalDate date1,
+      @NotNull LocalDate date2, @NotNull BigDecimal value1, BigDecimal value2,
+      BigDecimal value3, @NotNull BigDecimal tover1, BigDecimal tover2, BigDecimal tover3,
+      Long gsn, ApprovedBalance approvedBalance) {
     this.event = event;
     this.rowNr = rowNr;
     this.tenantId = tenantId;
@@ -97,6 +95,7 @@ public class EventItem {
     this.tover1 = tover1;
     this.tover2 = tover2;
     this.tover3 = tover3;
+    this.gsn = gsn;
     this.approvedBalance = approvedBalance;
   }
 }

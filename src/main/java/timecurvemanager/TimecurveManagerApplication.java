@@ -2,7 +2,10 @@ package timecurvemanager;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
+import java.time.temporal.ChronoField;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +14,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import timecurvemanager.application.EventService;
+import timecurvemanager.application.GsnService;
+import timecurvemanager.application.ObjectTimecurveRelationService;
 import timecurvemanager.application.PositionService;
-import timecurvemanager.application.TimecurveObjectService;
+import timecurvemanager.application.TimecurveService;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
@@ -20,7 +25,7 @@ import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.domain.position.Position;
 import timecurvemanager.domain.position.PositionValueType;
-import timecurvemanager.domain.timecurveobject.TimecurveObject;
+import timecurvemanager.domain.timecurve.Timecurve;
 
 @SpringBootApplication
 @Slf4j
@@ -36,8 +41,9 @@ public class TimecurveManagerApplication {
   private String activeProfile;
 
   @Bean
-  public CommandLineRunner demo(TimecurveObjectService timecurveObjectService,
-      EventService eventService, PositionService positionService) {
+  public CommandLineRunner demo(ObjectTimecurveRelationService relationService,
+      TimecurveService timecurveService, EventService eventService,
+      PositionService positionService, GsnService gsnService) {
     // Test Data Event
     final String orderId = "pay_1";
     final EventStatus status = EventStatus.APPROVED;
@@ -66,41 +72,44 @@ public class TimecurveManagerApplication {
       Position position0 = new Position(null, tenantId, "DT", "DT#CHF#INT",
           "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", false);
       position0 = positionService.addPosition(position0);
-      TimecurveObject timecurveObject0 = positionService
-          .addTimecurveForPositionAndDate(position0, LocalDate.of(2000, 1, 1));
-
+      Timecurve timecurve0 = new Timecurve(null, tenantId, "pos", position0.getClearingReference(),
+          position0.getDoBalanceCheck());
+      timecurve0 = relationService.createTimecurve(position0.getId().toString(), timecurve0, null);
       // Position 1
       Position position1 = new Position(null, tenantId, "C1", "C1#CHF#MACC",
           "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", true);
       position1 = positionService.addPosition(position1);
-      TimecurveObject timecurveObject1 = positionService
-          .addTimecurveForPositionAndDate(position1, LocalDate.of(2000, 4, 8));
+      Timecurve timecurve1 = new Timecurve(null, tenantId, "pos", position1.getClearingReference(),
+          position1.getDoBalanceCheck());
+      timecurve1 = relationService.createTimecurve(position1.getId().toString(), timecurve1, null);
 
       // Position 2
       Position position2 = new Position(null, tenantId, "C2", "C2#CHF#MACC",
           "CHF Money Account for Container 2", PositionValueType.CURRENCY, "CHF", true);
       position2 = positionService.addPosition(position2);
-      TimecurveObject timecurveObject2 = positionService
-          .addTimecurveForPositionAndDate(position2, LocalDate.of(2003, 3, 23));
+      Timecurve timecurve2 = new Timecurve(null, tenantId, "pos", position2.getClearingReference(),
+          position2.getDoBalanceCheck());
+      timecurve2 = relationService.createTimecurve(position2.getId().toString(), timecurve2, null);
 
       // fetch all timecurves
       log.info("Timecurves found with findAll():");
       log.info("-------------------------------");
-      for (TimecurveObject timecurveObject : timecurveObjectService.listObjects()) {
-        log.info(timecurveObject.toString());
+      for (Timecurve timecurve : timecurveService.listObjects()) {
+        log.info(timecurve.toString());
       }
 
       // Event1
       Event event1 = new Event(null, orderId, tenantId, dimension, status, useCase1, date1, date2);
 
-      EventItem eventItem11 = new EventItem(null, rowNr, tenantId, dimension, timecurveObject1,
-          itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3, null);
+      EventItem eventItem11 = new EventItem(null, rowNr, tenantId, dimension, timecurve1,
+          itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3, null,
+          null);
 
       event1.addEventItem(eventItem11);
 
-      EventItem eventItem12 = new EventItem(null, rowNr + 1, tenantId, dimension, timecurveObject0,
+      EventItem eventItem12 = new EventItem(null, rowNr + 1, tenantId, dimension, timecurve0,
           itemType, itemId, date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2,
-          tover3, null);
+          tover3, null, null);
       event1.addEventItem(eventItem12);
       event1 = eventService.addEvent(event1);
       log.info("event id: " + event1.getId() + " eventExtId: " + event1.getEventExtId());
@@ -109,34 +118,38 @@ public class TimecurveManagerApplication {
       Event event2 = new Event(null, orderId, tenantId, dimension, status, useCase2, date3, date4);
 
       EventItem eventItem21 = new EventItem(null, rowNr, tenantId, dimension,
-          timecurveObject0, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1).negate(),
-          value2, value3, BigDecimal.ONE.add(tover1).negate(), tover2, tover3, null);
+          timecurve0, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1).negate(),
+          value2, value3, BigDecimal.ONE.add(tover1).negate(), tover2, tover3, null, null);
       event2.addEventItem(eventItem21);
 
       EventItem eventItem22 = new EventItem(null, rowNr + 1, tenantId, dimension,
-          timecurveObject2, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2,
-          value3, BigDecimal.ONE.add(tover1), tover2, tover3, null);
+          timecurve2, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2,
+          value3, BigDecimal.ONE.add(tover1), tover2, tover3, null, null);
       event2.addEventItem(eventItem22);
       event2 = eventService.addEvent(event2);
       log.info("event id: " + event2.getId() + " eventExtId: " + event2.getEventExtId());
-
+      //TimeUnit.SECONDS.sleep(1);
       // Event3
       Event event3 = new Event(event2.getEventExtId(), orderId, tenantId, dimension, status,
           useCase2, date3, date4);
 
       EventItem eventItem31 = new EventItem(null, rowNr, tenantId, dimension,
-          timecurveObject0, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1).negate(),
-          value2, value3, tover1.negate(), tover2, tover3, null);
+          timecurve0, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1).negate(),
+          value2, value3, tover1.negate(), tover2, tover3, null, null);
       event3.addEventItem(eventItem31);
 
       EventItem eventItem32 = new EventItem(null, rowNr + 1, tenantId, dimension,
-          timecurveObject2, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2,
-          value3, tover1, tover2, tover3, null);
+          timecurve2, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2,
+          value3, tover1, tover2, tover3, null, null);
       event3.addEventItem(eventItem32);
       event3 = eventService.addEvent(event3);
       log.info("event id: " + event3.getId() + " eventExtId: " + event3.getEventExtId());
 
       log.info("Active Profile: " + activeProfile);
+      log.info("GSN: " + LocalDateTime.now()
+          .getLong(ChronoField.EPOCH_DAY) + " sec: " + LocalTime.now()
+          .getLong(ChronoField.SECOND_OF_DAY));
+      log.info("GSN: " + gsnService.getCurrGsn().getId());
     };
 
   }

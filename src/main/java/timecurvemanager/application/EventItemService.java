@@ -1,19 +1,16 @@
 package timecurvemanager.application;
 
-import static timecurvemanager.domain.event.EventItemNotFoundException.eventItemNotFound;
-
 import java.time.LocalDate;
 import java.util.Collection;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.domain.event.EventItemType;
-import timecurvemanager.domain.timecurveobject.TimecurveObject;
 
 @Service
+@Slf4j
 public class EventItemService {
 
   private final EventItemRepository itemRepository;

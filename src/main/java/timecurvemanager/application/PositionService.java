@@ -7,17 +7,19 @@ import static timecurvemanager.domain.position.PositionNotFoundException.positio
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import timecurvemanager.domain.position.Position;
 import timecurvemanager.domain.position.PositionRepository;
 import timecurvemanager.domain.position.PositionValueType;
-import timecurvemanager.domain.timecurveobject.TimecurveObject;
+import timecurvemanager.domain.timecurve.Timecurve;
 
 //@todo: add testing, testdata for position, timecurve, relations and events
 
 @Service
+@Slf4j
 public class PositionService {
 
   private static final String primaryKey = "Primary Key (Id)";
@@ -25,20 +27,20 @@ public class PositionService {
 
 
   private final PositionRepository positionRepository;
-  private final ObjectTimecurveRelationService relationService;
 
-  public PositionService(PositionRepository positionRepository,
-      ObjectTimecurveRelationService relationService) {
+  public PositionService(PositionRepository positionRepository) {
     this.positionRepository = positionRepository;
-    this.relationService = relationService;
   }
 
   /*
    * list Positions
    * **************
    * */
-  public Collection<Position> listObjects() {
-    return positionRepository.findAll();
+  public Collection<Position> listObjects(String containerId) {
+    if (containerId == null) {
+    return positionRepository.findAll();} else {
+      return positionRepository.findByContainerId(containerId);
+    }
   }
 
   public Position getPosition(String anyIdentifier) {
@@ -69,6 +71,13 @@ public class PositionService {
 
   }
 
+  // build Tag
+  public String getTag(String tenantId, String containerId, PositionValueType valueType, String valueTag) {
+    return tenantId+":"+containerId+":"+valueType.name()+":"+valueTag;
+
+  }
+
+
   /*
    * add Position
    * *************
@@ -95,26 +104,6 @@ public class PositionService {
     } catch (DataAccessException ex) {
       throw positionAddException(position.getId(), position.getTag());
     }
-  }
-
-  private String getClearingReference(Position position) {
-    if (position.getValueType() == PositionValueType.CURRENCY) {
-      return position.getValueTag();
-    } else {
-      return null;
-    }
-  }
-
-  private Boolean getNeedBalanceApproval(Position position) {
-    return position.getDoBalanceCheck() && position.getValueType() == PositionValueType.CURRENCY;
-  }
-
-  @Transactional
-  public TimecurveObject addTimecurveForPositionAndDate(Position position, LocalDate refDate) {
-    // check for existng one, if not exists -> create a new Timecuve Object & Relation to Position
-    return relationService
-        .addObjectTimecurveRelation(position.getId(), refDate, position.getTenantId(),
-            getClearingReference(position), getNeedBalanceApproval(position), "pos").getTimecurve();
   }
 
   // only for manual corrections

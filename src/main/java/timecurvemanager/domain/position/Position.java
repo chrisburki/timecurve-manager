@@ -31,4 +31,16 @@ public class Position {
 
   // @NotNull
   private Boolean doBalanceCheck;
+
+  public String getClearingReference() {
+    if (this.getValueType() == PositionValueType.CURRENCY) {
+      return this.getValueTag();
+    } else {
+      return null;
+    }
+  }
+
+  public Boolean getNeedBalanceApproval() {
+    return this.getDoBalanceCheck() && this.getValueType() == PositionValueType.CURRENCY;
+  }
 }

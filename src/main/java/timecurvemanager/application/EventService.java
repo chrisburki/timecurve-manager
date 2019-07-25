@@ -151,10 +151,9 @@ public class EventService {
     return event;
   }
 
-  private Event addEventExtId(Event event, Long eventExtId, Integer sequenceNr) {
+  private void addEventExtId(Event event, Long eventExtId, Integer sequenceNr) {
     event.setEventExtId(eventExtId);
     event.setSequenceNr(sequenceNr);
-    return event;
   }
 
   private Event putEvent(Event event, Event lastEvent) {
@@ -189,11 +188,11 @@ public class EventService {
     // 2. find EventExtId and if not existing add one
     Event lastEvent = null;
     if (event.getEventExtId() == null) {
-      event = addEventExtId(event, eventRepository.getNextEventExtId(), 1);
+      addEventExtId(event, eventRepository.getNextEventExtId(), 1);
     } else {
       lastEvent = getLastEvent(event.getEventExtId());
       log.info("NEW EVENT: " +lastEvent.getEventExtId() + " : "+ (-lastEvent.getSequenceNr() + 1));
-      event = addEventExtId(event, lastEvent.getEventExtId(), -lastEvent.getSequenceNr() + 1);
+      addEventExtId(event, lastEvent.getEventExtId(), -lastEvent.getSequenceNr() + 1);
     }
 
     // 3. add event & items

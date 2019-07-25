@@ -18,7 +18,7 @@ import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntityRepository;
-import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntity;
+import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
 
 @DataJpaTest
 public class EventItemEntityTests {
@@ -33,7 +33,7 @@ public class EventItemEntityTests {
   private final String useCase = "pay";
   private final Integer seqNr = 1;
 
-  // Test Data TimecurveObject
+  // Test Data Timecurve
   private final String name = "Object 1";
   private final String clearingRef = "CHF";
   private final Boolean needBalanceApproval = true;
@@ -57,7 +57,7 @@ public class EventItemEntityTests {
   public void shouldInsertEventItemEntity() {
     EventEntity eventEntity = new EventEntity(eventExtId, seqNr, orderId, tenantId, dimension,
         status, useCase, date1, date2);
-    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef,
+    TimecurveEntity timecurveEntity = new TimecurveEntity(tenantId, name, clearingRef,
         needBalanceApproval);
     EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
         itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3);
@@ -70,7 +70,7 @@ public class EventItemEntityTests {
   public void shouldFindEventItemEntityList() {
     EventEntity eventEntity = new EventEntity(eventExtId, seqNr, orderId, tenantId, dimension,
         status, useCase, date1, date2);
-    TimecurveObjectEntity timecurveEntity = new TimecurveObjectEntity(tenantId, name, clearingRef,
+    TimecurveEntity timecurveEntity = new TimecurveEntity(tenantId, name, clearingRef,
         needBalanceApproval);
     EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
         itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3);

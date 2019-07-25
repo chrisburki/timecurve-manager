@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import lombok.ToString;
 import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItemType;
 
-import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntity;
+import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
 
 @Entity
 @Table(name = "event_item"
@@ -36,7 +37,7 @@ import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObje
 public class EventItemEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @ManyToOne
@@ -58,7 +59,7 @@ public class EventItemEntity {
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "timecurve_id", referencedColumnName = "id", nullable = false)
   @NotNull
-  private TimecurveObjectEntity timecurveEntity;
+  private TimecurveEntity timecurveEntity;
 
   @Column(name = "item_type")
   @NotNull
@@ -86,9 +87,16 @@ public class EventItemEntity {
 
   private BigDecimal tover3;
 
+  private Long gsn;
+
+  @PrePersist
+  public void onPrePersist() {
+    gsn = eventEntity.getGsn();
+  }
+
   public EventItemEntity(Integer rowNr, String tenantId,
       EventDimension dimension,
-      TimecurveObjectEntity timecurveEntity, EventItemType itemType, Long itemId,
+      TimecurveEntity timecurveEntity, EventItemType itemType, Long itemId,
       LocalDate date1, LocalDate date2, BigDecimal value1, BigDecimal value2,
       BigDecimal value3, BigDecimal tover1, BigDecimal tover2, BigDecimal tover3) {
     this.rowNr = rowNr;

@@ -23,7 +23,7 @@ public class EventControllerTests {
 
   @Test
   public void givenDimensionGetAllEvents() throws Exception {
-    String uri = new String("/timecurve/events?");
+    String uri = new String("/book-keeping/events?");
     uri = uri + "dimension=SUBLEDGER";
     mockMvc.perform(get(uri)
         .contentType(MediaType.APPLICATION_JSON))

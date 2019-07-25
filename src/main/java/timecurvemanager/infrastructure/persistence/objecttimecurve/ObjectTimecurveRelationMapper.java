@@ -3,30 +3,20 @@ package timecurvemanager.infrastructure.persistence.objecttimecurve;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelation;
-import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntityRepository;
-import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectMapper;
+import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntityRepository;
+import timecurvemanager.infrastructure.persistence.timecurve.TimecurveMapper;
 
 @Component
+@Slf4j
 public class ObjectTimecurveRelationMapper {
 
 
-  private final TimecurveObjectMapper timecurveMapper;
-  private final TimecurveObjectEntityRepository timecurveObjectEntityRepository;
-
-  public ObjectTimecurveRelationMapper(
-      TimecurveObjectMapper timecurveMapper,
-      TimecurveObjectEntityRepository timecurveObjectEntityRepository) {
-    this.timecurveMapper = timecurveMapper;
-    this.timecurveObjectEntityRepository = timecurveObjectEntityRepository;
-  }
-
   public ObjectTimecurveRelationEntity mapDomainToEntity(ObjectTimecurveRelation relation) {
-    return new ObjectTimecurveRelationEntity(
-        relation.getObjectId(),
-        timecurveObjectEntityRepository.findById(relation.getTimecurve().getId()).get(),
-        relation.getValidFrom(), relation.getValidTo());
+    return new ObjectTimecurveRelationEntity(relation.getObjectId(), relation.getValidFrom(),
+        relation.getValidTo());
   }
 
   public List<ObjectTimecurveRelationEntity> mapDomainToEntityList(
@@ -38,7 +28,7 @@ public class ObjectTimecurveRelationMapper {
   public ObjectTimecurveRelation mapEntityToDomain(ObjectTimecurveRelationEntity entity) {
     return new ObjectTimecurveRelation(entity.getId(),
         entity.getObjectId(),
-        timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()), entity.getValidFrom(),
+        null, entity.getValidFrom(),
         entity.getValidTo());
   }
 
@@ -55,7 +45,7 @@ public class ObjectTimecurveRelationMapper {
       ObjectTimecurveRelationEntity entity = relationEntity.get();
       return Optional.of(new ObjectTimecurveRelation(entity.getId(),
           entity.getObjectId(),
-          timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()), entity.getValidFrom(),
+          null, entity.getValidFrom(),
           entity.getValidTo()));
     } else {
       return Optional.empty();

@@ -3,8 +3,9 @@ package timecurvemanager.domain.objecttimecurve;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import timecurvemanager.domain.timecurveobject.TimecurveObject;
+import timecurvemanager.domain.timecurve.Timecurve;
 
 @Getter
 @AllArgsConstructor
@@ -13,9 +14,10 @@ public class ObjectTimecurveRelation {
 
   private Long id;
 
-  private Long objectId;
+  private String objectId;
 
-  private TimecurveObject timecurve;
+  @Setter
+  private Timecurve timecurve;
 
   LocalDate validFrom;
 

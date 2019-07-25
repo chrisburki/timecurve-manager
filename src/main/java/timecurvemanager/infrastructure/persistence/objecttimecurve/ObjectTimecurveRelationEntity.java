@@ -14,8 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
-import timecurvemanager.infrastructure.persistence.timecurveobject.TimecurveObjectEntity;
+import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
 
 @Entity
 @Table(name = "object_timecurve_relation", indexes = @Index(name = "idx_object_date",
@@ -31,12 +32,12 @@ public class ObjectTimecurveRelationEntity {
 
   @NotNull
   @Column(name = "object_id")
-  private Long objectId;
+  private String objectId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "timecurve_id", referencedColumnName = "id", nullable = false)
+  @ManyToOne
+  @Setter
   @NotNull
-  private TimecurveObjectEntity timecurveEntity;
+  private TimecurveEntity timecurveEntity;
 
   @NotNull
   @Column(name = "valid_from")
@@ -47,11 +48,9 @@ public class ObjectTimecurveRelationEntity {
   LocalDate validTo;
 
   public ObjectTimecurveRelationEntity(
-      Long objectId,
-      @NotNull TimecurveObjectEntity timecurveEntity,
+      @NotNull String objectId,
       @NotNull LocalDate validFrom, @NotNull LocalDate validTo) {
     this.objectId = objectId;
-    this.timecurveEntity = timecurveEntity;
     this.validFrom = validFrom;
     this.validTo = validTo;
   }

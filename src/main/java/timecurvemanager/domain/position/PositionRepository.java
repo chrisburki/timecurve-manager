@@ -11,11 +11,11 @@ public interface PositionRepository {
 
   Optional<Position> findByTag(String tag);
 
-  List<Position> findByName(String name);
+  List<Position> findByContainerId(String name);
 
-  Position save(Position timecurveObject);
+  Position save(Position position);
 
-  void delete(Position timecurveObject);
+  void delete(Position position);
 
 
 }

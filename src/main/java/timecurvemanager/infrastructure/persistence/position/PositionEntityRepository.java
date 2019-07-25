@@ -11,6 +11,6 @@ public interface PositionEntityRepository extends
 
   Optional<PositionEntity> findByTag(String tag);
 
-  List<PositionEntity> findByName(String label);
+  List<PositionEntity> findByContainerId(String containerId);
 
 }

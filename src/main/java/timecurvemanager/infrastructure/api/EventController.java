@@ -20,7 +20,7 @@ import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemType;
 
 @RestController
-@RequestMapping("/timecurve")
+@RequestMapping("/book-keeping")
 public class EventController {
 
   private final EventService eventService;
@@ -46,7 +46,13 @@ public class EventController {
         HttpStatus.OK);
   }
 
-  @GetMapping("/eventItems")
+  @PostMapping("/events")
+  ResponseEntity<Event> addEvent(@RequestBody Event event) {
+    Event result = eventService.addEvent(event);
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+  @GetMapping("/event-items")
   ResponseEntity<List<EventItem>> listObjects(@RequestParam("dimension") EventDimension dimension,
       @RequestParam(value = "objectId", required = false) Long objectId,
       @RequestParam(value = "itemType", required = false) EventItemType itemType,
@@ -80,9 +86,4 @@ public class EventController {
         new ArrayList<>(eventItemService.getEventItemsByEventExtId(eventExtId)), HttpStatus.OK);
   }
 
-  @PostMapping("/events")
-  ResponseEntity<Event> addEvent(@RequestBody Event event) {
-    Event result = eventService.addEvent(event);
-    return new ResponseEntity<>(result, HttpStatus.OK);
-  }
 }

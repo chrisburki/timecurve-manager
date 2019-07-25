@@ -4,72 +4,90 @@ import static timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelationAdd
 import static timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelationNotFoundException.objectTimecurveRelationNotFound;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelation;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelationRepository;
+import timecurvemanager.domain.timecurve.Timecurve;
 
 @Service
+@Slf4j
 public class ObjectTimecurveRelationService {
 
   private final ObjectTimecurveRelationRepository relationRepository;
-  private final TimecurveObjectService timecurveObjectService;
+  private final TimecurveService timecurveService;
 
-  private final LocalDate maxDate = LocalDate.of(4712,12,31);
+  private final LocalDate maxDate = LocalDate.of(4712, 12, 31);
 
   public ObjectTimecurveRelationService(
       ObjectTimecurveRelationRepository relationRepository,
-      TimecurveObjectService timecurveObjectService) {
+      TimecurveService timecurveService) {
     this.relationRepository = relationRepository;
-    this.timecurveObjectService = timecurveObjectService;
+    this.timecurveService = timecurveService;
   }
 
   /*
-   * get Object Timecurve Relation
+   * Helper - nvl
+   */
+  private <T> T nvl(T arg0, T arg1) {
+    return (arg0 == null) ? arg1 : arg0;
+  }
+
+
+  /*
+   * get Timecurves by Object
+   * ************************
+   * */
+  public Collection<Timecurve> listTimecuves(String objectId) {
+    List<ObjectTimecurveRelation> relationList = relationRepository.findByObjectId(objectId);
+    return relationList.stream().map(relation -> relation.getTimecurve())
+        .collect(Collectors.toList());
+  }
+
+  /*
+   * get Timecurve by Object & Date
    * *******************************
    * */
-  public ObjectTimecurveRelation getByObjectAndRefDate(Long objectId, LocalDate refDate) {
+  public Timecurve getTimecurveByObjectAndDateId(String objectId, LocalDate refDate) {
+    ObjectTimecurveRelation relation = relationRepository.findByObjectRefDate(objectId, refDate)
+        .orElseThrow(() -> objectTimecurveRelationNotFound(objectId, refDate));
+    return relation.getTimecurve();
+  }
+
+  /*
+   * Create Object Timecurve Relation & Timecurve
+   * ********************************************
+   * create a ObjectTimecurveRelation & Timecurve and return the timecurve
+   * */
+  public Timecurve createTimecurve(String objectId, Timecurve timecurve, LocalDate refDate) {
+
+    ObjectTimecurveRelation relation = new ObjectTimecurveRelation(null, objectId,
+        null, nvl(refDate,LocalDate.now()), maxDate);
+    timecurve.addTimecurveRelation(relation);
+    timecurve = timecurveService.addTimecurve(timecurve);
+//    try {
+//      relationRepository.save(relation);
+//    } catch (DataAccessException ex) {
+//      throw objectTimecurveRelationAdd(objectId, relation.getTimecurve().getId(),
+//          refDate);
+//    }
+    return timecurve;
+  }
+
+
+  // internal: get Object Timecurve Relation
+  public ObjectTimecurveRelation getByObjectAndRefDate(String objectId, LocalDate refDate) {
     return relationRepository.findByObjectRefDate(objectId, refDate)
         .orElseThrow(() -> objectTimecurveRelationNotFound(objectId, refDate));
   }
 
-  /*
-   * add Object Timecurve Relation
-   * *******************************
-   * search for an existing based on the object and reference date. if not find
-   * create a ObjectTimecurveRelation and return it
-   * (only used by Object Services like Position Service)
-   * */
-  private ObjectTimecurveRelation createObjectTimecurveRelation(Long objectId,
-      LocalDate refDate, String tenantId, String clearingReference, Boolean needBalanceApproval,
-      String nameExtension) {
-    ObjectTimecurveRelation relation = new ObjectTimecurveRelation(null, objectId,
-        timecurveObjectService.addTimecurve(tenantId,
-            tenantId + ":" + clearingReference + ":" + needBalanceApproval.toString() + ":"
-                + nameExtension, clearingReference, needBalanceApproval
-            ),
-        refDate, maxDate);
-    try {
-      return relationRepository.save(relation);
-    } catch (DataAccessException ex) {
-      throw objectTimecurveRelationAdd(objectId, relation.getTimecurve().getId(),
-          refDate);
-    }
-  }
 
-  public ObjectTimecurveRelation addObjectTimecurveRelation(Long objectId, LocalDate refDate,
-      String tenantId, String clearingReference, Boolean needBalanceApproval,
-      String nameExtension) {
-
-    return relationRepository
-        .findByObjectRefDate(objectId, refDate)
-        .orElse(createObjectTimecurveRelation(objectId, refDate, tenantId, clearingReference,
-            needBalanceApproval, nameExtension));
-
-  }
-
-  // only for manual corrections
+  // internal: only for manual corrections
   @Transactional
   public ObjectTimecurveRelation addObjectTimecurveRelation(
       ObjectTimecurveRelation relation) {
@@ -83,7 +101,7 @@ public class ObjectTimecurveRelationService {
   }
 
 
-  // only for manual corrections
+  // internal: only for manual corrections
   @Transactional
   public void delete(ObjectTimecurveRelation relation) {
     try {

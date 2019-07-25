@@ -1,10 +1,12 @@
 package timecurvemanager.infrastructure.persistence.objecttimecurve;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelation;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelationRepository;
+import timecurvemanager.domain.position.Position;
 
 @Component
 public class ObjectTimecurveRelationRepositoryImpl implements
@@ -21,7 +23,12 @@ public class ObjectTimecurveRelationRepositoryImpl implements
   }
 
   @Override
-  public Optional<ObjectTimecurveRelation> findByObjectRefDate(Long objectId,
+  public List<ObjectTimecurveRelation> findByObjectId(String objectId) {
+    return relationMapper.mapEntityToDomainList(relationEntityRepository.findByObjectId(objectId));
+  }
+
+  @Override
+  public Optional<ObjectTimecurveRelation> findByObjectRefDate(String objectId,
       LocalDate refDate) {
     return relationMapper
         .mapOptionalEntityToDomain(

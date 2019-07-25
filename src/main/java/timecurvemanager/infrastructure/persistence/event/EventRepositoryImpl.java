@@ -11,6 +11,7 @@ import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventRepository;
 
 @Component
+@Slf4j
 public class EventRepositoryImpl implements EventRepository {
 
   private final EventEntityRepository eventEntityRepository;

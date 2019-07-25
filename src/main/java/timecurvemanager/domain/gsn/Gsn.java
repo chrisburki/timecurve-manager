@@ -11,10 +11,12 @@ import lombok.ToString;
 @ToString
 public class Gsn {
 
-  @NotNull
-  Long sequenceNr;
+  Long id;
 
   @NotNull
   LocalDateTime gsnDate;
 
+  public Gsn(@NotNull LocalDateTime gsnDate) {
+    this.gsnDate = gsnDate;
+  }
 }

@@ -1,6 +1,8 @@
 package timecurvemanager.domain.event;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -45,6 +47,8 @@ public class Event {
   @NotNull
   private LocalDate date2;
 
+  private Long gsn;
+
   private List<EventItem> eventItems = new ArrayList<>();
 
   public void addEventItem(EventItem eventItem) {
@@ -61,12 +65,9 @@ public class Event {
   }
 
   // internal setting 1 (domain to entity)
-  public Event(Long eventExtId, Integer sequenceNr,
-      @NotNull String orderId,
-      @NotNull String tenantId,
-      @NotNull EventDimension dimension,
-      @NotNull EventStatus status, @NotNull String useCase,
-      @NotNull LocalDate date1, @NotNull LocalDate date2) {
+  public Event(Long eventExtId, Integer sequenceNr, @NotNull String orderId,
+      @NotNull String tenantId, @NotNull EventDimension dimension, @NotNull EventStatus status,
+      @NotNull String useCase, @NotNull LocalDate date1, @NotNull LocalDate date2) {
     this.eventExtId = eventExtId;
     this.sequenceNr = sequenceNr;
     this.orderId = orderId;
@@ -79,12 +80,9 @@ public class Event {
   }
 
   // internal setting 1 (entity to domain)
-  public Event(Long id, Long eventExtId, Integer sequenceNr,
-      @NotNull String orderId,
-      @NotNull String tenantId,
-      @NotNull EventDimension dimension,
-      @NotNull EventStatus status, @NotNull String useCase,
-      @NotNull LocalDate date1, @NotNull LocalDate date2) {
+  public Event(Long id, Long eventExtId, Integer sequenceNr, @NotNull String orderId,
+      @NotNull String tenantId, @NotNull EventDimension dimension, @NotNull EventStatus status,
+      @NotNull String useCase, @NotNull LocalDate date1, @NotNull LocalDate date2, Long gsn) {
     this.id = id;
     this.eventExtId = eventExtId;
     this.sequenceNr = sequenceNr;
@@ -95,6 +93,7 @@ public class Event {
     this.useCase = useCase;
     this.date1 = date1;
     this.date2 = date2;
+    this.gsn = gsn;
   }
 
   // for external setting

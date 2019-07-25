@@ -36,7 +36,7 @@ public class EventMapper {
   public Event mapEntityToDomain(EventEntity entity) {
     Event event = new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
         entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
-        entity.getUseCase(), entity.getDate1(), entity.getDate2());
+        entity.getUseCase(), entity.getDate1(), entity.getDate2(), entity.getGsn());
     entity.getEventItems().forEach(item -> {
       event.addEventItem2(eventItemMapper.mapEntityToDomain(item));
     });
@@ -46,7 +46,7 @@ public class EventMapper {
   public Event mapEntityToDomain2(EventEntity entity) {
     return new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
         entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
-        entity.getUseCase(), entity.getDate1(), entity.getDate2());
+        entity.getUseCase(), entity.getDate1(), entity.getDate2(), entity.getGsn());
   }
 
   public List<Event> mapEntityToDomainList(List<EventEntity> entityList) {
@@ -61,7 +61,7 @@ public class EventMapper {
       EventEntity entity = eventEntity.get();
       return Optional.of(new Event(entity.getId(), entity.getEventExtId(), entity.getSequenceNr(),
           entity.getOrderId(), entity.getTenantId(), entity.getDimension(), entity.getStatus(),
-          entity.getUseCase(), entity.getDate1(), entity.getDate2()));
+          entity.getUseCase(), entity.getDate1(), entity.getDate2(), entity.getGsn()));
     } else {
       return Optional.empty();
     }

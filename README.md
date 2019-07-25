@@ -116,9 +116,14 @@ https://reflectoring.io/unit-testing-spring-boot/
 https://github.com/eventuate-tram/eventuate-tram-sagas
 https://blog.ippon.tech/boost-the-performance-of-your-spring-data-jpa-application/
 https://blog.restcase.com/5-basic-rest-api-design-guidelines/
+https://restfulapi.net/resource-naming/
 
 -- transaction handling
 https://dzone.com/articles/transaction-synchronization-and-spring-application
+
+-- jpa performance
+https://thoughts-on-java.org/jpa-generate-primary-keys/
+
 
 -- different datasources
 https://www.credera.com/blog/technology-insights/java/gradle-profiles-for-multi-project-spring-boot-applications/
