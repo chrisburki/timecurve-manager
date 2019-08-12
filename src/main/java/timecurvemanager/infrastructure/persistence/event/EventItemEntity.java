@@ -18,8 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 
 import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
 
@@ -54,7 +54,7 @@ public class EventItemEntity {
   private String tenantId;
 
   @NotNull
-  private EventDimension dimension;
+  private BookKeepingDimension dimension;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "timecurve_id", referencedColumnName = "id", nullable = false)
@@ -63,14 +63,16 @@ public class EventItemEntity {
 
   @Column(name = "item_type")
   @NotNull
-  private EventItemType itemType;
+  private BookKeepingItemType itemType;
 
   @Column(name = "item_id")
+  @NotNull
   private Long itemId;
 
   @NotNull
   private LocalDate date1;
 
+  @NotNull
   private LocalDate date2;
 
   @NotNull
@@ -95,8 +97,8 @@ public class EventItemEntity {
   }
 
   public EventItemEntity(Integer rowNr, String tenantId,
-      EventDimension dimension,
-      TimecurveEntity timecurveEntity, EventItemType itemType, Long itemId,
+      BookKeepingDimension dimension,
+      TimecurveEntity timecurveEntity, BookKeepingItemType itemType, Long itemId,
       LocalDate date1, LocalDate date2, BigDecimal value1, BigDecimal value2,
       BigDecimal value3, BigDecimal tover1, BigDecimal tover2, BigDecimal tover3) {
     this.rowNr = rowNr;

@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 
 @Embeddable
 @Getter
@@ -17,7 +17,7 @@ import timecurvemanager.domain.event.EventItemType;
 public class ApprovedBalanceEntityIdent implements Serializable {
 
   @NotNull
-  private EventDimension dimension;
+  private BookKeepingDimension dimension;
 
   @Column(name = "timecurve_id")
   @NotNull
@@ -25,13 +25,13 @@ public class ApprovedBalanceEntityIdent implements Serializable {
 
   @Column(name = "item_type")
   @NotNull
-  private EventItemType itemType;
+  private BookKeepingItemType itemType;
 
   @Column(name = "item_id")
   private Long itemId;
 
-  public ApprovedBalanceEntityIdent(EventDimension dimension, Long timecurveId,
-      EventItemType itemType, Long itemId) {
+  public ApprovedBalanceEntityIdent(BookKeepingDimension dimension, Long timecurveId,
+      BookKeepingItemType itemType, Long itemId) {
     this.dimension = dimension;
     this.timecurveId = timecurveId;
     this.itemType = itemType;

@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import timecurvemanager.domain.balance.ApprovedBalance;
 import timecurvemanager.domain.timecurve.Timecurve;
 
 //@todo: replace primary key id with event, rowNr
@@ -30,14 +29,15 @@ public class EventItem {
   private String tenantId;
 
   @NotNull
-  private EventDimension dimension;
+  private BookKeepingDimension dimension;
 
   @NotNull
   private Timecurve timecurve;
 
   @NotNull
-  private EventItemType itemType;
+  private BookKeepingItemType itemType;
 
+  @NotNull
   private Long itemId;
 
   @NotNull
@@ -68,18 +68,18 @@ public class EventItem {
 
   private Long gsn;
 
-  private ApprovedBalance approvedBalance;
+  private Long approvedBalanceId;
 
   public void setIdToNull() {
     this.id = null;
   }
 
   public EventItem(Event event, Integer rowNr, @NotNull String tenantId,
-      @NotNull EventDimension dimension, @NotNull Timecurve timecurve,
-      @NotNull EventItemType itemType, Long itemId, @NotNull LocalDate date1,
+      @NotNull BookKeepingDimension dimension, @NotNull Timecurve timecurve,
+      @NotNull BookKeepingItemType itemType, @NotNull Long itemId, @NotNull LocalDate date1,
       @NotNull LocalDate date2, @NotNull BigDecimal value1, BigDecimal value2,
       BigDecimal value3, @NotNull BigDecimal tover1, BigDecimal tover2, BigDecimal tover3,
-      Long gsn, ApprovedBalance approvedBalance) {
+      Long gsn, Long approvedBalanceId) {
     this.event = event;
     this.rowNr = rowNr;
     this.tenantId = tenantId;
@@ -96,6 +96,6 @@ public class EventItem {
     this.tover2 = tover2;
     this.tover3 = tover3;
     this.gsn = gsn;
-    this.approvedBalance = approvedBalance;
+    this.approvedBalanceId = approvedBalanceId;
   }
 }

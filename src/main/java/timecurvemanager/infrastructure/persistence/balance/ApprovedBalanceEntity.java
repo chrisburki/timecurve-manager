@@ -31,13 +31,13 @@ public class ApprovedBalanceEntity {
   private ApprovedBalanceEntityIdent approvedBalanceEntityIdent;
 
   /*
-  private EventDimension dimension;
+  private BookKeepingDimension dimension;
 
   @Column(name = "timecurve_id")
   private Long timecurveId;
 
   @Column(name = "item_type")
-  private EventItemType itemType;
+  private BookKeepingItemType itemType;
 
   @Column(name = "item_id")
   private Long itemId;

@@ -10,8 +10,8 @@ import java.util.Optional;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntity;
 import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent;
 import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityRepository;
@@ -21,9 +21,9 @@ public class ApprovedBalanceEntityTest {
 
   private ApprovedBalanceEntityRepository balanceRepository = Mockito
       .mock(ApprovedBalanceEntityRepository.class);
-  private final EventDimension dimension = EventDimension.SUBLEDGER;
+  private final BookKeepingDimension dimension = BookKeepingDimension.SUBLEDGER;
   private final Long timecurveId = 1L;
-  private final EventItemType itemType = EventItemType.BASIC;
+  private final BookKeepingItemType itemType = BookKeepingItemType.BASIC;
   private final Long itemId = 1L;
   private final BigDecimal value1 = new BigDecimal(100);
 

@@ -1,14 +1,14 @@
 package timecurvemanager.infrastructure.persistence.balance;
 
 import org.springframework.stereotype.Component;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 
 @Component
 public class ApprovedBalanceIdentMapper {
 
-  public ApprovedBalanceEntityIdent mapDomainToEntity(EventDimension dimension, Long timecurveId,
-      EventItemType itemType, Long itemId) {
+  public ApprovedBalanceEntityIdent mapDomainToEntity(BookKeepingDimension dimension, Long timecurveId,
+      BookKeepingItemType itemType, Long itemId) {
     return new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId);
   }
 

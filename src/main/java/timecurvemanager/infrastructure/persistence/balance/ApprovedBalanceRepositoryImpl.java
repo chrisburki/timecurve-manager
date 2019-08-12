@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.balance.ApprovedBalance;
 import timecurvemanager.domain.balance.ApprovedBalanceRepository;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 
 @Component
 public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository {
@@ -27,7 +27,7 @@ public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository 
 
   @Override
   public Optional<ApprovedBalance> findByDimensionAndTimecurveIdAndItemTypeAndItemId(
-      EventDimension dimension, Long timecurveId, EventItemType itemType, Long itemId) {
+      BookKeepingDimension dimension, Long timecurveId, BookKeepingItemType itemType, Long itemId) {
     return approvedBalanceMapper.mapOptionalEntityToDomain(approvedBalanceRepository
         .findByApprovedBalanceEntityIdent(
             new ApprovedBalanceEntityIdent(dimension, timecurveId, itemType, itemId)));

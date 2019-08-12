@@ -9,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import timecurvemanager.domain.balance.ApprovedBalance;
 import timecurvemanager.domain.balance.ApprovedBalanceRepository;
+import timecurvemanager.domain.event.BookKeepingDimension;
 import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingItemType;
 
 @Service
 @Slf4j
@@ -29,8 +29,8 @@ public class ApprovedBalanceService {
    * getApprovedBalance
    * ******************
    * return approved balance. Only supported for itemTypes with no items*/
-  public ApprovedBalance getApprovedBalance(EventDimension dimension, Long timecurveId,
-      EventItemType itemType, Long itemId) {
+  public ApprovedBalance getApprovedBalance(BookKeepingDimension dimension, Long timecurveId,
+      BookKeepingItemType itemType, Long itemId) {
     return approvedBalanceRepository
         .findByDimensionAndTimecurveIdAndItemTypeAndItemId(dimension, timecurveId, itemType, itemId)
         .orElseThrow(() -> approvedBalanceNotFound(null, dimension, timecurveId, itemType, itemId));
@@ -47,8 +47,8 @@ public class ApprovedBalanceService {
   }
 
   private ApprovedBalance getBalanceFromEventItem(EventItem eventItem) {
-    if (eventItem.getApprovedBalance() != null) {
-      return getBalance(eventItem.getApprovedBalance().getId());
+    if (eventItem.getApprovedBalanceId() != null) {
+      return getBalance(eventItem.getApprovedBalanceId());
     } else {
       return approvedBalanceRepository
           .findByDimensionAndTimecurveIdAndItemTypeAndItemId(eventItem.getDimension(),
@@ -102,7 +102,6 @@ public class ApprovedBalanceService {
   }
 
   // MAIN
-  //@todo: do not per event but per Gsn and position
   public void addEvent(Event newEvent, Event lastEvent) {
 
     HashMap<String, ApprovedBalance> approvedBalanceMap = new HashMap<>();
@@ -128,6 +127,7 @@ public class ApprovedBalanceService {
         .forEach(e -> {
           addBalance(approvedBalanceMap, e);
         });
+
     approvedBalanceMap.entrySet().stream()
         .filter(a -> a.getValue().getTover1().compareTo(BigDecimal.ZERO) != 0)
         .forEach(f -> updateBalance(f.getValue()));

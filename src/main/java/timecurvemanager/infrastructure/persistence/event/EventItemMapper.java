@@ -3,6 +3,7 @@ package timecurvemanager.infrastructure.persistence.event;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.event.Event;
 import timecurvemanager.domain.event.EventItem;
@@ -10,6 +11,7 @@ import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntityRepo
 import timecurvemanager.infrastructure.persistence.timecurve.TimecurveMapper;
 
 @Component
+@Slf4j
 public class EventItemMapper {
 
   private final TimecurveMapper timecurveMapper;
@@ -30,8 +32,8 @@ public class EventItemMapper {
         item.getValue3(), item.getTover1(), item.getTover2(), item.getTover3());
   }
 
-  public List<EventItemEntity> mapDomainToEntityList(List<EventItem> objectList) {
-    return objectList.stream().map(eventItem -> mapDomainToEntity(eventItem))
+  public List<EventItemEntity> mapDomainToEntityList(List<EventItem> itemList) {
+    return itemList.stream().map(eventItem -> mapDomainToEntity(eventItem))
         .collect(Collectors.toList());
   }
 
@@ -55,10 +57,10 @@ public class EventItemMapper {
   public EventItem mapEntityToDomain(EventItemEntity entity) {
     return new EventItem(entity.getId(), mapEventEntityToDomain(entity.getEventEntity()),
         entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
-        timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()),
+        timecurveMapper.mapEntityToDomain2(entity.getTimecurveEntity()),
         entity.getItemType(), entity.getItemId(), entity.getDate1(), entity.getDate2(),
         entity.getValue1(), entity.getValue2(), entity.getValue3(), entity.getTover1(),
-        entity.getTover2(), entity.getTover3(), entity.getGsn(),null);
+        entity.getTover2(), entity.getTover3(), entity.getGsn(), null);
   }
 
   public List<EventItem> mapEntityToDomainList(List<EventItemEntity> entityList) {

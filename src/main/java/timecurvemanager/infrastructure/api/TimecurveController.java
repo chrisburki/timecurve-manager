@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,14 +54,16 @@ public class TimecurveController {
 
   @GetMapping("/objects/{id}/timecurve")
   ResponseEntity<Timecurve> getTimecurveByObjectAndDateId(
-      @PathVariable("id") String id, @RequestParam(name = "reference-date") LocalDate refDate) {
+      @PathVariable("id") String id,
+      @RequestParam(name = "reference-date") @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
     return new ResponseEntity<>(relationService.getTimecurveByObjectAndDateId(id, refDate),
         HttpStatus.OK);
   }
 
   @PostMapping("/objects/{id}/timecurves")
-  ResponseEntity<Timecurve> createTimecurve(@PathVariable("id") String id, @RequestBody Timecurve timecurve,
-      @RequestParam(name = "reference-date", required = false) LocalDate refDate) {
+  ResponseEntity<Timecurve> createTimecurve(@PathVariable("id") String id,
+      @RequestBody Timecurve timecurve,
+      @RequestParam(name = "reference-date", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
     Timecurve result = relationService.createTimecurve(id, timecurve, refDate);
     return new ResponseEntity<>(result, HttpStatus.OK);
   }

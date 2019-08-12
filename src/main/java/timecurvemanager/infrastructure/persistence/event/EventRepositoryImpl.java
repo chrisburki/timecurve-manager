@@ -4,10 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
+import timecurvemanager.domain.event.BookKeepingDimension;
 import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventRepository;
 
 @Component
@@ -39,7 +38,7 @@ public class EventRepositoryImpl implements EventRepository {
   }
 
   @Override
-  public List<Event> findQueryEvents(EventDimension dimension, LocalDate fromDate1,
+  public List<Event> findQueryEvents(BookKeepingDimension dimension, LocalDate fromDate1,
       LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
     return eventMapper.mapEntityToDomainList(eventEntityRepository
         .findByFilterCriteria(dimension, fromDate1, toDate1, fromDate2, toDate2, useCase));

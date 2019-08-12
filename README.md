@@ -26,12 +26,6 @@ Time curve service is a service to managing balance curves. It provides
 
 ### Time Curve Balances and Turnovers
 
---------------------------
-## Docker local
-docker build -t timecurve-manager .
-docker tag timecurve-manager chrisburki/timecurve-manager
-docker push chrisburki/timecurve-manager:latest
-docker run --name timecurve-manager -p 8090:8080 -d timecurve-manager
 
 --------------------------
 ## GCP
@@ -105,6 +99,36 @@ gcloud builds submit --tag eu.gcr.io/buc-personal-banking/timecurve-manager .
 https://cloud.google.com/sdk/gcloud/reference/components/update
 --update to latest version run in the sdk window: gcloud components update
 --to init: gcloud init
+
+
+--------------------------
+## Docker Local (Integration) with confluentinc Kafka
+docker build -t timecurve-manager .
+
+** create a network "tcmgr-kafka"
+docker network create tcmgr-kafka --driver bridge
+
+** start zookeeper
+docker run -d --name zookeeper --network tcmgr-kafka -e ALLOW_ANONYMOUS_LOGIN=yes -p 2181:2181 bitnami/zookeeper:latest
+
+** start kafka
+docker run -d --name kafka --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e ALLOW_PLAINTEXT_LISTENER=yes -p 9092:9092 bitnami/kafka:latest
+
+** create a topic "tcmgr.events"
+docker run --rm --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-topics.sh --create --topic tcmgr.events --replication-factor 1 --partitions 1 --zookeeper zookeeper:2181
+
+** list all topics
+docker run --rm --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-topics.sh --list --zookeeper zookeeper:2181
+
+** create publisher
+docker run --rm --name kafka-publisher --interactive --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-console-producer.sh --topic tcmgr.events --broker-list kafka:9092
+
+** create consumer
+docker run --rm --name kafka-consumer --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-console-consumer.sh --topic tcmgr.events --from-beginning --bootstrap-server kafka:9092
+
+** create timecurve-manager
+docker run -d --name timecurve-manager --network tcmgr-kafka -p 8081:8080 timecurve-manager:latest
+
 
 --------------------------
 ## Helpers

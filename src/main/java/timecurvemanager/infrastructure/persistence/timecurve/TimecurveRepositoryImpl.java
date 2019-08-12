@@ -3,11 +3,13 @@ package timecurvemanager.infrastructure.persistence.timecurve;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.timecurve.Timecurve;
 import timecurvemanager.domain.timecurve.TimecurveRepository;
 
 @Component
+@Slf4j
 public class TimecurveRepositoryImpl implements TimecurveRepository {
 
   private final TimecurveEntityRepository timecurveEntityRepository;

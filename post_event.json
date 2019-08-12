@@ -1,11 +1,11 @@
 {
     "id": null,
     "eventExtId": 1,
-    "sequenceNr": null,
     "tenantId": "AAA",
+    "orderId": "Order12",
     "dimension": "SUBLEDGER",
     "status": "APPROVED",
-    "useCase": "pay",
+    "useCase": "intpay",
     "date1": "2019-07-09",
     "date2": "2019-07-09",
     "eventItems": [
@@ -32,6 +32,7 @@
             "tover1": 1000.00,
             "tover2": null,
             "tover3": null,
+            "gsn": null,
             "approvedBalance": null
         },
         {
@@ -57,6 +58,7 @@
             "tover1": -1000.00,
             "tover2": null,
             "tover3": null,
+            "gsn": null,
             "approvedBalance": null
         }
     ]

@@ -2,14 +2,17 @@ package timecurvemanager.infrastructure.persistence.event;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.domain.event.EventDimension;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 import timecurvemanager.domain.event.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
-import timecurvemanager.domain.event.EventItemType;
 import timecurvemanager.infrastructure.persistence.timecurve.TimecurveMapper;
 
 @Component
+@Slf4j
 public class EventItemRepositoryImpl implements EventItemRepository {
 
   private final EventItemEntityRepository eventItemEntityRepository;
@@ -32,12 +35,39 @@ public class EventItemRepositoryImpl implements EventItemRepository {
   }
 
   @Override
-  public List<EventItem> findQueryEventItems(EventDimension dimension, Long objectId,
-      EventItemType itemType, Long itemId, LocalDate fromDate1,
+  public List<EventItem> findQueryEventItems(BookKeepingDimension dimension, Long timecurveId,
+      BookKeepingItemType itemType, Long itemId, LocalDate fromDate1,
       LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
     return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository
-        .findQueryEventItems(dimension, objectId, itemType, itemId, fromDate1, toDate1, fromDate2,
+        .findQueryEventItems(dimension, timecurveId, itemType, itemId, fromDate1, toDate1,
+            fromDate2,
             toDate2, useCase));
+  }
+
+  @Override
+  public List<EventItem> findQueryByTimecurveIdAndGsnBetween(Long timecurveId,
+      BookKeepingDimension dimension, BookKeepingItemType itemType, Long itemId, LocalDate maxDate1,
+      LocalDate maxDate2, Long fromGsn, Long toGsn) {
+    return eventItemMapper.mapEntityToDomainList(
+        (eventItemEntityRepository
+            .findByTimecurveEntityAndGsnBetween(timecurveId, dimension, itemType, itemId, maxDate1,
+                maxDate2, fromGsn, toGsn)));
+  }
+
+  @Override
+  public Optional<EventItem> findFirstByTimecurveEntityIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
+      Long timecurveId, BookKeepingDimension dimension, BookKeepingItemType itemType) {
+    return eventItemMapper.mapOptionalEntityToDomain(eventItemEntityRepository
+        .findFirstByTimecurveEntityIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
+            timecurveId,
+            dimension, itemType));
+  }
+
+  @Override
+  public Long findQueryLastGsnByTimecurve(Long timecurveId,
+      BookKeepingDimension dimension, BookKeepingItemType itemType, Long itemId) {
+    return eventItemEntityRepository
+        .findQueryLastGsnByTimecurve(timecurveId, dimension, itemType, itemId);
   }
 
 }

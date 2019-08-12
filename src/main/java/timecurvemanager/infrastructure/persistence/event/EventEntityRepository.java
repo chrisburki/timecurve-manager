@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import timecurvemanager.domain.event.EventDimension;
+import timecurvemanager.domain.event.BookKeepingDimension;
 
 @Repository
 public interface EventEntityRepository extends JpaRepository<EventEntity, Long>,
@@ -24,7 +23,7 @@ public interface EventEntityRepository extends JpaRepository<EventEntity, Long>,
   Optional<EventEntity> findLastByEventExtId(@Param("eventExtId") Long eventExtId);
 
   default List<EventEntity> findByFilterCriteria(
-      EventDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,
+      BookKeepingDimension dimension, LocalDate fromDate1, LocalDate toDate1, LocalDate fromDate2,
       LocalDate toDate2, String useCase
   ) {
     return findAll((root, criteriaQuery, criteriaBuilder) -> {

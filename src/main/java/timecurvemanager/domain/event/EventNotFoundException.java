@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EventNotFoundException extends RuntimeException {
 
   private EventNotFoundException(Long ident, String type) {
-    super("Timecurve Object with " + type + ": " + ident.toString() + " does not exist");
+    super("Event with " + type + ": " + ident.toString() + " does not exist");
   }
 
   public static EventNotFoundException eventNotFound(Long ident,

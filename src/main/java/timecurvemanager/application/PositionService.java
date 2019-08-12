@@ -16,8 +16,6 @@ import timecurvemanager.domain.position.PositionRepository;
 import timecurvemanager.domain.position.PositionValueType;
 import timecurvemanager.domain.timecurve.Timecurve;
 
-//@todo: add testing, testdata for position, timecurve, relations and events
-
 @Service
 @Slf4j
 public class PositionService {

@@ -1,29 +1,34 @@
 dependencies {
-    if (project.hasProperty('environment') && environment=='prod') {
+    if (project.hasProperty('environment') && environment == 'prod') {
         runtimeOnly 'org.postgresql:postgresql'
-    } else if (project.hasProperty('environment') && environment=='dev') {
+    } else if (project.hasProperty('environment') && environment == 'dev') {
+        runtimeOnly 'com.h2database:h2'
+    } else if (project.hasProperty('environment') && environment == 'int') {
         runtimeOnly 'com.h2database:h2'
     } else {
         runtimeOnly 'com.h2database:h2'
     }
 }
 
-def prodProfiles='prod'
-def devProfiles='dev'
-def testProfiles='test'
+def prodProfiles = 'prod'
+def devProfiles = 'dev'
+def testProfiles = 'test'
+def intProfiles = 'int'
 def propertyDrivenProfiles;
 
-if (project.hasProperty('environment') && environment=='prod') {
+if (project.hasProperty('environment') && environment == 'prod') {
     propertyDrivenProfiles = prodProfiles
-} else if (project.hasProperty('environment') && environment=='dev') {
+} else if (project.hasProperty('environment') && environment == 'dev') {
     propertyDrivenProfiles = devProfiles
+} else if (project.hasProperty('environment') && environment == 'int') {
+    propertyDrivenProfiles = intProfiles
 } else {
     propertyDrivenProfiles = testProfiles
 }
 
 bootRun {
     systemProperties = [
-        'spring.profiles.active': propertyDrivenProfiles
+            'spring.profiles.active': propertyDrivenProfiles
     ]
 }
 

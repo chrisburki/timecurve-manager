@@ -28,8 +28,8 @@ public class EventMapper {
     return entity;
   }
 
-  public List<EventEntity> mapDomainToEntityList(List<Event> objectList) {
-    return objectList.stream().map((event) -> mapDomainToEntity(event))
+  public List<EventEntity> mapDomainToEntityList(List<Event> eventList) {
+    return eventList.stream().map((event) -> mapDomainToEntity(event))
         .collect(Collectors.toList());
   }
 

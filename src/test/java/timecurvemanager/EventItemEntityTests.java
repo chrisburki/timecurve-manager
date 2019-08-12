@@ -12,8 +12,8 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.event.EventDimension;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.BookKeepingItemType;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntity;
@@ -41,8 +41,8 @@ public class EventItemEntityTests {
   // Test Data EventItem
   private final Integer rowNr = 1;
   private final String tenantId = "AAA";
-  private final EventDimension dimension = EventDimension.SUBLEDGER;
-  private final EventItemType itemType = EventItemType.BASIC;
+  private final BookKeepingDimension dimension = BookKeepingDimension.SUBLEDGER;
+  private final BookKeepingItemType itemType = BookKeepingItemType.BASIC;
   private final Long itemId = 1L;
   private final LocalDate date1 = LocalDate.now();
   private final LocalDate date2 = LocalDate.now();

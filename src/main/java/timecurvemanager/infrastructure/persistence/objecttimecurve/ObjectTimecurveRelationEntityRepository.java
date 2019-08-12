@@ -20,4 +20,9 @@ public interface ObjectTimecurveRelationEntityRepository extends
       + "and   :refDate between pt.validFrom and pt.validTo")
   Optional<ObjectTimecurveRelationEntity> findByObjectRefDate(
       @Param("objectId") String objectId, @Param("refDate") LocalDate refDate);
+
+  @Query("select pt from ObjectTimecurveRelationEntity pt "
+      + "where pt.timecurveEntity.id = :timecurveId "
+      + "and   :refDate between pt.validFrom and pt.validTo")
+  Optional<ObjectTimecurveRelationEntity> findByTimecurveAndRefDate(@Param("timecurveId") Long timecuveId, @Param("refDate") LocalDate refDate);
 }

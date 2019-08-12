@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.event.EventDimension;
+import timecurvemanager.domain.event.BookKeepingDimension;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventEntityRepository;
@@ -27,7 +27,7 @@ public class EventEntitryTests {
   private final Integer seqNr = 1;
   private final String orderId = "pay_1";
   private final String tenantId = "AAA";
-  private final EventDimension dimension = EventDimension.SUBLEDGER;
+  private final BookKeepingDimension dimension = BookKeepingDimension.SUBLEDGER;
   private final EventStatus status = EventStatus.OPEN;
   private final String useCase = "pay";
   private final LocalDate date1 = LocalDate.now();
@@ -50,10 +50,10 @@ public class EventEntitryTests {
 
     // Test 1
     when(entityRepository
-        .findByFilterCriteria(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase))
+        .findByFilterCriteria(BookKeepingDimension.SUBLEDGER, date1, date2, date1, date2, useCase))
         .thenReturn(entityList);
     List<EventEntity> returnedList4 = entityRepository
-        .findByFilterCriteria(EventDimension.SUBLEDGER, date1, date2, date1, date2, useCase);
+        .findByFilterCriteria(BookKeepingDimension.SUBLEDGER, date1, date2, date1, date2, useCase);
     assertThat(returnedList4.size()).isEqualTo(1);
 
   }

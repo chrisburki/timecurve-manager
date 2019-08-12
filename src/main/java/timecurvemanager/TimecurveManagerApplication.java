@@ -18,10 +18,10 @@ import timecurvemanager.application.GsnService;
 import timecurvemanager.application.ObjectTimecurveRelationService;
 import timecurvemanager.application.PositionService;
 import timecurvemanager.application.TimecurveService;
+import timecurvemanager.domain.event.BookKeepingDimension;
 import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventDimension;
 import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.domain.event.EventItemType;
+import timecurvemanager.domain.event.BookKeepingItemType;
 import timecurvemanager.domain.event.EventStatus;
 import timecurvemanager.domain.position.Position;
 import timecurvemanager.domain.position.PositionValueType;
@@ -53,8 +53,8 @@ public class TimecurveManagerApplication {
     // Test Data EventItem
     final Integer rowNr = 1;
     final String tenantId = "AAA";
-    final EventDimension dimension = EventDimension.SUBLEDGER;
-    final EventItemType itemType = EventItemType.BASIC;
+    final BookKeepingDimension dimension = BookKeepingDimension.SUBLEDGER;
+    final BookKeepingItemType itemType = BookKeepingItemType.BASIC;
     final Long itemId = 1L;
     final LocalDate date1 = LocalDate.now();
     final LocalDate date2 = LocalDate.now();
@@ -111,7 +111,7 @@ public class TimecurveManagerApplication {
           itemType, itemId, date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2,
           tover3, null, null);
       event1.addEventItem(eventItem12);
-      event1 = eventService.addEvent(event1);
+      event1 = eventService.addEvent(event1, null);
       log.info("event id: " + event1.getId() + " eventExtId: " + event1.getEventExtId());
 
       // Event2
@@ -126,7 +126,7 @@ public class TimecurveManagerApplication {
           timecurve2, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2,
           value3, BigDecimal.ONE.add(tover1), tover2, tover3, null, null);
       event2.addEventItem(eventItem22);
-      event2 = eventService.addEvent(event2);
+      event2 = eventService.addEvent(event2, null);
       log.info("event id: " + event2.getId() + " eventExtId: " + event2.getEventExtId());
       //TimeUnit.SECONDS.sleep(1);
       // Event3
@@ -142,7 +142,7 @@ public class TimecurveManagerApplication {
           timecurve2, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2,
           value3, tover1, tover2, tover3, null, null);
       event3.addEventItem(eventItem32);
-      event3 = eventService.addEvent(event3);
+      event3 = eventService.addEvent(event3, null);
       log.info("event id: " + event3.getId() + " eventExtId: " + event3.getEventExtId());
 
       log.info("Active Profile: " + activeProfile);

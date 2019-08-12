@@ -3,12 +3,14 @@ package timecurvemanager.infrastructure.persistence.objecttimecurve;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelation;
 import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelationRepository;
 import timecurvemanager.domain.position.Position;
 
 @Component
+@Slf4j
 public class ObjectTimecurveRelationRepositoryImpl implements
     ObjectTimecurveRelationRepository {
 
@@ -25,6 +27,13 @@ public class ObjectTimecurveRelationRepositoryImpl implements
   @Override
   public List<ObjectTimecurveRelation> findByObjectId(String objectId) {
     return relationMapper.mapEntityToDomainList(relationEntityRepository.findByObjectId(objectId));
+  }
+
+  @Override
+  public Optional<ObjectTimecurveRelation> findByTimecurveAndRefDate(Long timecurveId,
+      LocalDate refDate) {
+    return relationMapper.mapOptionalEntityToDomain(
+        relationEntityRepository.findByTimecurveAndRefDate(timecurveId, refDate));
   }
 
   @Override

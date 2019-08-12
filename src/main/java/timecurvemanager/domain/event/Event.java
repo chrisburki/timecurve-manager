@@ -1,8 +1,6 @@
 package timecurvemanager.domain.event;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -15,8 +13,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class Event {
-
-  //@todo: handle Gsn
 
   private Long id;
 
@@ -33,7 +29,7 @@ public class Event {
   private String tenantId;
 
   @NotNull
-  private EventDimension dimension;
+  private BookKeepingDimension dimension;
 
   @NotNull
   private EventStatus status;
@@ -44,7 +40,6 @@ public class Event {
   @NotNull
   private LocalDate date1;
 
-  @NotNull
   private LocalDate date2;
 
   private Long gsn;
@@ -66,7 +61,7 @@ public class Event {
 
   // internal setting 1 (domain to entity)
   public Event(Long eventExtId, Integer sequenceNr, @NotNull String orderId,
-      @NotNull String tenantId, @NotNull EventDimension dimension, @NotNull EventStatus status,
+      @NotNull String tenantId, @NotNull BookKeepingDimension dimension, @NotNull EventStatus status,
       @NotNull String useCase, @NotNull LocalDate date1, @NotNull LocalDate date2) {
     this.eventExtId = eventExtId;
     this.sequenceNr = sequenceNr;
@@ -81,7 +76,7 @@ public class Event {
 
   // internal setting 1 (entity to domain)
   public Event(Long id, Long eventExtId, Integer sequenceNr, @NotNull String orderId,
-      @NotNull String tenantId, @NotNull EventDimension dimension, @NotNull EventStatus status,
+      @NotNull String tenantId, @NotNull BookKeepingDimension dimension, @NotNull EventStatus status,
       @NotNull String useCase, @NotNull LocalDate date1, @NotNull LocalDate date2, Long gsn) {
     this.id = id;
     this.eventExtId = eventExtId;
@@ -99,7 +94,7 @@ public class Event {
   // for external setting
   public Event(Long eventExtId, @NotNull String tenantId,
       @NotNull String orderId,
-      @NotNull EventDimension dimension,
+      @NotNull BookKeepingDimension dimension,
       @NotNull EventStatus status, @NotNull String useCase,
       @NotNull LocalDate date1, @NotNull LocalDate date2) {
     this.eventExtId = eventExtId;

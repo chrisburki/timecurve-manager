@@ -9,6 +9,8 @@ public interface ObjectTimecurveRelationRepository {
 
   List<ObjectTimecurveRelation> findByObjectId(String objectId);
 
+  Optional<ObjectTimecurveRelation> findByTimecurveAndRefDate(Long timecurveId, LocalDate refDate);
+
   Optional<ObjectTimecurveRelation> findByObjectRefDate(String objectId, LocalDate refDate);
 
   ObjectTimecurveRelation save(ObjectTimecurveRelation objectTimecurveRelation);
