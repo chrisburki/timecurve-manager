@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
@@ -25,11 +26,12 @@ import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
 
 @Entity
 @Table(name = "event_item"
-//    , indexes = {
+    , indexes = {
+        @Index(name = "idx_gsn_timecurve", columnList = "gsn,timecurve_id", unique = false)
 //        @Index(name = "idx_item_event_entity", columnList = "eventEntity", unique = false),
 //    @Index(name = "idx_item_timecurve_date1", columnList = "timecurve_id, date1", unique = false),
 //    @Index(name = "idx_item_timecurve_date2", columnList = "timecurve_id, date2", unique = false)
-//}
+}
 )
 @Getter
 @NoArgsConstructor
@@ -41,6 +43,7 @@ public class EventItemEntity {
   private Long id;
 
   @ManyToOne
+  @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = false)
   @Setter
   @NotNull
   private EventEntity eventEntity;

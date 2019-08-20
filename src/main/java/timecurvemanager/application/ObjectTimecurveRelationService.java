@@ -6,6 +6,7 @@ import static timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelationNot
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -53,10 +54,20 @@ public class ObjectTimecurveRelationService {
    * get Timecurve by Object & Date
    * *******************************
    * */
-  public Timecurve getTimecurveByObjectAndDateId(String objectId, LocalDate refDate) {
+  public Timecurve getTimecurveByObjectIdAndDate(String objectId, LocalDate refDate) {
     ObjectTimecurveRelation relation = relationRepository.findByObjectRefDate(objectId, refDate)
-        .orElseThrow(() -> objectTimecurveRelationNotFound(objectId, refDate));
+        .orElseThrow(() -> objectTimecurveRelationNotFound(objectId, null, refDate));
     return relation.getTimecurve();
+  }
+
+  /*
+   * get Object by Object & Date
+   * *******************************
+   * */
+  public String getObjectByTimecuveIdAndDate(Long timecurveId, LocalDate refDate) {
+    ObjectTimecurveRelation relation = relationRepository.findByTimecurveAndRefDate(timecurveId, refDate)
+        .orElseThrow(() -> objectTimecurveRelationNotFound(null, timecurveId, refDate));
+    return relation.getObjectId();
   }
 
   /*
@@ -83,7 +94,7 @@ public class ObjectTimecurveRelationService {
   // internal: get Object Timecurve Relation
   public ObjectTimecurveRelation getByObjectAndRefDate(String objectId, LocalDate refDate) {
     return relationRepository.findByObjectRefDate(objectId, refDate)
-        .orElseThrow(() -> objectTimecurveRelationNotFound(objectId, refDate));
+        .orElseThrow(() -> objectTimecurveRelationNotFound(objectId, null, refDate));
   }
 
 
@@ -107,7 +118,7 @@ public class ObjectTimecurveRelationService {
     try {
       relationRepository.delete(relation);
     } catch (DataAccessException ex) {
-      throw objectTimecurveRelationNotFound(relation.getObjectId(), relation.getValidFrom());
+      throw objectTimecurveRelationNotFound(relation.getObjectId(), null, relation.getValidFrom());
     }
   }
 }

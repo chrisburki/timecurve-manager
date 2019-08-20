@@ -74,14 +74,14 @@ public class TimecurveManagerApplication {
       position0 = positionService.addPosition(position0);
       Timecurve timecurve0 = new Timecurve(null, tenantId, "pos", position0.getClearingReference(),
           position0.getDoBalanceCheck());
-      timecurve0 = relationService.createTimecurve(position0.getId().toString(), timecurve0, null);
+      timecurve0 = relationService.createTimecurve(position0.getId().toString(), timecurve0, date3);
       // Position 1
       Position position1 = new Position(null, tenantId, "C1", "C1#CHF#MACC",
           "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", true);
       position1 = positionService.addPosition(position1);
       Timecurve timecurve1 = new Timecurve(null, tenantId, "pos", position1.getClearingReference(),
           position1.getDoBalanceCheck());
-      timecurve1 = relationService.createTimecurve(position1.getId().toString(), timecurve1, null);
+      timecurve1 = relationService.createTimecurve(position1.getId().toString(), timecurve1, date3);
 
       // Position 2
       Position position2 = new Position(null, tenantId, "C2", "C2#CHF#MACC",
@@ -89,7 +89,7 @@ public class TimecurveManagerApplication {
       position2 = positionService.addPosition(position2);
       Timecurve timecurve2 = new Timecurve(null, tenantId, "pos", position2.getClearingReference(),
           position2.getDoBalanceCheck());
-      timecurve2 = relationService.createTimecurve(position2.getId().toString(), timecurve2, null);
+      timecurve2 = relationService.createTimecurve(position2.getId().toString(), timecurve2, date3);
 
       // fetch all timecurves
       log.info("Timecurves found with findAll():");

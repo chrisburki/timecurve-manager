@@ -104,6 +104,9 @@ https://cloud.google.com/sdk/gcloud/reference/components/update
 --------------------------
 ## Docker Local (Integration) with confluentinc Kafka
 docker build -t timecurve-manager .
+docker build -t baltov .
+docker pull mongo
+docker build -t payment .
 
 ** create a network "tcmgr-kafka"
 docker network create tcmgr-kafka --driver bridge
@@ -129,6 +132,20 @@ docker run --rm --name kafka-consumer --network tcmgr-kafka -e KAFKA_ZOOKEEPER_C
 ** create timecurve-manager
 docker run -d --name timecurve-manager --network tcmgr-kafka -p 8081:8080 timecurve-manager:latest
 
+** create baltov
+docker run -d --name baltov --network tcmgr-kafka -p 8082:8080 baltov:latest
+
+** start mongo dob
+docker run -d --name mongo-payment --network tcmgr-kafka -p 27000:27017 mongo:latest
+
+** create payment
+docker run -d --name payment --network tcmgr-kafka --link=mongo-payment -p 8083:8080 payment:latest
+
+http://www.littlebigextra.com/how-to-connect-to-spring-boot-rest-service-to-mongo-db-in-docker/
+
+** cleanup
+FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
+FOR /f "tokens=*" %i IN ('docker container ls -a -q') DO docker rm %i
 
 --------------------------
 ## Helpers

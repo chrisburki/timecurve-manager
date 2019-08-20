@@ -1,5 +1,8 @@
-package timecurvemanager.domain.event.publish;
+package timecurvemanager.domain.event.messaging;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,7 +18,7 @@ import timecurvemanager.domain.event.EventStatus;
 @Getter
 @Builder
 @ToString
-public class EventPublish implements Serializable {
+public class EventMessage implements Serializable {
 
   @Setter
   private Long eventExtId;
@@ -45,10 +48,19 @@ public class EventPublish implements Serializable {
   private Long itemId;
 
   @NotNull
+  @JsonFormat(pattern="yyyy-MM-dd")
+  @JsonSerialize(using = LocalDateSerializer.class)
+//  @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate date1;
 
   @NotNull
+  @JsonFormat(pattern="yyyy-MM-dd")
+  @JsonSerialize(using = LocalDateSerializer.class)
+//  @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate date2;
+
+  @NotNull
+  private String objectId;
 
   @NotNull
   @Setter

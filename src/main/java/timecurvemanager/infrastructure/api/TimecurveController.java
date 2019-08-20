@@ -45,6 +45,14 @@ public class TimecurveController {
     return new ResponseEntity<>(timecurveService.getById(id), HttpStatus.OK);
   }
 
+  @GetMapping("/timecurves/{id}/object")
+  ResponseEntity<String> getObjectByTimecurveIdAndDate(
+      @PathVariable("id") Long id,
+      @RequestParam(name = "reference-date") @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
+    return new ResponseEntity<>(relationService.getObjectByTimecuveIdAndDate(id, refDate),
+        HttpStatus.OK);
+  }
+
   @GetMapping("/objects/{id}/timecurves")
   ResponseEntity<List<Timecurve>> getTimecurvesByObjectId(
       @PathVariable("id") String id) {
@@ -53,10 +61,10 @@ public class TimecurveController {
   }
 
   @GetMapping("/objects/{id}/timecurve")
-  ResponseEntity<Timecurve> getTimecurveByObjectAndDateId(
+  ResponseEntity<Timecurve> getTimecurveByObjectIdAndDate(
       @PathVariable("id") String id,
       @RequestParam(name = "reference-date") @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
-    return new ResponseEntity<>(relationService.getTimecurveByObjectAndDateId(id, refDate),
+    return new ResponseEntity<>(relationService.getTimecurveByObjectIdAndDate(id, refDate),
         HttpStatus.OK);
   }
 

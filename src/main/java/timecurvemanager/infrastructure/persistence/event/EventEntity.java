@@ -26,7 +26,7 @@ import timecurvemanager.domain.event.EventStatus;
 
 @Entity
 @Table(name = "event", indexes = {
-    @Index(name = "idx_event_id", columnList = "event_ext_id, sequence_nr", unique = true),
+    @Index(name = "idx_event_id", columnList = "event_ext_id, sequence_nr", unique = true)
 //    @Index(name = "idx_event_date1", columnList = "date1", unique = false),
 //    @Index(name = "idx_event_date2", columnList = "date2", unique = false)
 })

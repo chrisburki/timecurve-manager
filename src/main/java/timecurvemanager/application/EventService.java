@@ -25,7 +25,8 @@ import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.domain.event.EventMessaging;
 import timecurvemanager.domain.event.EventRepository;
 import timecurvemanager.domain.event.EventStatus;
-import timecurvemanager.domain.event.publish.EventPublish;
+import timecurvemanager.domain.event.messaging.EventMessage;
+import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelation;
 
 @Service
 @Slf4j
@@ -40,15 +41,18 @@ public class EventService {
   private final EventRepository eventRepository;
   private final EventItemRepository eventItemRepository;
   private final ApprovedBalanceService approvedBalanceService;
-  private final EventMessaging eventMessaging;
+  private final ObjectTimecurveRelationService objectTimecurveRelationService;
+  private final timecurvemanager.domain.event.EventMessaging eventMessaging;
 
   public EventService(EventRepository eventRepository,
       EventItemRepository eventItemRepository,
       ApprovedBalanceService approvedBalanceService,
+      ObjectTimecurveRelationService objectTimecurveRelationService,
       EventMessaging eventMessaging) {
     this.eventRepository = eventRepository;
     this.eventItemRepository = eventItemRepository;
     this.approvedBalanceService = approvedBalanceService;
+    this.objectTimecurveRelationService = objectTimecurveRelationService;
     this.eventMessaging = eventMessaging;
   }
 
@@ -262,7 +266,8 @@ public class EventService {
   //
   /* generate message to be published (5. part of addEvent) */
   private void publishItems(EventItem item) {
-    EventPublish eventPublish = EventPublish.builder()
+    String objectId = objectTimecurveRelationService.getObjectByTimecuveIdAndDate(item.getTimecurve().getId(),item.getDate1());
+    EventMessage eventMessage = EventMessage.builder()
         .eventExtId(item.getEvent().getEventExtId())
         .eventSequenceNr(item.getEvent().getSequenceNr())
         .orderId(item.getEvent().getOrderId())
@@ -274,6 +279,7 @@ public class EventService {
         .itemId(item.getItemId())
         .date1(item.getDate1())
         .date2(item.getDate2())
+        .objectId(objectId)
         .value1(item.getValue1())
         .value2(item.getValue2())
         .value3(item.getValue3())
@@ -282,7 +288,7 @@ public class EventService {
         .tover3(item.getTover3())
         .status(item.getEvent().getStatus())
         .gsn(item.getGsn()).build();
-    eventMessaging.sendEvent(eventPublish);
+    this.eventMessaging.sendEvent(eventMessage);
   }
 
   private void publishEvent(Event event) {
@@ -328,7 +334,7 @@ public class EventService {
     // 4. add event & items
     event = putEvent(event, lastEvent);
 
-    // 5. publish event -- may replace with outbox table concept
+    // 5. messaging event -- may replace with outbox table concept
     publishEvent(event);
 
     //@todo: implement update async in own service

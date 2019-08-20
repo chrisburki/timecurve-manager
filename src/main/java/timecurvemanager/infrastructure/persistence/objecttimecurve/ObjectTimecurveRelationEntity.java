@@ -19,8 +19,12 @@ import lombok.ToString;
 import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
 
 @Entity
-@Table(name = "object_timecurve_relation", indexes = @Index(name = "idx_object_date",
-    columnList = "object_id, valid_from, valid_to", unique = true))
+@Table(name = "object_timecurve_relation",
+    indexes = {
+        @Index(name = "idx_object_date", columnList = "object_id, valid_from, valid_to", unique = true),
+        @Index(name = "idx_timecurve_date", columnList = "timecurve_id, valid_from, valid_to", unique = true)
+}
+)
 @Getter
 @NoArgsConstructor
 @ToString
@@ -35,6 +39,7 @@ public class ObjectTimecurveRelationEntity {
   private String objectId;
 
   @ManyToOne
+  @JoinColumn(name = "timecurve_id", referencedColumnName = "id", nullable = false)
   @Setter
   @NotNull
   private TimecurveEntity timecurveEntity;
