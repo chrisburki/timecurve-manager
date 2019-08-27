@@ -44,6 +44,10 @@ public class Timecurve {
     this.needBalanceApproval = needBalanceApproval;
   }
 
+  public Boolean needClearing() {
+    return this.clearingReference != null;
+  }
+
   public String validateForNull(Timecurve timecurve)
       throws IllegalArgumentException, IllegalAccessException {
     // Get the attributes of the class

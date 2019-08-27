@@ -3,7 +3,6 @@ package timecurvemanager.infrastructure.persistence.event;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,15 +18,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-
-import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
 
 @Entity
 @Table(name = "event_item"
     , indexes = {
-        @Index(name = "idx_gsn_timecurve", columnList = "gsn,timecurve_id", unique = false)
+    @Index(name = "idx_gsn_timecurve", columnList = "gsn,timecurve_id", unique = false)
 //        @Index(name = "idx_item_event_entity", columnList = "eventEntity", unique = false),
 //    @Index(name = "idx_item_timecurve_date1", columnList = "timecurve_id, date1", unique = false),
 //    @Index(name = "idx_item_timecurve_date2", columnList = "timecurve_id, date2", unique = false)
@@ -59,10 +56,9 @@ public class EventItemEntity {
   @NotNull
   private BookKeepingDimension dimension;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "timecurve_id", referencedColumnName = "id", nullable = false)
+  @Column(name = "timecurve_id")
   @NotNull
-  private TimecurveEntity timecurveEntity;
+  private Long timecurveId;
 
   @Column(name = "item_type")
   @NotNull
@@ -101,13 +97,13 @@ public class EventItemEntity {
 
   public EventItemEntity(Integer rowNr, String tenantId,
       BookKeepingDimension dimension,
-      TimecurveEntity timecurveEntity, BookKeepingItemType itemType, Long itemId,
+      Long timecurveId, BookKeepingItemType itemType, Long itemId,
       LocalDate date1, LocalDate date2, BigDecimal value1, BigDecimal value2,
       BigDecimal value3, BigDecimal tover1, BigDecimal tover2, BigDecimal tover3) {
     this.rowNr = rowNr;
     this.tenantId = tenantId;
     this.dimension = dimension;
-    this.timecurveEntity = timecurveEntity;
+    this.timecurveId = timecurveId;
     this.itemType = itemType;
     this.itemId = itemId;
     this.date1 = date1;

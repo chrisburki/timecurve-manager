@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import timecurvemanager.application.EventItemService;
 import timecurvemanager.application.EventService;
 import timecurvemanager.application.EventTurnoverService;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventItem;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.Event;
+import timecurvemanager.domain.event.model.EventItem;
 import timecurvemanager.domain.event.view.EventTurnover;
 
 @RestController

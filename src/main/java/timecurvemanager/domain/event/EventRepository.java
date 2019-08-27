@@ -3,6 +3,8 @@ package timecurvemanager.domain.event;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.Event;
 
 public interface EventRepository {
 

@@ -12,8 +12,8 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.EventStatus;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventEntityRepository;
 

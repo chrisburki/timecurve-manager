@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import timecurvemanager.domain.balance.ApprovedBalance;
 import timecurvemanager.domain.balance.ApprovedBalanceRepository;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
 
 @Component
 public class ApprovedBalanceRepositoryImpl implements ApprovedBalanceRepository {

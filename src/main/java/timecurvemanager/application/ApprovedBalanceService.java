@@ -9,20 +9,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import timecurvemanager.domain.balance.ApprovedBalance;
 import timecurvemanager.domain.balance.ApprovedBalanceRepository;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.domain.event.BookKeepingItemType;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.Event;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventItem;
 
 @Service
 @Slf4j
 public class ApprovedBalanceService {
 
   private final ApprovedBalanceRepository approvedBalanceRepository;
+  private final TimecurveService timecurveService;
 
   public ApprovedBalanceService(
-      ApprovedBalanceRepository approvedBalanceRepository) {
+      ApprovedBalanceRepository approvedBalanceRepository,
+      TimecurveService timecurveService) {
     this.approvedBalanceRepository = approvedBalanceRepository;
+    this.timecurveService = timecurveService;
   }
 
   /*
@@ -47,22 +50,18 @@ public class ApprovedBalanceService {
   }
 
   private ApprovedBalance getBalanceFromEventItem(EventItem eventItem) {
-    if (eventItem.getApprovedBalanceId() != null) {
-      return getBalance(eventItem.getApprovedBalanceId());
-    } else {
-      return approvedBalanceRepository
-          .findByDimensionAndTimecurveIdAndItemTypeAndItemId(eventItem.getDimension(),
-              eventItem.getTimecurve().getId(), eventItem.getItemType(), eventItem.getItemId())
-          .orElse(new ApprovedBalance(null, eventItem.getDimension(),
-              eventItem.getTimecurve().getId(), eventItem.getItemType(), eventItem.getItemId(),
-              BigDecimal.ZERO, BigDecimal.ZERO));
-    }
+    return approvedBalanceRepository
+        .findByDimensionAndTimecurveIdAndItemTypeAndItemId(eventItem.getDimension(),
+            eventItem.getTimecurveId(), eventItem.getItemType(), eventItem.getItemId())
+        .orElse(new ApprovedBalance(null, eventItem.getDimension(),
+            eventItem.getTimecurveId(), eventItem.getItemType(), eventItem.getItemId(),
+            BigDecimal.ZERO, BigDecimal.ZERO));
   }
 
   private void addBalance(HashMap<String, ApprovedBalance> approvedBalanceMap,
       EventItem eventItem) {
 
-    String key = eventItem.getDimension() + ":" + eventItem.getTimecurve().getId() + ":" + eventItem
+    String key = eventItem.getDimension() + ":" + eventItem.getTimecurveId() + ":" + eventItem
         .getItemType().abbreviation() + ":" + eventItem.getItemId();
 
     ApprovedBalance approvedBalance = approvedBalanceMap.get(key);
@@ -97,7 +96,8 @@ public class ApprovedBalanceService {
       throw balanceSmallerZero(approvedBalance.getValue1(), approvedBalance.getTover1());
     }
     // SAVE UPDATED BALANCE
-    log.info("UPDATE BALANCE: " + approvedBalance.getValue1() + " : " + approvedBalance.getTover1());
+    log.info(
+        "UPDATE BALANCE: " + approvedBalance.getValue1() + " : " + approvedBalance.getTover1());
     approvedBalanceRepository.save(approvedBalance);
   }
 
@@ -112,7 +112,7 @@ public class ApprovedBalanceService {
           // check if check on approved balance is needed (on itemType and on timecurve object)
           .filter(
               item -> item.getItemType().buildApprovedBalance()
-                  && item.getTimecurve().getNeedBalanceApproval())
+                  && timecurveService.getById(item.getTimecurveId()).getNeedBalanceApproval())
           .forEach(e -> {
             addBalance(approvedBalanceMap, e);
           });
@@ -123,7 +123,7 @@ public class ApprovedBalanceService {
         // check if check on approved balance is needed (on itemType and on timecurve object)
         .filter(
             item -> item.getItemType().buildApprovedBalance()
-                && item.getTimecurve().getNeedBalanceApproval())
+                && timecurveService.getById(item.getTimecurveId()).getNeedBalanceApproval())
         .forEach(e -> {
           addBalance(approvedBalanceMap, e);
         });

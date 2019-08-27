@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Optional;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventItem;
 
 public interface EventItemRepository {
 
@@ -17,7 +20,7 @@ public interface EventItemRepository {
       BookKeepingDimension dimension, BookKeepingItemType itemType, Long itemId, LocalDate maxDate1,
       LocalDate maxDate2, Long fromGsn, Long toGsn);
 
-  Optional<EventItem> findFirstByTimecurveEntityIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
+  Optional<EventItem> findFirstByTimecurveIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
       Long timecurveId, BookKeepingDimension dimension, BookKeepingItemType itemType
   );
 

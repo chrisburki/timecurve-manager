@@ -5,28 +5,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntityRepository;
-import timecurvemanager.infrastructure.persistence.timecurve.TimecurveMapper;
+import timecurvemanager.domain.event.model.Event;
+import timecurvemanager.domain.event.model.EventItem;
 
 @Component
 @Slf4j
 public class EventItemMapper {
 
-  private final TimecurveMapper timecurveMapper;
-  private final TimecurveEntityRepository timecurveEntityRepository;
-
-  public EventItemMapper(TimecurveMapper timecurveMapper,
-      TimecurveEntityRepository timecurveEntityRepository) {
-    this.timecurveMapper = timecurveMapper;
-    this.timecurveEntityRepository = timecurveEntityRepository;
-  }
-
   public EventItemEntity mapDomainToEntity(EventItem item) {
     return new EventItemEntity(item.getRowNr(),
         item.getTenantId(), item.getDimension(),
-        timecurveEntityRepository.findById(item.getTimecurve().getId()).get(),
+        item.getTimecurveId(),
         item.getItemType(),
         item.getItemId(), item.getDate1(), item.getDate2(), item.getValue1(), item.getValue2(),
         item.getValue3(), item.getTover1(), item.getTover2(), item.getTover3());
@@ -40,11 +29,10 @@ public class EventItemMapper {
   /* return EventItems given Event*/
   public EventItem mapEntityAndEventToDomain(EventItemEntity entity, Event event) {
     return new EventItem(entity.getId(), event,
-        entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
-        timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()),
+        entity.getRowNr(), entity.getTenantId(), entity.getDimension(), entity.getTimecurveId(),
         entity.getItemType(), entity.getItemId(), entity.getDate1(), entity.getDate2(),
         entity.getValue1(), entity.getValue2(), entity.getValue3(), entity.getTover1(),
-        entity.getTover2(), entity.getTover3(), entity.getGsn(), null);
+        entity.getTover2(), entity.getTover3(), entity.getGsn());
   }
 
 
@@ -56,11 +44,10 @@ public class EventItemMapper {
 
   public EventItem mapEntityToDomain(EventItemEntity entity) {
     return new EventItem(entity.getId(), mapEventEntityToDomain(entity.getEventEntity()),
-        entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
-        timecurveMapper.mapEntityToDomain2(entity.getTimecurveEntity()),
+        entity.getRowNr(), entity.getTenantId(), entity.getDimension(), entity.getTimecurveId(),
         entity.getItemType(), entity.getItemId(), entity.getDate1(), entity.getDate2(),
         entity.getValue1(), entity.getValue2(), entity.getValue3(), entity.getTover1(),
-        entity.getTover2(), entity.getTover3(), entity.getGsn(), null);
+        entity.getTover2(), entity.getTover3(), entity.getGsn());
   }
 
   public List<EventItem> mapEntityToDomainList(List<EventItemEntity> entityList) {
@@ -76,10 +63,9 @@ public class EventItemMapper {
       return Optional
           .of(new EventItem(entity.getId(), mapEventEntityToDomain(entity.getEventEntity()),
               entity.getRowNr(), entity.getTenantId(), entity.getDimension(),
-              timecurveMapper.mapEntityToDomain(entity.getTimecurveEntity()), entity.getItemType(),
-              entity.getItemId(), entity.getDate1(),
+              entity.getTimecurveId(), entity.getItemType(), entity.getItemId(), entity.getDate1(),
               entity.getDate2(), entity.getValue1(), entity.getValue2(), entity.getValue3(),
-              entity.getTover1(), entity.getTover2(), entity.getTover3(), entity.getGsn(), null));
+              entity.getTover1(), entity.getTover2(), entity.getTover3(), entity.getGsn()));
     } else {
       return Optional.empty();
     }

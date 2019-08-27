@@ -1,8 +1,8 @@
 package timecurvemanager.domain.balance;
 
 import java.util.Optional;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
 
 public interface ApprovedBalanceRepository {
 

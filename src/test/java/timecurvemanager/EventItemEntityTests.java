@@ -12,9 +12,9 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.EventStatus;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventStatus;
 import timecurvemanager.infrastructure.persistence.event.EventEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntity;
 import timecurvemanager.infrastructure.persistence.event.EventItemEntityRepository;
@@ -59,7 +59,7 @@ public class EventItemEntityTests {
         status, useCase, date1, date2);
     TimecurveEntity timecurveEntity = new TimecurveEntity(tenantId, name, clearingRef,
         needBalanceApproval);
-    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
+    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity.getId(),
         itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3);
     when(entityRepository.save(any(EventItemEntity.class))).then(returnsFirstArg());
     EventItemEntity savedEntity = entityRepository.save(entity);
@@ -72,7 +72,7 @@ public class EventItemEntityTests {
         status, useCase, date1, date2);
     TimecurveEntity timecurveEntity = new TimecurveEntity(tenantId, name, clearingRef,
         needBalanceApproval);
-    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity,
+    EventItemEntity entity = new EventItemEntity(rowNr, tenantId, dimension, timecurveEntity.getId(),
         itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3);
     List<EventItemEntity> entityList = Arrays.asList(entity);
 

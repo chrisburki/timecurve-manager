@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.EventItem;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.infrastructure.persistence.timecurve.TimecurveMapper;
 
@@ -40,8 +40,7 @@ public class EventItemRepositoryImpl implements EventItemRepository {
       LocalDate toDate1, LocalDate fromDate2, LocalDate toDate2, String useCase) {
     return eventItemMapper.mapEntityToDomainList(eventItemEntityRepository
         .findQueryEventItems(dimension, timecurveId, itemType, itemId, fromDate1, toDate1,
-            fromDate2,
-            toDate2, useCase));
+            fromDate2, toDate2, useCase));
   }
 
   @Override
@@ -55,12 +54,11 @@ public class EventItemRepositoryImpl implements EventItemRepository {
   }
 
   @Override
-  public Optional<EventItem> findFirstByTimecurveEntityIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
+  public Optional<EventItem> findFirstByTimecurveIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
       Long timecurveId, BookKeepingDimension dimension, BookKeepingItemType itemType) {
     return eventItemMapper.mapOptionalEntityToDomain(eventItemEntityRepository
-        .findFirstByTimecurveEntityIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
-            timecurveId,
-            dimension, itemType));
+        .findFirstByTimecurveIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
+            timecurveId, dimension, itemType));
   }
 
   @Override

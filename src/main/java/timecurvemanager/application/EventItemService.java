@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.EventItem;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 
 @Service

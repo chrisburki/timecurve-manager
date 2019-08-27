@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import timecurvemanager.domain.event.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
 
 @Repository
 public interface EventEntityRepository extends JpaRepository<EventEntity, Long>,

@@ -23,7 +23,7 @@ import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
     indexes = {
         @Index(name = "idx_object_date", columnList = "object_id, valid_from, valid_to", unique = true),
         @Index(name = "idx_timecurve_date", columnList = "timecurve_id, valid_from, valid_to", unique = true)
-}
+    }
 )
 @Getter
 @NoArgsConstructor

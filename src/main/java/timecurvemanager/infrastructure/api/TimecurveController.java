@@ -60,20 +60,20 @@ public class TimecurveController {
         new ArrayList<>(relationService.listTimecuves(id)), HttpStatus.OK);
   }
 
+  @PostMapping("/objects/{id}/timecurves")
+  ResponseEntity<Timecurve> createTimecurve(@RequestBody Timecurve timecurve,
+      @PathVariable("id") String id,
+      @RequestParam(name = "reference-date", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
+    return new ResponseEntity<>(relationService.createTimecurve(id, timecurve, refDate),
+        HttpStatus.OK);
+  }
+
   @GetMapping("/objects/{id}/timecurve")
   ResponseEntity<Timecurve> getTimecurveByObjectIdAndDate(
       @PathVariable("id") String id,
       @RequestParam(name = "reference-date") @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
     return new ResponseEntity<>(relationService.getTimecurveByObjectIdAndDate(id, refDate),
         HttpStatus.OK);
-  }
-
-  @PostMapping("/objects/{id}/timecurves")
-  ResponseEntity<Timecurve> createTimecurve(@PathVariable("id") String id,
-      @RequestBody Timecurve timecurve,
-      @RequestParam(name = "reference-date", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate refDate) {
-    Timecurve result = relationService.createTimecurve(id, timecurve, refDate);
-    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
   // readiness probe

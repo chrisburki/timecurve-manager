@@ -65,7 +65,8 @@ public class ObjectTimecurveRelationService {
    * *******************************
    * */
   public String getObjectByTimecuveIdAndDate(Long timecurveId, LocalDate refDate) {
-    ObjectTimecurveRelation relation = relationRepository.findByTimecurveAndRefDate(timecurveId, refDate)
+    ObjectTimecurveRelation relation = relationRepository
+        .findByTimecurveAndRefDate(timecurveId, refDate)
         .orElseThrow(() -> objectTimecurveRelationNotFound(null, timecurveId, refDate));
     return relation.getObjectId();
   }
@@ -78,7 +79,7 @@ public class ObjectTimecurveRelationService {
   public Timecurve createTimecurve(String objectId, Timecurve timecurve, LocalDate refDate) {
 
     ObjectTimecurveRelation relation = new ObjectTimecurveRelation(null, objectId,
-        null, nvl(refDate,LocalDate.now()), maxDate);
+        null, nvl(refDate, LocalDate.now()), maxDate);
     timecurve.addTimecurveRelation(relation);
     timecurve = timecurveService.addTimecurve(timecurve);
 //    try {

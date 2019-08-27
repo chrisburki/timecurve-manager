@@ -36,7 +36,8 @@ public class PositionService {
    * */
   public Collection<Position> listObjects(String containerId) {
     if (containerId == null) {
-    return positionRepository.findAll();} else {
+      return positionRepository.findAll();
+    } else {
       return positionRepository.findByContainerId(containerId);
     }
   }
@@ -70,8 +71,9 @@ public class PositionService {
   }
 
   // build Tag
-  public String getTag(String tenantId, String containerId, PositionValueType valueType, String valueTag) {
-    return tenantId+":"+containerId+":"+valueType.name()+":"+valueTag;
+  public String getTag(String tenantId, String containerId, PositionValueType valueType,
+      String valueTag) {
+    return tenantId + ":" + containerId + ":" + valueType.name() + ":" + valueTag;
 
   }
 

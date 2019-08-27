@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.domain.event.Event;
+import timecurvemanager.domain.event.model.Event;
 
 @Component
 @Slf4j

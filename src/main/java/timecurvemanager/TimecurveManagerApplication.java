@@ -18,11 +18,11 @@ import timecurvemanager.application.GsnService;
 import timecurvemanager.application.ObjectTimecurveRelationService;
 import timecurvemanager.application.PositionService;
 import timecurvemanager.application.TimecurveService;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventItem;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.EventStatus;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.Event;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventItem;
+import timecurvemanager.domain.event.model.EventStatus;
 import timecurvemanager.domain.position.Position;
 import timecurvemanager.domain.position.PositionValueType;
 import timecurvemanager.domain.timecurve.Timecurve;
@@ -101,15 +101,16 @@ public class TimecurveManagerApplication {
       // Event1
       Event event1 = new Event(null, orderId, tenantId, dimension, status, useCase1, date1, date2);
 
-      EventItem eventItem11 = new EventItem(null, rowNr, tenantId, dimension, timecurve1,
-          itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3, null,
-          null);
+      EventItem eventItem11 = new EventItem(null, rowNr, tenantId, dimension, timecurve1.getId(),
+          itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3, null
+      );
 
       event1.addEventItem(eventItem11);
 
-      EventItem eventItem12 = new EventItem(null, rowNr + 1, tenantId, dimension, timecurve0,
+      EventItem eventItem12 = new EventItem(null, rowNr + 1, tenantId, dimension,
+          timecurve0.getId(),
           itemType, itemId, date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2,
-          tover3, null, null);
+          tover3, null);
       event1.addEventItem(eventItem12);
       event1 = eventService.addEvent(event1, null);
       log.info("event id: " + event1.getId() + " eventExtId: " + event1.getEventExtId());
@@ -118,13 +119,13 @@ public class TimecurveManagerApplication {
       Event event2 = new Event(null, orderId, tenantId, dimension, status, useCase2, date3, date4);
 
       EventItem eventItem21 = new EventItem(null, rowNr, tenantId, dimension,
-          timecurve0, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1).negate(),
-          value2, value3, BigDecimal.ONE.add(tover1).negate(), tover2, tover3, null, null);
+          timecurve0.getId(), itemType, itemId, date3, date4, BigDecimal.ONE.add(value1).negate(),
+          value2, value3, BigDecimal.ONE.add(tover1).negate(), tover2, tover3, null);
       event2.addEventItem(eventItem21);
 
       EventItem eventItem22 = new EventItem(null, rowNr + 1, tenantId, dimension,
-          timecurve2, itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2,
-          value3, BigDecimal.ONE.add(tover1), tover2, tover3, null, null);
+          timecurve2.getId(), itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2,
+          value3, BigDecimal.ONE.add(tover1), tover2, tover3, null);
       event2.addEventItem(eventItem22);
       event2 = eventService.addEvent(event2, null);
       log.info("event id: " + event2.getId() + " eventExtId: " + event2.getEventExtId());
@@ -134,13 +135,13 @@ public class TimecurveManagerApplication {
           useCase2, date3, date4);
 
       EventItem eventItem31 = new EventItem(null, rowNr, tenantId, dimension,
-          timecurve0, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1).negate(),
-          value2, value3, tover1.negate(), tover2, tover3, null, null);
+          timecurve0.getId(), itemType, itemId, date3, date4, BigDecimal.TEN.add(value1).negate(),
+          value2, value3, tover1.negate(), tover2, tover3, null);
       event3.addEventItem(eventItem31);
 
       EventItem eventItem32 = new EventItem(null, rowNr + 1, tenantId, dimension,
-          timecurve2, itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2,
-          value3, tover1, tover2, tover3, null, null);
+          timecurve2.getId(), itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2,
+          value3, tover1, tover2, tover3, null);
       event3.addEventItem(eventItem32);
       event3 = eventService.addEvent(event3, null);
       log.info("event id: " + event3.getId() + " eventExtId: " + event3.getEventExtId());

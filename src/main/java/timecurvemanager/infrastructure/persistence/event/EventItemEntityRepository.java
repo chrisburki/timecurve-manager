@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
 
 @Repository
 public interface EventItemEntityRepository extends JpaRepository<EventItemEntity, Long> {
@@ -23,10 +23,10 @@ public interface EventItemEntityRepository extends JpaRepository<EventItemEntity
   @Query("select i "
       + "from  EventItemEntity i JOIN FETCH i.eventEntity e "
       + "where e.dimension = :dimension"
-      + "  and (:timecurveId is null or i.timecurveEntity.id = :timecurveId)"
-      + "  and (:useCase     is null or e.useCase            = :useCase)"
-      + "  and (:itemType    is null or i.itemType           = :itemType)"
-      + "  and (:itemId      is null or i.itemId             = :itemId)"
+      + "  and (:timecurveId is null or i.timecurveId = :timecurveId)"
+      + "  and (:useCase     is null or e.useCase     = :useCase)"
+      + "  and (:itemType    is null or i.itemType    = :itemType)"
+      + "  and (:itemId      is null or i.itemId      = :itemId)"
       + "  and i.date1       between :fromDate1 and :toDate1"
       + "  and i.date2       between :fromDate2 and :toDate2")
   List<EventItemEntity> findQueryEventItems(
@@ -38,8 +38,8 @@ public interface EventItemEntityRepository extends JpaRepository<EventItemEntity
 
   @Query("select i "
       + "from  EventItemEntity i "
-      + "where i.timecurveEntity.id = :timecurveId"
-      + "  and i.dimension          = :dimension"
+      + "where i.timecurveId = :timecurveId"
+      + "  and i.dimension   = :dimension"
       + "  and (:itemType    is null or i.itemType           = :itemType)"
       + "  and (:itemId      is null or i.itemId             = :itemId)"
       + "  and i.date1       <= :maxDate1"
@@ -53,15 +53,15 @@ public interface EventItemEntityRepository extends JpaRepository<EventItemEntity
 
   @Query("select max(i.gsn) "
       + "from   EventItemEntity i "
-      + "where i.timecurveEntity.id = :timecurveId"
-      + "  and i.dimension          = :dimension"
-      + "  and i.itemType           = :itemType"
-      + "  and (:itemId      is null or i.itemId             = :itemId)")
+      + "where i.timecurveId = :timecurveId"
+      + "  and i.dimension   = :dimension"
+      + "  and i.itemType    = :itemType"
+      + "  and (:itemId is null or i.itemId = :itemId)")
   Long findQueryLastGsnByTimecurve(
       @Param("timecurveId") Long timecurveId, @Param("dimension") BookKeepingDimension dimension,
       @Param("itemType") BookKeepingItemType itemType, @Param("itemId") Long itemId);
 
-  Optional<EventItemEntity> findFirstByTimecurveEntityIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
+  Optional<EventItemEntity> findFirstByTimecurveIdAndDimensionAndItemTypeOrderByGsnDescEventEntityIdDesc(
       @Param("timecurveId") Long timecurveId, @Param("dimension") BookKeepingDimension dimension,
       @Param("itemType") BookKeepingItemType itemType);
 

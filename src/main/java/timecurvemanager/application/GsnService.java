@@ -40,7 +40,8 @@ public class GsnService {
     final Long shift = 100000L;
     LocalDateTime currDateTime = LocalDateTime.now();
     return new Gsn(currDateTime.toLocalDate()
-        .getLong(ChronoField.EPOCH_DAY)*shift + currDateTime.getLong(ChronoField.SECOND_OF_DAY), currDateTime);
+        .getLong(ChronoField.EPOCH_DAY) * shift + currDateTime.getLong(ChronoField.SECOND_OF_DAY),
+        currDateTime);
   }
 
   /*

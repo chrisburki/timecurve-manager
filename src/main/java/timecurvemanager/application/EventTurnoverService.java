@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.EventItem;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 import timecurvemanager.domain.event.view.EventTurnover;
 
@@ -29,12 +29,12 @@ public class EventTurnoverService {
   private void convertEventItemToTurnover(HashMap<String, EventTurnover> turnoverMap,
       EventItem item) {
     String key =
-        item.getTenantId() + ":" + item.getDimension() + ":" + item.getTimecurve().getId() + ":"
+        item.getTenantId() + ":" + item.getDimension() + ":" + item.getTimecurveId() + ":"
             + item.getItemType() + ":" + item.getItemId();
     EventTurnover turnover = turnoverMap.get(key);
     if (turnover == null) {
       turnover = new EventTurnover(item.getTenantId(), item.getDimension(),
-          item.getTimecurve().getId(),
+          item.getTimecurveId(),
           item.getItemType(), item.getItemId(), item.getValue1(),
           eventService.nvl(item.getValue2(), BigDecimal.ZERO),
           eventService.nvl(item.getValue3(), BigDecimal.ZERO), item.getGsn());

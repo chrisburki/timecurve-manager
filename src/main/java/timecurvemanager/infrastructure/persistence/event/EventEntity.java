@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.EventStatus;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.EventStatus;
 
 
 @Entity
@@ -87,8 +87,9 @@ public class EventEntity {
         .getLong(ChronoField.SECOND_OF_DAY);
   }
 
-  public EventEntity(Long eventExtId, Integer sequenceNr, String orderId, String tenantId, BookKeepingDimension dimension,
-      EventStatus status, String useCase, LocalDate date1, LocalDate date2) {
+  public EventEntity(Long eventExtId, Integer sequenceNr, String orderId, String tenantId,
+      BookKeepingDimension dimension, EventStatus status, String useCase, LocalDate date1,
+      LocalDate date2) {
     this.eventExtId = eventExtId;
     this.sequenceNr = sequenceNr;
     this.orderId = orderId;

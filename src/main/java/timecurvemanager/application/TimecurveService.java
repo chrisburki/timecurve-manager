@@ -3,6 +3,7 @@ package timecurvemanager.application;
 import static timecurvemanager.domain.timecurve.TimecurveAddException.timecurveAddException;
 import static timecurvemanager.domain.timecurve.TimecurveNotFoundException.timecurveNotFound;
 
+import java.sql.Time;
 import java.util.Collection;
 
 import lombok.extern.slf4j.Slf4j;

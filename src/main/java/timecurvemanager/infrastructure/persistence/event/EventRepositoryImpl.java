@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.Event;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.Event;
 import timecurvemanager.domain.event.EventRepository;
 
 @Component

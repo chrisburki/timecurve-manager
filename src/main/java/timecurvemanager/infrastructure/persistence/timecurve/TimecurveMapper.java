@@ -47,6 +47,7 @@ public class TimecurveMapper {
     return new Timecurve(entity.getId(), entity.getTenantId(),
         entity.getName(), entity.getClearingReference(), entity.getNeedBalanceApproval());
   }
+
   public List<Timecurve> mapEntityToDomainList(List<TimecurveEntity> entityList) {
     return entityList.stream()
         .map((objectEntity) -> mapEntityToDomain2(objectEntity))

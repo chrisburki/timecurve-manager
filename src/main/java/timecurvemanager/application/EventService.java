@@ -1,8 +1,8 @@
 package timecurvemanager.application;
 
-import static timecurvemanager.domain.event.EventClearingNotZeroException.eventClearingNotZero;
-import static timecurvemanager.domain.event.EventItemGsnBiggerApprovedException.EventItemGsnBiggerApproved;
-import static timecurvemanager.domain.event.EventNotFoundException.eventNotFound;
+import static timecurvemanager.domain.event.model.EventClearingNotZeroException.eventClearingNotZero;
+import static timecurvemanager.domain.event.model.EventItemGsnBiggerApprovedException.EventItemGsnBiggerApproved;
+import static timecurvemanager.domain.event.model.EventNotFoundException.eventNotFound;
 
 import java.math.BigDecimal;
 
@@ -16,17 +16,16 @@ import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import timecurvemanager.domain.event.BookKeepingDimension;
-import timecurvemanager.domain.event.BookKeepingItemType;
-import timecurvemanager.domain.event.Event;
-import timecurvemanager.domain.event.EventItem;
+import timecurvemanager.domain.event.model.BookKeepingDimension;
+import timecurvemanager.domain.event.model.BookKeepingItemType;
+import timecurvemanager.domain.event.model.Event;
+import timecurvemanager.domain.event.model.EventItem;
 import timecurvemanager.domain.event.EventItemRepository;
 
 import timecurvemanager.domain.event.EventMessaging;
 import timecurvemanager.domain.event.EventRepository;
-import timecurvemanager.domain.event.EventStatus;
-import timecurvemanager.domain.event.messaging.EventMessage;
-import timecurvemanager.domain.objecttimecurve.ObjectTimecurveRelation;
+import timecurvemanager.domain.event.model.EventStatus;
+import timecurvemanager.domain.event.messaging.BookingDomainEventMessage;
 
 @Service
 @Slf4j
@@ -41,17 +40,20 @@ public class EventService {
   private final EventRepository eventRepository;
   private final EventItemRepository eventItemRepository;
   private final ApprovedBalanceService approvedBalanceService;
+  private final TimecurveService timecurveService;
   private final ObjectTimecurveRelationService objectTimecurveRelationService;
   private final timecurvemanager.domain.event.EventMessaging eventMessaging;
 
   public EventService(EventRepository eventRepository,
       EventItemRepository eventItemRepository,
       ApprovedBalanceService approvedBalanceService,
+      TimecurveService timecurveService,
       ObjectTimecurveRelationService objectTimecurveRelationService,
       EventMessaging eventMessaging) {
     this.eventRepository = eventRepository;
     this.eventItemRepository = eventItemRepository;
     this.approvedBalanceService = approvedBalanceService;
+    this.timecurveService = timecurveService;
     this.objectTimecurveRelationService = objectTimecurveRelationService;
     this.eventMessaging = eventMessaging;
   }
@@ -124,9 +126,11 @@ public class EventService {
     HashMap<String, BigDecimal> clearingMap = new HashMap<>();
     //1. Build Clearing Map
     event.getEventItems().stream()
-        .filter(eventItem -> eventItem.getTimecurve().getClearingReference() != null)
+        .filter(
+            eventItem -> timecurveService.getById(eventItem.getTimecurveId()).needClearing())
         .forEach(eventItem -> {
-          buildClearing(clearingMap, eventItem.getTimecurve().getClearingReference(),
+          buildClearing(clearingMap,
+              timecurveService.getById(eventItem.getTimecurveId()).getClearingReference(),
               eventItem.getValue1());
         });
     // 2. Check Clearing Map for != 0
@@ -174,6 +178,7 @@ public class EventService {
   //
   /* check approved gsn (3. part of addEvent) */
   private class ApprovedToverGsn {
+
     BigDecimal tover;
     Long lastGsn;
     BookKeepingDimension dimension;
@@ -185,7 +190,7 @@ public class EventService {
       EventItem eventItem) {
 
     // update or add tover
-    ApprovedToverGsn approvedToverGsn = approvedBalanceGsnMap.get(eventItem.getTimecurve().getId());
+    ApprovedToverGsn approvedToverGsn = approvedBalanceGsnMap.get(eventItem.getTimecurveId());
     if (approvedToverGsn != null) {
       approvedToverGsn.tover = new BigDecimal(0)
           .add(approvedToverGsn.tover.add(eventItem.getValue1()));
@@ -198,7 +203,7 @@ public class EventService {
     }
 
     // add to hash map
-    approvedBalanceGsnMap.put(eventItem.getTimecurve().getId(), approvedToverGsn);
+    approvedBalanceGsnMap.put(eventItem.getTimecurveId(), approvedToverGsn);
   }
 
   private void checkGsn(Long timecurveId, ApprovedToverGsn approvedToverGsn, Long approvedGsn) {
@@ -229,7 +234,7 @@ public class EventService {
           // check if check on approved balance is needed (on itemType and on timecurve object)
           .filter(
               item -> item.getItemType().buildApprovedBalance()
-                  && item.getTimecurve().getNeedBalanceApproval())
+                  && timecurveService.getById(item.getTimecurveId()).getNeedBalanceApproval())
           .forEach(e -> {
             addApprovedToverAndGsn(approvedToverGsnMap, e);
           });
@@ -240,7 +245,7 @@ public class EventService {
         // check if check on approved balance is needed (on itemType and on timecurve object)
         .filter(
             item -> item.getItemType().buildApprovedBalance()
-                && item.getTimecurve().getNeedBalanceApproval())
+                && timecurveService.getById(item.getTimecurveId()).getNeedBalanceApproval())
         .forEach(e -> {
           addApprovedToverAndGsn(approvedToverGsnMap, e);
         });
@@ -266,15 +271,16 @@ public class EventService {
   //
   /* generate message to be published (5. part of addEvent) */
   private void publishItems(EventItem item) {
-    String objectId = objectTimecurveRelationService.getObjectByTimecuveIdAndDate(item.getTimecurve().getId(),item.getDate1());
-    EventMessage eventMessage = EventMessage.builder()
+    String objectId = objectTimecurveRelationService
+        .getObjectByTimecuveIdAndDate(item.getTimecurveId(), item.getDate1());
+    BookingDomainEventMessage bookingDomainEventMessage = BookingDomainEventMessage.builder()
         .eventExtId(item.getEvent().getEventExtId())
         .eventSequenceNr(item.getEvent().getSequenceNr())
         .orderId(item.getEvent().getOrderId())
         .eventItemRowNr(item.getRowNr())
         .tenantId(item.getTenantId())
         .dimension(item.getDimension())
-        .timecurveId(item.getTimecurve().getId())
+        .timecurveId(item.getTimecurveId())
         .itemType(item.getItemType())
         .itemId(item.getItemId())
         .date1(item.getDate1())
@@ -288,10 +294,10 @@ public class EventService {
         .tover3(item.getTover3())
         .status(item.getEvent().getStatus())
         .gsn(item.getGsn()).build();
-    this.eventMessaging.sendEvent(eventMessage);
+    this.eventMessaging.sendDomainEvent(bookingDomainEventMessage);
   }
 
-  private void publishEvent(Event event) {
+  private void publishDomainEvent(Event event) {
     event.getEventItems().forEach(item -> publishItems(item));
   }
 
@@ -335,9 +341,9 @@ public class EventService {
     event = putEvent(event, lastEvent);
 
     // 5. messaging event -- may replace with outbox table concept
-    publishEvent(event);
+    publishDomainEvent(event);
 
-    //@todo: implement update async in own service
+    //@todo: remove as update in baltov done async via message
     // 6. check approved gsn for relevant timecurves & update balance
     updateBalance(relvUpdate(event), relvUpdate(lastEvent));
 
