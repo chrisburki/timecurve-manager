@@ -19,8 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import timecurvemanager.domain.timecurve.Timecurve;
-import timecurvemanager.domain.timecurve.TimecurveRepository;
+import timecurvemanager.bookkeeping.domain.timecurve.Timecurve;
+import timecurvemanager.bookkeeping.domain.timecurve.TimecurveRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

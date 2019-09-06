@@ -13,19 +13,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import timecurvemanager.application.EventService;
-import timecurvemanager.application.GsnService;
-import timecurvemanager.application.ObjectTimecurveRelationService;
-import timecurvemanager.application.PositionService;
-import timecurvemanager.application.TimecurveService;
-import timecurvemanager.domain.event.model.BookKeepingDimension;
-import timecurvemanager.domain.event.model.Event;
-import timecurvemanager.domain.event.model.BookKeepingItemType;
-import timecurvemanager.domain.event.model.EventItem;
-import timecurvemanager.domain.event.model.EventStatus;
-import timecurvemanager.domain.position.Position;
-import timecurvemanager.domain.position.PositionValueType;
-import timecurvemanager.domain.timecurve.Timecurve;
+import timecurvemanager.bookkeeping.application.BookingService;
+import timecurvemanager.bookkeeping.application.TimecurveService;
+import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingDimension;
+import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingItemType;
+import timecurvemanager.bookkeeping.domain.booking.model.Booking;
+import timecurvemanager.bookkeeping.domain.booking.model.BookingItem;
+import timecurvemanager.bookkeeping.domain.booking.model.BookingStatus;
+import timecurvemanager.bookkeeping.domain.timecurve.Timecurve;
+import timecurvemanager.gsn.application.GsnService;
+import timecurvemanager.position.application.PositionService;
+import timecurvemanager.position.domain.Position;
+import timecurvemanager.position.domain.PositionValueType;
 
 @SpringBootApplication
 @Slf4j
@@ -41,16 +40,16 @@ public class TimecurveManagerApplication {
   private String activeProfile;
 
   @Bean
-  public CommandLineRunner demo(ObjectTimecurveRelationService relationService,
-      TimecurveService timecurveService, EventService eventService,
+  public CommandLineRunner demo(
+      TimecurveService timecurveService, BookingService bookingService,
       PositionService positionService, GsnService gsnService) {
-    // Test Data Event
+    // Test Data Booking
     final String orderId = "pay_1";
-    final EventStatus status = EventStatus.APPROVED;
+    final BookingStatus status = BookingStatus.APPROVED;
     final String useCase1 = "pay";
     final String useCase2 = "xfer";
 
-    // Test Data EventItem
+    // Test Data BookingItem
     final Integer rowNr = 1;
     final String tenantId = "AAA";
     final BookKeepingDimension dimension = BookKeepingDimension.SUBLEDGER;
@@ -72,24 +71,24 @@ public class TimecurveManagerApplication {
       Position position0 = new Position(null, tenantId, "DT", "DT#CHF#INT",
           "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", false);
       position0 = positionService.addPosition(position0);
-      Timecurve timecurve0 = new Timecurve(null, tenantId, "pos", position0.getClearingReference(),
-          position0.getDoBalanceCheck());
-      timecurve0 = relationService.createTimecurve(position0.getId().toString(), timecurve0, date3);
+      Timecurve timecurve0 = timecurveService
+          .createTimecurve(position0.getId().toString(), position0.getTenantId(), "pos",
+              position0.getClearingReference(), position0.getNeedBalanceApproval(), date3);
       // Position 1
       Position position1 = new Position(null, tenantId, "C1", "C1#CHF#MACC",
           "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", true);
       position1 = positionService.addPosition(position1);
-      Timecurve timecurve1 = new Timecurve(null, tenantId, "pos", position1.getClearingReference(),
-          position1.getDoBalanceCheck());
-      timecurve1 = relationService.createTimecurve(position1.getId().toString(), timecurve1, date3);
+      Timecurve timecurve1 = timecurveService
+          .createTimecurve(position1.getId().toString(), position1.getTenantId(), "pos",
+              position1.getClearingReference(), position1.getNeedBalanceApproval(), date3);
 
       // Position 2
       Position position2 = new Position(null, tenantId, "C2", "C2#CHF#MACC",
           "CHF Money Account for Container 2", PositionValueType.CURRENCY, "CHF", true);
       position2 = positionService.addPosition(position2);
-      Timecurve timecurve2 = new Timecurve(null, tenantId, "pos", position2.getClearingReference(),
-          position2.getDoBalanceCheck());
-      timecurve2 = relationService.createTimecurve(position2.getId().toString(), timecurve2, date3);
+      Timecurve timecurve2 = timecurveService
+          .createTimecurve(position2.getId().toString(), position2.getTenantId(), "pos",
+              position2.getClearingReference(), position2.getNeedBalanceApproval(), date3);
 
       // fetch all timecurves
       log.info("Timecurves found with findAll():");
@@ -98,53 +97,56 @@ public class TimecurveManagerApplication {
         log.info(timecurve.toString());
       }
 
-      // Event1
-      Event event1 = new Event(null, orderId, tenantId, dimension, status, useCase1, date1, date2);
+      // Booking1
+      Booking booking1 = new Booking(null, orderId, tenantId, dimension, status, useCase1, date1,
+          date2);
 
-      EventItem eventItem11 = new EventItem(null, rowNr, tenantId, dimension, timecurve1.getId(),
-          itemType, itemId, date1, date2, value1, value2, value3, tover1, tover2, tover3, null
+      BookingItem bookingItem11 = new BookingItem(rowNr, timecurve1.getId(),
+          itemType, itemId, value1, value2, value3, tover1, tover2, tover3, null
       );
 
-      event1.addEventItem(eventItem11);
+      booking1.addBookingItem(bookingItem11);
 
-      EventItem eventItem12 = new EventItem(null, rowNr + 1, tenantId, dimension,
+      BookingItem bookingItem12 = new BookingItem(rowNr + 1,
           timecurve0.getId(),
-          itemType, itemId, date1, date2, value1.negate(), value2, value3, tover1.negate(), tover2,
+          itemType, itemId, value1.negate(), value2, value3, tover1.negate(), tover2,
           tover3, null);
-      event1.addEventItem(eventItem12);
-      event1 = eventService.addEvent(event1, null);
-      log.info("event id: " + event1.getId() + " eventExtId: " + event1.getEventExtId());
+      booking1.addBookingItem(bookingItem12);
+      booking1 = bookingService.addBooking(booking1, null);
+      log.info("booking id: " + booking1.getId() + " bookingExtId: " + booking1.getBookingExtId());
 
-      // Event2
-      Event event2 = new Event(null, orderId, tenantId, dimension, status, useCase2, date3, date4);
+      // Booking2
+      Booking booking2 = new Booking(null, orderId, tenantId, dimension, status, useCase2, date3,
+          date4);
 
-      EventItem eventItem21 = new EventItem(null, rowNr, tenantId, dimension,
-          timecurve0.getId(), itemType, itemId, date3, date4, BigDecimal.ONE.add(value1).negate(),
+      BookingItem bookingItem21 = new BookingItem(rowNr,
+          timecurve0.getId(), itemType, itemId, BigDecimal.ONE.add(value1).negate(),
           value2, value3, BigDecimal.ONE.add(tover1).negate(), tover2, tover3, null);
-      event2.addEventItem(eventItem21);
+      booking2.addBookingItem(bookingItem21);
 
-      EventItem eventItem22 = new EventItem(null, rowNr + 1, tenantId, dimension,
-          timecurve2.getId(), itemType, itemId, date3, date4, BigDecimal.ONE.add(value1), value2,
+      BookingItem bookingItem22 = new BookingItem(rowNr + 1,
+          timecurve2.getId(), itemType, itemId, BigDecimal.ONE.add(value1), value2,
           value3, BigDecimal.ONE.add(tover1), tover2, tover3, null);
-      event2.addEventItem(eventItem22);
-      event2 = eventService.addEvent(event2, null);
-      log.info("event id: " + event2.getId() + " eventExtId: " + event2.getEventExtId());
+      booking2.addBookingItem(bookingItem22);
+      booking2 = bookingService.addBooking(booking2, null);
+      log.info("booking id: " + booking2.getId() + " bookingExtId: " + booking2.getBookingExtId());
       //TimeUnit.SECONDS.sleep(1);
-      // Event3
-      Event event3 = new Event(event2.getEventExtId(), orderId, tenantId, dimension, status,
+      // Booking3
+      Booking booking3 = new Booking(booking2.getBookingExtId(), orderId, tenantId, dimension,
+          status,
           useCase2, date3, date4);
 
-      EventItem eventItem31 = new EventItem(null, rowNr, tenantId, dimension,
-          timecurve0.getId(), itemType, itemId, date3, date4, BigDecimal.TEN.add(value1).negate(),
+      BookingItem bookingItem31 = new BookingItem(rowNr,
+          timecurve0.getId(), itemType, itemId, BigDecimal.TEN.add(value1).negate(),
           value2, value3, tover1.negate(), tover2, tover3, null);
-      event3.addEventItem(eventItem31);
+      booking3.addBookingItem(bookingItem31);
 
-      EventItem eventItem32 = new EventItem(null, rowNr + 1, tenantId, dimension,
-          timecurve2.getId(), itemType, itemId, date3, date4, BigDecimal.TEN.add(value1), value2,
+      BookingItem bookingItem32 = new BookingItem(rowNr + 1,
+          timecurve2.getId(), itemType, itemId, BigDecimal.TEN.add(value1), value2,
           value3, tover1, tover2, tover3, null);
-      event3.addEventItem(eventItem32);
-      event3 = eventService.addEvent(event3, null);
-      log.info("event id: " + event3.getId() + " eventExtId: " + event3.getEventExtId());
+      booking3.addBookingItem(bookingItem32);
+      booking3 = bookingService.addBooking(booking3, null);
+      log.info("booking id: " + booking3.getId() + " bookingExtId: " + booking3.getBookingExtId());
 
       log.info("Active Profile: " + activeProfile);
       log.info("GSN: " + LocalDateTime.now()

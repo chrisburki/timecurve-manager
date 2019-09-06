@@ -11,8 +11,8 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntity;
-import timecurvemanager.infrastructure.persistence.timecurve.TimecurveEntityRepository;
+import timecurvemanager.bookkeeping.infrastructure.persistence.timecurve.TimecurveEntity;
+import timecurvemanager.bookkeeping.infrastructure.persistence.timecurve.TimecurveEntityRepository;
 
 @DataJpaTest
 public class TimecurveEntityTests {

@@ -117,23 +117,25 @@ docker run -d --name zookeeper --network tcmgr-kafka -e ALLOW_ANONYMOUS_LOGIN=ye
 ** start kafka
 docker run -d --name kafka --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e ALLOW_PLAINTEXT_LISTENER=yes -p 9092:9092 bitnami/kafka:latest
 
-** create a topic "domain-event-booking"
-docker run --rm --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-topics.sh --create --topic domain-event-booking --replication-factor 1 --partitions 1 --zookeeper zookeeper:2181
+** create a topic "domain-booking-booking"
+docker run --rm --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-topics.sh --create --topic domain-booking-booking --replication-factor 1 --partitions 1 --zookeeper zookeeper:2181
 
 ** list all topics
 docker run --rm --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-topics.sh --list --zookeeper zookeeper:2181
 
 ** create publisher
-docker run --rm --name kafka-publisher --interactive --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-console-producer.sh --topic domain-event-booking --broker-list kafka:9092
+docker run --rm --name kafka-publisher --interactive --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-console-producer.sh --topic domain-booking-booking --broker-list kafka:9092
 
 ** create consumer
-docker run --rm --name kafka-consumer --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-console-consumer.sh --topic domain-event-booking --from-beginning --bootstrap-server kafka:9092
+docker run --rm --name kafka-consumer --network tcmgr-kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 bitnami/kafka:latest kafka-console-consumer.sh --topic domain-booking-booking --from-beginning --bootstrap-server kafka:9092
 
 ** create timecurve-manager
 docker run -d --name timecurve-manager --network tcmgr-kafka -p 8081:8080 timecurve-manager:latest
+docker run --name timecurve-manager --network tcmgr-kafka -p 8081:8080 timecurve-manager:latest
 
 ** create baltov
 docker run -d --name baltov --network tcmgr-kafka -p 8082:8080 baltov:latest
+docker run --name baltov --network tcmgr-kafka -p 8082:8080 baltov:latest
 
 ** start mongo dob
 docker run -d --name mongo-payment --network tcmgr-kafka -p 27000:27017 mongo:latest

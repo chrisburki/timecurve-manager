@@ -10,11 +10,11 @@ import java.util.Optional;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import timecurvemanager.domain.event.model.BookKeepingDimension;
-import timecurvemanager.domain.event.model.BookKeepingItemType;
-import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntity;
-import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityIdent;
-import timecurvemanager.infrastructure.persistence.balance.ApprovedBalanceEntityRepository;
+import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingDimension;
+import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingItemType;
+import timecurvemanager.bookkeeping.infrastructure.persistence.balance.ApprovedBalanceEntity;
+import timecurvemanager.bookkeeping.infrastructure.persistence.balance.ApprovedBalanceEntityIdent;
+import timecurvemanager.bookkeeping.infrastructure.persistence.balance.ApprovedBalanceEntityRepository;
 
 @DataJpaTest
 public class ApprovedBalanceEntityTest {
