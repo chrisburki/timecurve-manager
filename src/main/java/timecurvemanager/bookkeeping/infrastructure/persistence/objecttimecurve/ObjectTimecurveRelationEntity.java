@@ -17,7 +17,6 @@ import lombok.Setter;
 import lombok.ToString;
 import timecurvemanager.bookkeeping.infrastructure.persistence.timecurve.TimecurveEntity;
 
-//@todo:check indexes
 @Entity
 @Table(name = "object_timecurve_relation",
     indexes = {

@@ -26,9 +26,8 @@ import timecurvemanager.bookkeeping.domain.booking.model.BookingStatus;
 
 @Entity
 @Table(name = "booking", indexes = {
-    @Index(name = "idx_booking_id", columnList = "booking_ext_id, sequence_nr", unique = true)
-//    @Index(name = "idx_booking_date1", columnList = "date1", unique = false),
-//    @Index(name = "idx_booking_date2", columnList = "date2", unique = false)
+    @Index(name = "idx_booking_id", columnList = "booking_ext_id, sequence_nr", unique = true),
+    @Index(name = "idx_gsn", columnList = "gsn", unique = false),
 })
 @Getter
 @NoArgsConstructor

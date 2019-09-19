@@ -31,8 +31,8 @@ public class Timecurve {
   private List<ObjectTimecurveRelation> timecurveRelations = new ArrayList<>();
 
   public void addTimecurveRelation(ObjectTimecurveRelation relation) {
-    this.timecurveRelations.add(relation);
     relation.setTimecurve(this);
+    this.timecurveRelations.add(relation);
   }
 
   public Timecurve(Long id, String tenantId, String name, String clearingReference,

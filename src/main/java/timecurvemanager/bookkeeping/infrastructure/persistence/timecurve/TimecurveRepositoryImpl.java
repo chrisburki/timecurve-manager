@@ -1,5 +1,6 @@
 package timecurvemanager.bookkeeping.infrastructure.persistence.timecurve;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,13 @@ public class TimecurveRepositoryImpl implements TimecurveRepository {
   public List<Timecurve> findByName(String name) {
     return timecurveMapper
         .mapEntityToDomainList(timecurveEntityRepository.findByName(name));
+  }
+
+  @Override
+  public Optional<Timecurve> findByObjectIdAndRefDate(String objectId, LocalDate refDate) {
+    return timecurveMapper
+        .mapOptionalEntityToDomain(
+            timecurveEntityRepository.findByObjectIdAndRefDate(objectId, refDate));
   }
 
   @Override

@@ -25,7 +25,6 @@ public class BookingCommand extends BookingMessage implements Serializable {
   @ToString
   public class BookingItemCommandMessage extends BookingMessage.BookingItemMessage implements
       Serializable {
-
     public BookingItemCommandMessage(@NotNull Integer rowNr,
         @NotNull String objectId, @NotNull BookKeepingItemType itemType, @NotNull Long itemId,
         @NotNull BigDecimal value1, BigDecimal value2, BigDecimal value3,

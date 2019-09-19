@@ -1,5 +1,6 @@
 package timecurvemanager.position.domain;
 
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,10 +12,10 @@ public class Position {
 
   private Long id;
 
-  // @NotNull
+  @NotNull
   private String tenantId;
 
-  // @NotNull
+  @NotNull
   private String containerId;
 
   // @NotNull
@@ -23,10 +24,10 @@ public class Position {
   // @NotNull
   private String name;
 
-  // @NotNull
+  @NotNull
   private PositionValueType valueType;
 
-  // @NotNull
+  @NotNull
   private String valueTag;
 
   // @NotNull

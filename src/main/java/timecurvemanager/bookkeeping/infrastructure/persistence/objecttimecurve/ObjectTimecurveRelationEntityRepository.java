@@ -12,17 +12,18 @@ import org.springframework.stereotype.Repository;
 public interface ObjectTimecurveRelationEntityRepository extends
     JpaRepository<ObjectTimecurveRelationEntity, Long> {
 
-  List<ObjectTimecurveRelationEntity> findByObjectId(String objectId);
+  List<ObjectTimecurveRelationEntity> findByObjectIdOrderByValidFromAsc(String objectId);
 
   @Query("select pt from ObjectTimecurveRelationEntity pt "
       + "where pt.objectId = :objectId "
       + "and   :refDate between pt.validFrom and pt.validTo")
-  Optional<ObjectTimecurveRelationEntity> findByObjectRefDate(
+  Optional<ObjectTimecurveRelationEntity> findByObjectIdAndRefDate(
       @Param("objectId") String objectId, @Param("refDate") LocalDate refDate);
 
   @Query("select pt from ObjectTimecurveRelationEntity pt "
       + "where pt.timecurveEntity.id = :timecurveId "
       + "and   :refDate between pt.validFrom and pt.validTo")
-  Optional<ObjectTimecurveRelationEntity> findByTimecurveAndRefDate(
+  Optional<ObjectTimecurveRelationEntity> findByTimecurveIdAndRefDate(
       @Param("timecurveId") Long timecuveId, @Param("refDate") LocalDate refDate);
+
 }

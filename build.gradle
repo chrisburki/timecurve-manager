@@ -1,19 +1,26 @@
-buildscript {
-    ext {
-        springBootVersion = '2.1.5.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
+//buildscript {
+//    ext {
+//        springBootVersion = '2.1.8.RELEASE'
+//    }
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//    }
+//}
+//apply plugin: 'java'
+//apply plugin: 'idea'
+//apply plugin: 'org.springframework.boot'
+//apply plugin: 'io.spring.dependency-management'
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+
+plugins {
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'idea'
+}
 
 bootJar {
     baseName = 'timecurve-manager'
@@ -51,6 +58,6 @@ dependencies {
 }
 
 
-apply from: rootProject.file('environment-gradle/profiles.gradle');
+apply from: rootProject.file('environment-gradle/profiles.gradle')
 
 //gradlew clean build dependencies --configuration runtimeOnly

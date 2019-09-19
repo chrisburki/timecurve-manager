@@ -22,6 +22,7 @@ import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand.BookingItemCommandMessage;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingDomainEvent;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingExternalEvent;
+import timecurvemanager.bookkeeping.domain.booking.api.BookingMessage;
 import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingDimension;
 import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingItemType;
 import timecurvemanager.bookkeeping.domain.booking.model.Booking;
@@ -386,9 +387,9 @@ public class BookingService {
   // Command
   //
 
-  private void addBookingItems(Booking booking, BookingCommand.BookingItemCommandMessage item) {
+  private void addBookingItems(Booking booking, BookingMessage.BookingItemMessage item) {
     Timecurve timecurve = timecurveService
-        .getTimecurveByObjectIdAndDate(item.getObjectId(), booking.getDate1());
+        .addTimecurve(item.getObjectId(), booking.getDate1());
     BookingItem bookingItem = BookingItem.builder()
         .rowNr(item.getRowNr())
         .timecurveId(timecurve.getId())
@@ -422,7 +423,7 @@ public class BookingService {
         bookingCommand.getDate1(),
         bookingCommand.getDate2());
     bookingCommand.getBookingItems().forEach(bookingItemMessage -> addBookingItems(booking,
-        (BookingItemCommandMessage) bookingItemMessage));
+        bookingItemMessage));
     Booking newBooking = addBooking(booking, bookingCommand.getGsn());
     if (sendReply) {
       return BookingExternalEvent.builder()

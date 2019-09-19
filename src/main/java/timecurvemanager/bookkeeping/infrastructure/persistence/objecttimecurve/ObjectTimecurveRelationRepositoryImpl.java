@@ -24,29 +24,23 @@ public class ObjectTimecurveRelationRepositoryImpl implements
   }
 
   @Override
-  public List<ObjectTimecurveRelation> findByObjectId(String objectId) {
-    return relationMapper.mapEntityToDomainList(relationEntityRepository.findByObjectId(objectId));
+  public List<ObjectTimecurveRelation> findByObjectIdOrderByValidFromAsc(String objectId) {
+    return relationMapper.mapEntityToDomainList(relationEntityRepository.findByObjectIdOrderByValidFromAsc(objectId));
   }
 
   @Override
-  public Optional<ObjectTimecurveRelation> findByTimecurveAndRefDate(Long timecurveId,
+  public Optional<ObjectTimecurveRelation> findByTimecurveIdAndRefDate(Long timecurveId,
       LocalDate refDate) {
     return relationMapper.mapOptionalEntityToDomain(
-        relationEntityRepository.findByTimecurveAndRefDate(timecurveId, refDate));
+        relationEntityRepository.findByTimecurveIdAndRefDate(timecurveId, refDate));
   }
 
   @Override
-  public Optional<ObjectTimecurveRelation> findByObjectRefDate(String objectId,
+  public Optional<ObjectTimecurveRelation> findByObjectIdAndRefDate(String objectId,
       LocalDate refDate) {
     return relationMapper
         .mapOptionalEntityToDomain(
-            relationEntityRepository.findByObjectRefDate(objectId, refDate));
-  }
-
-  @Override
-  public ObjectTimecurveRelation save(ObjectTimecurveRelation objectTimecurveRelation) {
-    return relationMapper.mapEntityToDomain(
-        relationEntityRepository.save(relationMapper.mapDomainToEntity(objectTimecurveRelation)));
+            relationEntityRepository.findByObjectIdAndRefDate(objectId, refDate));
   }
 
   @Override

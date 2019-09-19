@@ -30,7 +30,7 @@ public class BookingMessagingIntImpl implements BookingMessaging {
   private String domainEventBookingTopic;
 
   @Value(value = "${spring.kafka.topic.reply-booking}")
-  private String ReplyBookingTopic;
+  private String replyBookingTopic;
 
   public BookingMessagingIntImpl(
       KafkaTemplate<String, BookingDomainEvent> kafkaTemplate,
@@ -72,7 +72,7 @@ public class BookingMessagingIntImpl implements BookingMessaging {
     log.info("Publish Int Booking External Event");
     Message<BookingExternalEvent> message = MessageBuilder
         .withPayload(event)
-        .setHeader(KafkaHeaders.TOPIC, domainEventBookingTopic)
+        .setHeader(KafkaHeaders.TOPIC, replyBookingTopic)
         .build();
     kafkaTemplate.send(message);
   }

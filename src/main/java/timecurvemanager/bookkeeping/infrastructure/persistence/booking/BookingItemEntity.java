@@ -22,13 +22,13 @@ import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingDimension;
 import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingItemType;
 
 @Entity
-@Table(name = "booking_item"
-    , indexes = {
-    @Index(name = "idx_gsn_timecurve", columnList = "gsn,timecurve_id", unique = false)
-//        @Index(name = "idx_item_booking_entity", columnList = "bookingEntity", unique = false),
+@Table(name = "booking_item",
+    indexes = {
+        @Index(name = "idx_gsn_timecurve", columnList = "gsn,timecurve_id", unique = false),
+        @Index(name = "idx_item_booking", columnList = "booking_id", unique = false),
 //    @Index(name = "idx_item_timecurve_date1", columnList = "timecurve_id, date1", unique = false),
 //    @Index(name = "idx_item_timecurve_date2", columnList = "timecurve_id, date2", unique = false)
-}
+    }
 )
 @Getter
 @NoArgsConstructor

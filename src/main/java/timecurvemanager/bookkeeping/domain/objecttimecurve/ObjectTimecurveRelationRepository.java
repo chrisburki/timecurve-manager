@@ -6,13 +6,13 @@ import java.util.Optional;
 
 public interface ObjectTimecurveRelationRepository {
 
-  List<ObjectTimecurveRelation> findByObjectId(String objectId);
+  List<ObjectTimecurveRelation> findByObjectIdOrderByValidFromAsc(String objectId);
 
-  Optional<ObjectTimecurveRelation> findByTimecurveAndRefDate(Long timecurveId, LocalDate refDate);
+  Optional<ObjectTimecurveRelation> findByTimecurveIdAndRefDate(Long timecurveId, LocalDate refDate);
 
-  Optional<ObjectTimecurveRelation> findByObjectRefDate(String objectId, LocalDate refDate);
+  Optional<ObjectTimecurveRelation> findByObjectIdAndRefDate(String objectId, LocalDate refDate);
 
-  ObjectTimecurveRelation save(ObjectTimecurveRelation objectTimecurveRelation);
+//  ObjectTimecurveRelation save(ObjectTimecurveRelation objectTimecurveRelation);
 
   void delete(ObjectTimecurveRelation relation);
 }

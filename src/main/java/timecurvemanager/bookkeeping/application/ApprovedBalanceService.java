@@ -75,7 +75,7 @@ public class ApprovedBalanceService {
     BigDecimal newTover = new BigDecimal(0)
         .add(approvedBalance.getTover1().add(bookingItem.getValue1()));
 
-    log.info("NEW BAL: " + newValue + " NEW TOVER: " + newTover);
+    log.debug("NEW BAL: " + newValue + " NEW TOVER: " + newTover);
     // CHECKS
     // check if evenItem balance is equal to getted balance
 //    if (!(eventItem.getApprovedBalance() != null
@@ -96,7 +96,7 @@ public class ApprovedBalanceService {
       throw balanceSmallerZero(approvedBalance.getValue1(), approvedBalance.getTover1());
     }
     // SAVE UPDATED BALANCE
-    log.info(
+    log.debug(
         "UPDATE BALANCE: " + approvedBalance.getValue1() + " : " + approvedBalance.getTover1());
     approvedBalanceRepository.save(approvedBalance);
   }
