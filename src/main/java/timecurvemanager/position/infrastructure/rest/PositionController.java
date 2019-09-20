@@ -48,8 +48,8 @@ public class PositionController {
 
   @GetMapping("/positions/{id}")
   ResponseEntity<Position> getObjectById(
-      @PathVariable("id") Long id) {
-    return new ResponseEntity<>(positionService.getById(id), HttpStatus.OK);
+      @PathVariable("id") String id) {
+    return new ResponseEntity<>(positionService.getPosition(id), HttpStatus.OK);
   }
 
   @PostMapping("/positions")

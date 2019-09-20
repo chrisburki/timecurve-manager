@@ -40,6 +40,24 @@ public class PositionService {
     }
   }
 
+  /*
+   * searchPosition
+   * **************
+   */
+  // get Position By Id
+  private Position getById(Long id) {
+    return positionRepository.findById(id)
+        .orElseThrow(() -> positionNotFound(id.toString(), primaryKey));
+
+  }
+
+  // get Position By Tag
+  private Position getByTag(String tag) {
+    return positionRepository.findByTag(tag)
+        .orElseThrow(() -> positionNotFound(tag, typeTag));
+
+  }
+
   public Position getPosition(String anyIdentifier) {
     try {
       Long l = Long.parseLong(anyIdentifier);
@@ -47,25 +65,6 @@ public class PositionService {
     } catch (NumberFormatException | NullPointerException nfe) {
       return getByTag(anyIdentifier);
     }
-  }
-
-  /*
-   * searchPosition
-   * **************
-   */
-
-  // get Position By Id
-  public Position getById(Long id) {
-    return positionRepository.findById(id)
-        .orElseThrow(() -> positionNotFound(id.toString(), primaryKey));
-
-  }
-
-  // get Position By Tag
-  public Position getByTag(String tag) {
-    return positionRepository.findByTag(tag)
-        .orElseThrow(() -> positionNotFound(tag, typeTag));
-
   }
 
   // build Tag

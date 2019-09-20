@@ -72,12 +72,12 @@ public class TimecurveManagerApplication {
       position0 = positionService.addPosition(position0);
 
       // Position 1
-      Position position1 = new Position(null, tenantId, "C1", "C1#CHF#MACC",
+      Position position1 = new Position(null, tenantId, "C1", "CH1231231231108",
           "CHF Money Account for Container 1", PositionValueType.CURRENCY, "CHF", true);
       position1 = positionService.addPosition(position1);
 
       // Position 2
-      Position position2 = new Position(null, tenantId, "C2", "C2#CHF#MACC",
+      Position position2 = new Position(null, tenantId, "C2", "CH1231231231123",
           "CHF Money Account for Container 2", PositionValueType.CURRENCY, "CHF", true);
       position2 = positionService.addPosition(position2);
 

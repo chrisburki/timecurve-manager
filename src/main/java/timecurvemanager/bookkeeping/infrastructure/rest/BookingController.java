@@ -21,6 +21,8 @@ import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingDimension;
 import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingItemType;
 import timecurvemanager.bookkeeping.domain.booking.model.Booking;
 
+//@todo: replace get and post with messages
+
 @RestController
 @RequestMapping("/book-keeping")
 public class BookingController {

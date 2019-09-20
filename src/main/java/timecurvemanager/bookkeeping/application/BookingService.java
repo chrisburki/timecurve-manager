@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import timecurvemanager.bookkeeping.domain.booking.BookingMessaging;
 import timecurvemanager.bookkeeping.domain.booking.BookingRepository;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand;
-import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand.BookingItemCommandMessage;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingDomainEvent;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingExternalEvent;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingMessage;
