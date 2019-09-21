@@ -2,6 +2,7 @@ package timecurvemanager.position.domain;
 
 import java.util.List;
 import java.util.Optional;
+import timecurvemanager.position.domain.model.Position;
 
 public interface PositionRepository {
 

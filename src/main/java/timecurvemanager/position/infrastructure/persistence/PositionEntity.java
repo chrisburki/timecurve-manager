@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import timecurvemanager.position.domain.PositionValueType;
+import timecurvemanager.position.domain.model.PositionValueType;
 
 @Entity
 @Table(name = "position", indexes = @Index(name = "idx_position_tag",

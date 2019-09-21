@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import timecurvemanager.position.domain.PositionValueType;
+import timecurvemanager.position.domain.model.PositionValueType;
 
 
 @Getter

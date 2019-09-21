@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.position.domain.Position;
+import timecurvemanager.position.domain.model.Position;
 
 @Component
 @Slf4j

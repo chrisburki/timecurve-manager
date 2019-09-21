@@ -408,8 +408,7 @@ public class BookingService {
    * Process Command
    * ***************
    * */
-  public BookingExternalEvent processBookingCommand(BookingCommand bookingCommand,
-      Boolean sendReply) {
+  public BookingExternalEvent processBookingCommand(BookingCommand bookingCommand) {
     //@todo: check for duplicates
     Booking booking = new Booking(
         bookingCommand.getExtId(),
@@ -424,15 +423,11 @@ public class BookingService {
     bookingCommand.getBookingItems().forEach(bookingItemMessage -> addBookingItems(booking,
         bookingItemMessage));
     Booking newBooking = addBooking(booking, bookingCommand.getGsn());
-    if (sendReply) {
-      return BookingExternalEvent.builder()
-          .orderId(newBooking.getOrderId())
-          .bookingExtId(newBooking.getBookingExtId())
-          .bookingSequenceNr(newBooking.getSequenceNr())
-          .tenantId(newBooking.getTenantId())
-          .build();
-    } else {
-      return null;
-    }
+    return BookingExternalEvent.builder()
+        .orderId(newBooking.getOrderId())
+        .bookingExtId(newBooking.getBookingExtId())
+        .bookingSequenceNr(newBooking.getSequenceNr())
+        .tenantId(newBooking.getTenantId())
+        .build();
   }
 }

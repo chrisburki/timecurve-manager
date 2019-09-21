@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import timecurvemanager.position.application.PositionService;
-import timecurvemanager.position.domain.Position;
-import timecurvemanager.position.domain.PositionValueType;
+import timecurvemanager.position.domain.api.PositionCommand;
+import timecurvemanager.position.domain.api.PositionExternalEvent;
+import timecurvemanager.position.domain.model.Position;
+import timecurvemanager.position.domain.model.PositionValueType;
 
 @RestController
 public class PositionController {
@@ -53,9 +55,8 @@ public class PositionController {
   }
 
   @PostMapping("/positions")
-  ResponseEntity<Position> addPosition(@RequestBody Position position) {
-    Position result = positionService
-        .addPosition(position);
+  ResponseEntity<PositionExternalEvent> addPosition(@RequestBody PositionCommand positionCommand) {
+    PositionExternalEvent result = positionService.processPositionCommand(positionCommand);
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
 

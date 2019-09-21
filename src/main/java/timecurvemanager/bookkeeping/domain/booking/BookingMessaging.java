@@ -10,9 +10,6 @@ public interface BookingMessaging {
   /*Publish Domain Event to message broker*/
   void sendDomainEvent(BookingDomainEvent event);
 
-  /*Receive command Message*/
-  void receiveCommand(BookingCommand event, MessageHeaders headers);
-
   /*Publish External Event to message broker*/
   void sendExternalEvent(BookingExternalEvent event);
 
