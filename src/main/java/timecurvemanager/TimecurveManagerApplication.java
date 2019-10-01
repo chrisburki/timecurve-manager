@@ -76,6 +76,7 @@ public class TimecurveManagerApplication {
           .build();
       PositionExternalEvent positionExternalEvent1 = positionService
           .processPositionCommand(positionCommand1);
+      log.info("Pos1: " + positionExternalEvent1.getId());
 
       // Position 2
       PositionCommand positionCommand2 = PositionCommand.builder()
@@ -87,6 +88,7 @@ public class TimecurveManagerApplication {
           .build();
       PositionExternalEvent positionExternalEvent2 = positionService
           .processPositionCommand(positionCommand2);
+      log.info("Pos2: " + positionExternalEvent2.getId());
 
       // Position 3
       PositionCommand positionCommand3 = PositionCommand.builder()
@@ -98,6 +100,7 @@ public class TimecurveManagerApplication {
           .build();
       PositionExternalEvent positionExternalEvent3 = positionService
           .processPositionCommand(positionCommand3);
+      log.info("Pos3: " + positionExternalEvent3.getId());
 
       // Position 4
       PositionCommand positionCommand4 = PositionCommand.builder()
@@ -108,6 +111,7 @@ public class TimecurveManagerApplication {
           .build();
       PositionExternalEvent positionExternalEvent4 = positionService
           .processPositionCommand(positionCommand4);
+      log.info("Pos4: " + positionExternalEvent4.getId());
 
       // Booking1
       BookingCommand bookingCommand1 = BookingCommand.builder()
@@ -119,7 +123,8 @@ public class TimecurveManagerApplication {
           .date1(date1)
           .date2(date2).build();
       bookingCommand1
-          .createBookingItem(rowNr, positionExternalEvent2.getId().toString(), itemType, itemId, value1, value2,
+          .createBookingItem(rowNr, positionExternalEvent2.getId().toString(), itemType, itemId,
+              value1, value2,
               value3, tover1, tover2, tover3);
       bookingCommand1
           .createBookingItem(rowNr + 1, positionExternalEvent1.getId().toString(), itemType, itemId,

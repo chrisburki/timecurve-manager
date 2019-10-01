@@ -16,9 +16,10 @@ import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import timecurvemanager.bookkeeping.domain.booking.BookingMessaging;
+import timecurvemanager.bookkeeping.domain.booking.BookingMessageOutHdl;
 import timecurvemanager.bookkeeping.domain.booking.BookingRepository;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand;
+import timecurvemanager.bookkeeping.domain.booking.api.BookingCommandItem;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingDomainEvent;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingExternalEvent;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingMessage;
@@ -42,16 +43,16 @@ public class BookingService {
   private final BookingRepository bookingRepository;
   private final ApprovedBalanceService approvedBalanceService;
   private final TimecurveService timecurveService;
-  private final BookingMessaging bookingMessaging;
+  private final BookingMessageOutHdl bookingMessageOutHdl;
 
   public BookingService(BookingRepository bookingRepository,
       ApprovedBalanceService approvedBalanceService,
       TimecurveService timecurveService,
-      BookingMessaging bookingMessaging) {
+      BookingMessageOutHdl bookingMessageOutHdl) {
     this.bookingRepository = bookingRepository;
     this.approvedBalanceService = approvedBalanceService;
     this.timecurveService = timecurveService;
-    this.bookingMessaging = bookingMessaging;
+    this.bookingMessageOutHdl = bookingMessageOutHdl;
   }
 
   //
@@ -327,7 +328,7 @@ public class BookingService {
             .build();
     booking.getBookingItems().forEach(item -> publishItems(bookingDomainEvent, booking, item));
 
-    this.bookingMessaging.sendDomainEvent(bookingDomainEvent);
+    this.bookingMessageOutHdl.sendDomainEvent(bookingDomainEvent);
   }
 
   /* update balance 6. part of addBooking) */
@@ -340,7 +341,9 @@ public class BookingService {
   }
 
   private void updateBalance(Booking newBooking, Booking lastBooking) {
-    approvedBalanceService.addBooking(newBooking, lastBooking);
+    if (newBooking != null) {
+      approvedBalanceService.addBooking(newBooking, lastBooking);
+    }
   }
 
   /*
@@ -386,7 +389,7 @@ public class BookingService {
   // Command
   //
 
-  private void addBookingItems(Booking booking, BookingMessage.BookingItemMessage item) {
+  private void addBookingItems(Booking booking, BookingCommandItem item) {
     Timecurve timecurve = timecurveService
         .addTimecurve(item.getObjectId(), booking.getDate1());
     BookingItem bookingItem = BookingItem.builder()
@@ -420,8 +423,8 @@ public class BookingService {
         bookingCommand.getUseCase(),
         bookingCommand.getDate1(),
         bookingCommand.getDate2());
-    bookingCommand.getBookingItems().forEach(bookingItemMessage -> addBookingItems(booking,
-        bookingItemMessage));
+    bookingCommand.getBookingItems().forEach(bookingItem -> addBookingItems(booking,
+        bookingItem));
     Booking newBooking = addBooking(booking, bookingCommand.getGsn());
     return BookingExternalEvent.builder()
         .orderId(newBooking.getOrderId())
