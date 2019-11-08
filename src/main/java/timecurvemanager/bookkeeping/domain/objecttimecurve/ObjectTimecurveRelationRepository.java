@@ -8,7 +8,8 @@ public interface ObjectTimecurveRelationRepository {
 
   List<ObjectTimecurveRelation> findByObjectIdOrderByValidFromAsc(String objectId);
 
-  Optional<ObjectTimecurveRelation> findByTimecurveIdAndRefDate(Long timecurveId, LocalDate refDate);
+  Optional<ObjectTimecurveRelation> findByTimecurveIdAndRefDate(Long timecurveId,
+      LocalDate refDate);
 
   Optional<ObjectTimecurveRelation> findByObjectIdAndRefDate(String objectId, LocalDate refDate);
 

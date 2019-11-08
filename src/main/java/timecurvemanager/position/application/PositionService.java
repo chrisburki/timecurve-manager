@@ -10,12 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand;
-import timecurvemanager.bookkeeping.domain.booking.api.BookingExternalEvent;
 import timecurvemanager.position.domain.api.PositionCommand;
 import timecurvemanager.position.domain.api.PositionExternalEvent;
-import timecurvemanager.position.domain.model.Position;
 import timecurvemanager.position.domain.PositionRepository;
+import timecurvemanager.position.domain.model.Position;
 import timecurvemanager.position.domain.model.PositionValueType;
 
 @Service
@@ -82,6 +80,8 @@ public class PositionService {
       case SECURITY:
         addon = "#SEC";
         break;
+      default:
+        addon = "#ANY";
     }
     return tenantId + "#" + containerId + "#" + valueType.name() + "#" + valueTag + addon;
   }

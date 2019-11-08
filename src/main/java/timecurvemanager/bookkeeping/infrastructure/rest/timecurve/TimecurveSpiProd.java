@@ -1,18 +1,38 @@
 package timecurvemanager.bookkeeping.infrastructure.rest.timecurve;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import timecurvemanager.bookkeeping.domain.timecurve.ObjectDetail;
+import timecurvemanager.bookkeeping.domain.timecurve.TimecurveObjectDetail;
 import timecurvemanager.bookkeeping.domain.timecurve.TimecurveSpi;
+import timecurvemanager.position.application.PositionService;
+import timecurvemanager.position.domain.model.Position;
 
 @Component
 @Slf4j
 @Profile("prod")
 public class TimecurveSpiProd implements TimecurveSpi {
 
+  private final PositionService positionService;
+
+  public TimecurveSpiProd(PositionService positionService) {
+    this.positionService = positionService;
+  }
+
+  @Override
+  public TimecurveObjectDetail getObject(String objectId) {
+    Position objectExternal = positionService.getPosition(objectId);
+    TimecurveObjectDetail timecurveObjectDetail = TimecurveObjectDetail.builder()
+        .objectId(objectExternal.getId().toString())
+        .tenantId(objectExternal.getTenantId())
+        .valueType(objectExternal.getValueType())
+        .valueTag(objectExternal.getValueTag())
+        .doBalanceCheck(objectExternal.getDoBalanceCheck())
+        .build();
+    return timecurveObjectDetail;
+  }
+
+  /*
   @Value("${EWOM_POSITION_SERVICE_HOST}")
   private String ewomPositionHost;
 
@@ -22,19 +42,21 @@ public class TimecurveSpiProd implements TimecurveSpi {
   String ewomPositionUrl = "http://" + ewomPositionHost + ":" + ewomPositionPort + "/positions/";
 
   @Override
-  public ObjectDetail getObject(String objectId) {
+  public TimecurveObjectDetail getObject(String objectId) {
     ewomPositionUrl = ewomPositionUrl + objectId;
     RestTemplate restTemplate = new RestTemplate();
-    ExternalObject response = restTemplate.getForObject(
-        ewomPositionUrl, ExternalObject.class);
-    ObjectDetail objectDetail = ObjectDetail.builder()
+    TimecurveObjectExternal response = restTemplate.getForObject(
+        ewomPositionUrl, TimecurveObjectExternal.class);
+    TimecurveObjectDetail timecurveObjectDetail = TimecurveObjectDetail.builder()
         .objectId(response.getId().toString())
         .tenantId(response.getTenantId())
         .valueType(response.getValueType())
         .valueTag(response.getValueTag())
         .doBalanceCheck(response.getDoBalanceCheck())
         .build();
-    return objectDetail;
+    return timecurveObjectDetail;
   }
+   */
+
 
 }

@@ -23,7 +23,7 @@ public class BookingMessageOutHdlDev implements BookingMessageOutHdl {
   }
 
   @Override
-  public void sendReply(BookingExternalEvent event) {
+  public void sendReply(BookingExternalEvent event, String replyTopic, String correlationId) {
     log.info("Publish Dev Booking Reply");
   }
 

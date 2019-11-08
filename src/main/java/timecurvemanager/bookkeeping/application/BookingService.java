@@ -18,16 +18,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import timecurvemanager.bookkeeping.domain.booking.BookingMessageOutHdl;
 import timecurvemanager.bookkeeping.domain.booking.BookingRepository;
+import timecurvemanager.bookkeeping.domain.booking.BookingSpi;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingCommand;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingCommandItem;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingDomainEvent;
 import timecurvemanager.bookkeeping.domain.booking.api.BookingExternalEvent;
-import timecurvemanager.bookkeeping.domain.booking.api.BookingMessage;
 import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingDimension;
 import timecurvemanager.bookkeeping.domain.booking.model.BookKeepingItemType;
 import timecurvemanager.bookkeeping.domain.booking.model.Booking;
 import timecurvemanager.bookkeeping.domain.booking.model.BookingItem;
 import timecurvemanager.bookkeeping.domain.booking.model.BookingStatus;
+import timecurvemanager.bookkeeping.domain.booking.model.BookingTimecurveDetail;
 import timecurvemanager.bookkeeping.domain.timecurve.Timecurve;
 
 @Service
@@ -42,16 +43,16 @@ public class BookingService {
 
   private final BookingRepository bookingRepository;
   private final ApprovedBalanceService approvedBalanceService;
-  private final TimecurveService timecurveService;
+  private final BookingSpi bookingSpi;
   private final BookingMessageOutHdl bookingMessageOutHdl;
 
   public BookingService(BookingRepository bookingRepository,
       ApprovedBalanceService approvedBalanceService,
-      TimecurveService timecurveService,
+      BookingSpi bookingSpi,
       BookingMessageOutHdl bookingMessageOutHdl) {
     this.bookingRepository = bookingRepository;
     this.approvedBalanceService = approvedBalanceService;
-    this.timecurveService = timecurveService;
+    this.bookingSpi = bookingSpi;
     this.bookingMessageOutHdl = bookingMessageOutHdl;
   }
 
@@ -154,10 +155,12 @@ public class BookingService {
     //1. Build Clearing Map
     booking.getBookingItems().stream()
         .filter(
-            bookingItem -> timecurveService.getById(bookingItem.getTimecurveId()).needClearing())
+            bookingItem -> bookingSpi.getTimecurve(bookingItem.getTimecurveId(), booking.getDate1())
+                .getNeedClearing())
         .forEach(bookingItem -> {
           buildClearing(clearingMap,
-              timecurveService.getById(bookingItem.getTimecurveId()).getClearingReference(),
+              bookingSpi.getTimecurve(bookingItem.getTimecurveId(), booking.getDate1())
+                  .getClearingReference(),
               bookingItem.getValue1());
         });
     // 2. Check Clearing Map for != 0
@@ -246,7 +249,7 @@ public class BookingService {
   private void checkApprovedToverGsn(Booking newBooking, Booking lastBooking, Long approvedGsn) {
 
     // if apprvedGsn is null then don't do any checks
-    if (approvedGsn == null) {
+    if (approvedGsn == null || newBooking == null) {
       return;
     }
 
@@ -259,7 +262,8 @@ public class BookingService {
           // check if check on approved balance is needed (on itemType and on timecurve object)
           .filter(
               item -> item.getItemType().buildApprovedBalance()
-                  && timecurveService.getById(item.getTimecurveId()).getNeedBalanceApproval())
+                  && bookingSpi.getTimecurve(item.getTimecurveId(), lastBooking.getDate1())
+                  .getNeedBalanceApproval())
           .forEach(item -> {
             addApprovedToverAndGsn(approvedToverGsnMap, lastBooking, item);
           });
@@ -270,7 +274,8 @@ public class BookingService {
         // check if check on approved balance is needed (on itemType and on timecurve object)
         .filter(
             item -> item.getItemType().buildApprovedBalance()
-                && timecurveService.getById(item.getTimecurveId()).getNeedBalanceApproval())
+                && bookingSpi.getTimecurve(item.getTimecurveId(), newBooking.getDate1())
+                .getNeedBalanceApproval())
         .forEach(item -> {
           addApprovedToverAndGsn(approvedToverGsnMap, newBooking, item);
         });
@@ -303,8 +308,8 @@ public class BookingService {
 
   private void publishItems(BookingDomainEvent bookingDomainEvent, Booking booking,
       BookingItem item) {
-    String objectId = timecurveService
-        .getObjectByTimecuveIdAndDate(item.getTimecurveId(), booking.getDate1());
+    String objectId = bookingSpi.getTimecurve(item.getTimecurveId(), booking.getDate1())
+        .getObjectId();
     bookingDomainEvent.createBookingItem(
         item.getRowNr(), objectId, item.getItemType(), item.getItemId(), item.getValue1(),
         item.getValue2(), item.getValue3(), item.getTover1(), item.getTover2(), item.getTover3(),
@@ -352,7 +357,7 @@ public class BookingService {
    * *******************************************************************
    * */
   @Transactional
-  public Booking addBooking(Booking booking, Long approvedGsn) {
+  private Booking addBooking(Booking booking, Long approvedGsn) {
     log.debug("Approved GSN: " + approvedGsn);
     // 1. evaluate clearing
     evalClearing(booking);
@@ -377,6 +382,7 @@ public class BookingService {
 
     // 5. messaging booking -- may replace with outbox table concept
     publishDomainEvent(booking);
+    //@todo: publish external event (anti corruption layer, domain event only within bounded context)
 
     //@todo: remove as update in baltov done async via message
     // 6. check approved gsn for relevant timecurves & update balance
@@ -390,7 +396,7 @@ public class BookingService {
   //
 
   private void addBookingItems(Booking booking, BookingCommandItem item) {
-    Timecurve timecurve = timecurveService
+    BookingTimecurveDetail timecurve = bookingSpi
         .addTimecurve(item.getObjectId(), booking.getDate1());
     BookingItem bookingItem = BookingItem.builder()
         .rowNr(item.getRowNr())
@@ -431,6 +437,7 @@ public class BookingService {
         .bookingExtId(newBooking.getBookingExtId())
         .bookingSequenceNr(newBooking.getSequenceNr())
         .tenantId(newBooking.getTenantId())
+        .bookingStatus(newBooking.getStatus())
         .build();
   }
 }

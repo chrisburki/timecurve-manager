@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import timecurvemanager.bookkeeping.domain.booking.model.BookingStatus;
 
 @Getter
 @Builder
@@ -23,5 +24,8 @@ public class BookingExternalEvent implements Serializable {
 
   @NotNull
   private String tenantId;
+
+  @NotNull
+  private BookingStatus bookingStatus;
 
 }

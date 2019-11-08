@@ -7,7 +7,6 @@ import static timecurvemanager.bookkeeping.domain.timecurve.TimecurveNotFoundExc
 
 import java.time.LocalDate;
 import java.util.Collection;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import timecurvemanager.bookkeeping.domain.objecttimecurve.ObjectTimecurveRelation;
 import timecurvemanager.bookkeeping.domain.objecttimecurve.ObjectTimecurveRelationRepository;
-import timecurvemanager.bookkeeping.domain.timecurve.ObjectDetail;
 import timecurvemanager.bookkeeping.domain.timecurve.Timecurve;
+import timecurvemanager.bookkeeping.domain.timecurve.TimecurveObjectDetail;
 import timecurvemanager.bookkeeping.domain.timecurve.TimecurveRepository;
 import timecurvemanager.bookkeeping.domain.timecurve.TimecurveSpi;
 
@@ -186,10 +185,10 @@ public class TimecurveService {
   }
 
   private Timecurve getObjectAndCreateTimecurve(String objectId, LocalDate refDate) {
-    ObjectDetail objectDetail = timecurveSpi.getObject(objectId);
-    log.debug("Created Timecurve: " + objectDetail.toString());
-    return createTimecurve(objectId, objectDetail.getTenantId(),
-        objectDetail.getClearingReference(), objectDetail.getNeedBalanceApproval(), refDate);
+    TimecurveObjectDetail timecurveObjectDetail = timecurveSpi.getObject(objectId);
+    log.debug("Created Timecurve: " + timecurveObjectDetail.toString());
+    return createTimecurve(objectId, timecurveObjectDetail.getTenantId(),
+        timecurveObjectDetail.getClearingReference(), timecurveObjectDetail.getNeedBalanceApproval(), refDate);
   }
 
   public Timecurve addTimecurve(String objectId, LocalDate refDate) {

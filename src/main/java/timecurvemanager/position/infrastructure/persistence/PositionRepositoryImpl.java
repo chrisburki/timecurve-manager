@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import timecurvemanager.position.domain.model.Position;
 import timecurvemanager.position.domain.PositionRepository;
+import timecurvemanager.position.domain.model.Position;
 
 @Component
 @Slf4j

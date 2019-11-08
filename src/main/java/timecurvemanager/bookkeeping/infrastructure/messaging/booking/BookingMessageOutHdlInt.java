@@ -1,5 +1,6 @@
 package timecurvemanager.bookkeeping.infrastructure.messaging.booking;
 
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -46,11 +47,12 @@ public class BookingMessageOutHdlInt implements BookingMessageOutHdl {
   }
 
   @Override
-  public void sendReply(BookingExternalEvent event) {
+  public void sendReply(BookingExternalEvent event, String replyTopic, String correlationId) {
     log.debug("Publish Int Booking External Event");
     Message<BookingExternalEvent> message = MessageBuilder
         .withPayload(event)
-        .setHeader(KafkaHeaders.TOPIC, replyBookingTopic)
+        .setHeader(KafkaHeaders.TOPIC, Optional.ofNullable(replyTopic).orElse(replyBookingTopic))
+        .setHeader(KafkaHeaders.CORRELATION_ID, correlationId)
         .build();
     kafkaTemplate.send(message);
   }

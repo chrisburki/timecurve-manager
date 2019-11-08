@@ -3,6 +3,7 @@ package timecurvemanager.bookkeeping.infrastructure.messaging.booking;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -33,11 +34,12 @@ public class BookingCommandInHdlInt implements BookingCommandInHdl {
   @Override
   public void receiveCommand(@Payload BookingCommand event, @Headers MessageHeaders headers) {
     System.out.println("Received Int Booking Command: " + event.toString());
-    Object replyChannel = headers.getReplyChannel();
+    String replyTopic = headers.get(KafkaHeaders.REPLY_TOPIC).toString();
+    String correlationId = headers.get(KafkaHeaders.CORRELATION_ID).toString();
     BookingExternalEvent bookingExternalEvent = bookingService
         .processBookingCommand(event);
-    if (replyChannel != null) {
-      bookingMessageOutHdl.sendReply(bookingExternalEvent);
+    if (replyTopic != null) {
+      bookingMessageOutHdl.sendReply(bookingExternalEvent, replyTopic, correlationId);
     }
   }
 }

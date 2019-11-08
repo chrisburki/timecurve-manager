@@ -23,8 +23,6 @@ import timecurvemanager.gsn.application.GsnService;
 import timecurvemanager.position.application.PositionService;
 import timecurvemanager.position.domain.api.PositionCommand;
 import timecurvemanager.position.domain.api.PositionExternalEvent;
-import timecurvemanager.position.domain.model.Position;
-import timecurvemanager.position.domain.model.PositionAddException;
 import timecurvemanager.position.domain.model.PositionValueType;
 
 @SpringBootApplication
@@ -121,7 +119,9 @@ public class TimecurveManagerApplication {
           .status(status)
           .useCase(useCase1)
           .date1(date1)
-          .date2(date2).build();
+          .date2(date2)
+          .gsn(gsnService.getCurrGsn().getId())
+          .build();
       bookingCommand1
           .createBookingItem(rowNr, positionExternalEvent2.getId().toString(), itemType, itemId,
               value1, value2,
@@ -140,7 +140,9 @@ public class TimecurveManagerApplication {
           .status(status)
           .useCase(useCase2)
           .date1(date3)
-          .date2(date4).build();
+          .date2(date4)
+          .gsn(gsnService.getCurrGsn().getId())
+          .build();
       bookingCommand2
           .createBookingItem(rowNr, positionExternalEvent1.getId().toString(), itemType, itemId,
               BigDecimal.ONE.add(value1).negate(), value2,
@@ -161,7 +163,9 @@ public class TimecurveManagerApplication {
           .status(status)
           .useCase(useCase2)
           .date1(date3)
-          .date2(date4).build();
+          .date2(date4)
+          .gsn(gsnService.getCurrGsn().getId())
+          .build();
       bookingCommand3
           .createBookingItem(rowNr, positionExternalEvent1.getId().toString(), itemType, itemId,
               BigDecimal.TEN.add(value1).negate(), value2,

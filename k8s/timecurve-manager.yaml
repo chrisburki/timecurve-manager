@@ -27,11 +27,18 @@ spec:
               port: 8080
           readinessProbe:
             httpGet:
-              path: /timecurve/objects/ready
+              path: /book-keeping/objects/ready
               port: 8080
           ports:
             - protocol: TCP
               containerPort: 8080
+          volumeMounts:
+            - name: timecurve-pubsub-secrets
+              mountPath: /var/secrets/google
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/pubsub-credentials.json
+      # [START proxy_container]
             # The following environment variables will contain the database host,
             # user and password to connect to the PostgreSQL instance.
             #          env:
@@ -53,27 +60,29 @@ spec:
         # project, the region of your Cloud SQL instance and the name
         # of your Cloud SQL instance. The format is
         # $PROJECT:$REGION:$INSTANCE
-        # [START proxy_container]
         - name: cloudsql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.14
           command: ["/cloud_sql_proxy",
                     "-instances=buc-personal-banking:europe-west3:timecurves=tcp:5432",
-                    "-credential_file=/secrets/cloudsql/credentials.json"]
+                    "-credential_file=/secrets/cloudsql/cloudsql-credentials.json"]
           # [START cloudsql_security_context]
           #          securityContext:
           #            runAsUser: 2  # non-root user
           #            allowPrivilegeEscalation: false
           # [END cloudsql_security_context]
           volumeMounts:
-            - name: my-secrets-volume
+            - name: timecurve-cloudsql-secrets
               mountPath: /secrets/cloudsql
               readOnly: true
-        # [END proxy_container]
+      # [END proxy_container]
       # [START volumes]
       volumes:
-        - name: my-secrets-volume
+        - name: timecurve-pubsub-secrets
           secret:
-            secretName: cloudsql-instance-credentials
+            secretName: timecurve-pubsub-credentials
+        - name: timecurve-cloudsql-secrets
+          secret:
+            secretName: timecurve-cloudsql-credentials
       # [END volumes]
 ---
 apiVersion: v1
