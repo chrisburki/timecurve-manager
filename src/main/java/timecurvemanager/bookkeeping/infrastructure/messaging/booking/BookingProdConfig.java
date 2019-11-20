@@ -28,6 +28,9 @@ public class BookingProdConfig {
   final String subscriptionCommand = "bookingCommandSub";
   final String subscriptionReply = "bookingReply";
 
+  public static final String replyTopic = "REPLY_TOPIC";
+  public static final String correlationId = "CORRELATION_ID";
+
   private final PubSubAdmin pubSubAdmin;
 
   public BookingProdConfig(PubSubAdmin pubSubAdmin) {
@@ -57,9 +60,7 @@ public class BookingProdConfig {
   @Bean
   public void createSubscription() {
     try {
-//    pubSubAdmin.createSubscription(subscriptionDomainEvent, topicDomainEvent);
       pubSubAdmin.createSubscription(subscriptionCommand, topicCommand);
-//    pubSubAdmin.createSubscription(subscriptionReply, topicReply);
     } catch (ApiException e) {
       System.out.print(e.getStatusCode().getCode());
       System.out.print(e.isRetryable());

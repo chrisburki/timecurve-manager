@@ -234,6 +234,7 @@ https://medium.com/maxime-heckel/building-a-graphql-wrapper-for-the-docker-api-2
 
 -- bpmn
 https://medium.com/@venkat.y/running-workflow-as-a-microservice-25781ecf8155
+https://github.com/berndruecker/flowing-retail/blob/master/rest/java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV3.java
 
 
 Log4j

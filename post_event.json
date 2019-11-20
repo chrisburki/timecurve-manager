@@ -1,54 +1,38 @@
 {
-    "id": null,
-    "eventExtId": null,
-    "tenantId": "AAA",
+    "extId": null,
+    "sequenceNr": null,
     "orderId": "Order15",
+    "tenantId": "AAA",
     "dimension": "SUBLEDGER",
     "status": "APPROVED",
     "useCase": "intpay",
     "date1": "2019-07-09",
     "date2": "2019-07-09",
     "gsn": null,
-    "eventItems": [
+    "bookingItems": [
         {
-            "id": null,
-            "event": null,
             "rowNr": 1,
-            "tenantId": "AAA",
-            "dimension": "SUBLEDGER",
-            "timecurveId": 5,
+            "objectId": 2,
             "itemType": "BASIC",
             "itemId": 1,
-            "date1": "2019-07-09",
-            "date2": "2019-07-09",
             "value1": 2000.00,
             "value2": null,
             "value3": null,
             "tover1": 2000.00,
             "tover2": null,
-            "tover3": null,
-            "gsn": null,
-            "approvedBalance": null
+            "tover3": null
         },
         {
-            "id": null,
-            "event": null,
             "rowNr": 2,
-            "tenantId": "AAA",
-            "dimension": "SUBLEDGER",
-            "timecurveId": 2,
+            "objectId": 2,
             "itemType": "BASIC",
             "itemId": 1,
-            "date1": "2019-07-09",
-            "date2": "2019-07-09",
             "value1": -2000.00,
             "value2": null,
             "value3": null,
             "tover1": -2000.00,
             "tover2": null,
-            "tover3": null,
-            "gsn": null,
-            "approvedBalance": null
+            "tover3": null
         }
     ]
 }

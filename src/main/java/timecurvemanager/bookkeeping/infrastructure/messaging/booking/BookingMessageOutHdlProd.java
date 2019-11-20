@@ -57,11 +57,11 @@ public class BookingMessageOutHdlProd implements BookingMessageOutHdl {
 
   @Override
   public void sendReply(BookingExternalEvent event, String replyTopic, String correlationId) {
-    log.debug("Publish Int Booking External Event");
+    log.info("Publish Int Booking External Event ==[{}]: rplyT:" + replyTopic + " corrId: " + correlationId, event);
     Message<BookingExternalEvent> message = MessageBuilder
         .withPayload(event)
-        .setHeader(KafkaHeaders.TOPIC, Optional.ofNullable(replyTopic).orElse(topicReply))
-        .setHeader(KafkaHeaders.CORRELATION_ID, correlationId)
+        .setHeader(BookingProdConfig.replyTopic, Optional.ofNullable(replyTopic).orElse(topicReply))
+        .setHeader(BookingProdConfig.correlationId, correlationId)
         .build();
     pubSubTemplate.publish(topicReply, message);
   }
