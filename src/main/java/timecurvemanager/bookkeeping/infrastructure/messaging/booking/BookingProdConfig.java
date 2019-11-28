@@ -24,9 +24,7 @@ public class BookingProdConfig {
   @Value(value = "${topic.reply-booking}")
   private String topicReply;
 
-  final String subscriptionDomainEvent = "bookingDomainEvent";
   final String subscriptionCommand = "bookingCommandSub";
-  final String subscriptionReply = "bookingReply";
 
   public static final String replyTopic = "REPLY_TOPIC";
   public static final String correlationId = "CORRELATION_ID";

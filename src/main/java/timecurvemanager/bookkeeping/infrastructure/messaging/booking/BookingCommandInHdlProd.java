@@ -10,7 +10,9 @@ import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gcp.pubsub.support.BasicAcknowledgeablePubsubMessage;
 import org.springframework.context.annotation.Profile;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import timecurvemanager.bookkeeping.application.BookingService;
 import timecurvemanager.bookkeeping.domain.booking.BookingCommandInHdl;
@@ -55,7 +57,7 @@ public class BookingCommandInHdlProd implements BookingCommandInHdl {
 
     // process message
     String messageJson = message.getData().toStringUtf8();
-    log.info("message received: " + messageJson);
+    log.info("message received: replTopic: " + replyTopicVal + " corrId: "+ correlationIdVal + " msg: " + messageJson);
 
     // acknowledge that message was received
     command.ack();

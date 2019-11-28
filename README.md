@@ -35,7 +35,7 @@ Time curve service is a service to managing balance curves. It provides
 
 #### create cluster
 gcloud config set project buc-personal-banking
-gcloud config set compute/zone europe-west3-c
+gcloud config set compute/zone europe-west6-c
 gcloud container clusters create timecurve --machine-type=g1-small --disk-size=30GB --num-nodes=1
 gcloud container clusters get-credentials timecurve
 kubectl cluster-info
@@ -50,12 +50,14 @@ kubectl create secret generic timecurve-db-credentials --from-literal username=p
 kubectl create secret generic timecurve-pubsub-credentials --from-file=pubsub-credentials.json=pubsub-timecurve-credentials.json
 
 #### create deployment
-kubectl create -f "C:\dev\timecurve\manager\k8s\timecurve-manager.yaml"
+kubectl create -f "C:\dev\timecurve\manager\k8s\timecurve-manager-h2.yaml"
 kubectl create -f "C:\dev\timecurve\baltov\k8s\timecurve-baltov.yaml"
+kubectl create -f "C:\dev\timecurve\payment\k8s\payment.yaml"
 
 #### delete deployment
-kubectl delete -f "C:\dev\timecurve\manager\k8s\timecurve-manager.yaml"
+kubectl delete -f "C:\dev\timecurve\manager\k8s\timecurve-manager-h2.yaml"
 kubectl delete -f "C:\dev\timecurve\baltov\k8s\timecurve-baltov.yaml"
+kubectl delete -f "C:\dev\timecurve\payment\k8s\payment.yaml"
 
 #### delete secrets
 kubectl delete secret timecurve-cloudsql-credentials
@@ -122,6 +124,12 @@ gcloud builds submit --tag eu.gcr.io/buc-personal-banking/timecurve-manager .
 https://cloud.google.com/sdk/gcloud/reference/components/update
 --update to latest version run in the sdk window: gcloud components update
 --to init: gcloud init
+
+### kubectl proxy
+https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/#manually-constructing-apiserver-proxy-urls
+
+kubectl proxy
+http://localhost:8001/api/v1/namespaces/default/services/timecurve-manager/proxy/book-keeping/bookings?dimension=SUBLEDGER
 
 ### kubernetes dashboard
 
@@ -214,6 +222,7 @@ https://github.com/eventuate-tram/eventuate-tram-sagas
 https://blog.ippon.tech/boost-the-performance-of-your-spring-data-jpa-application/
 https://blog.restcase.com/5-basic-rest-api-design-guidelines/
 https://restfulapi.net/resource-naming/
+https://platform9.com/blog/kubernetes-service-discovery-principles-in-practice/
 
 -- transaction handling
 https://dzone.com/articles/transaction-synchronization-and-spring-application
@@ -236,6 +245,11 @@ https://medium.com/maxime-heckel/building-a-graphql-wrapper-for-the-docker-api-2
 https://medium.com/@venkat.y/running-workflow-as-a-microservice-25781ecf8155
 https://github.com/berndruecker/flowing-retail/blob/master/rest/java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV3.java
 
+-- performance testing
+https://medium.com/google-cloud/google-kubernetes-engine-load-testing-and-auto-scaling-with-locust-ceefc088c5b3
+
+-- istio
+https://cloud.google.com/istio/docs/istio-on-gke/installing#enabling_sidecar_injection
 
 Log4j
     implementation('org.springframework.boot:spring-boot-starter-log4j2')

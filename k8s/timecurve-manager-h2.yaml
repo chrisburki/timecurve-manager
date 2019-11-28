@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timecurve-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manager
+      role: backend
+      scs: timecurve
+  template:
+    metadata:
+      labels:
+        app: manager
+        role: backend
+        scs: timecurve
+    spec:
+      containers:
+        - name: timecurve-manager
+          image: eu.gcr.io/buc-personal-banking/timecurve-manager:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /book-keeping/objects/ready
+              port: 8080
+          ports:
+            - protocol: TCP
+              containerPort: 8080
+          volumeMounts:
+            - name: timecurve-pubsub-secrets
+              mountPath: /var/secrets/google
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/pubsub-credentials.json
+      # [START volumes]
+      volumes:
+        - name: timecurve-pubsub-secrets
+          secret:
+            secretName: timecurve-pubsub-credentials
+        - name: timecurve-cloudsql-secrets
+          secret:
+            secretName: timecurve-cloudsql-credentials
+      # [END volumes]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timecurve-manager
+spec:
+  selector:
+    app: manager
+    role: backend
+    scs: timecurve
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
