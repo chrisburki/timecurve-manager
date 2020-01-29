@@ -36,28 +36,32 @@ Time curve service is a service to managing balance curves. It provides
 #### create cluster
 gcloud config set project buc-personal-banking
 gcloud config set compute/zone europe-west6-c
-gcloud container clusters create timecurve --machine-type=g1-small --disk-size=30GB --num-nodes=1
+gcloud container clusters create timecurve --machine-type=n1-standard-1 --disk-size=30GB --num-nodes=1
 gcloud container clusters get-credentials timecurve
 kubectl cluster-info
+
+#### create namespace
+kubectl create namespace timecurve
+kubectl config set-context --current --namespace=timecurve
 
 #### enable apis
 gcloud services enable sqladmin.googleapis.com
 gcloud services enable pubsub.googleapis.com
 
 #### create secrets
-kubectl create secret generic timecurve-cloudsql-credentials --from-file=cloudsql-credentials.json=cloudsql-timecurves-credentials.json
-kubectl create secret generic timecurve-db-credentials --from-literal username=postgres --from-literal password=buc
-kubectl create secret generic timecurve-pubsub-credentials --from-file=pubsub-credentials.json=pubsub-timecurve-credentials.json
+kubectl create secret generic timecurve-cloudsql-credentials --from-file=cloudsql-credentials.json=cloudsql-timecurves-credentials.json --namespace=timecurve
+kubectl create secret generic timecurve-db-credentials --from-literal username=postgres --from-literal password=buc --namespace=timecurve
+kubectl create secret generic timecurve-pubsub-credentials --from-file=pubsub-credentials.json=pubsub-timecurve-credentials.json --namespace=timecurve
 
 #### create deployment
-kubectl create -f "C:\dev\timecurve\manager\k8s\timecurve-manager-h2.yaml"
 kubectl create -f "C:\dev\timecurve\baltov\k8s\timecurve-baltov.yaml"
+kubectl create -f "C:\dev\timecurve\manager\k8s\timecurve-manager-h2.yaml"
 kubectl create -f "C:\dev\timecurve\payment\k8s\payment.yaml"
 
 #### delete deployment
+kubectl delete -f "C:\dev\timecurve\payment\k8s\payment.yaml"
 kubectl delete -f "C:\dev\timecurve\manager\k8s\timecurve-manager-h2.yaml"
 kubectl delete -f "C:\dev\timecurve\baltov\k8s\timecurve-baltov.yaml"
-kubectl delete -f "C:\dev\timecurve\payment\k8s\payment.yaml"
 
 #### delete secrets
 kubectl delete secret timecurve-cloudsql-credentials
@@ -250,6 +254,7 @@ https://medium.com/google-cloud/google-kubernetes-engine-load-testing-and-auto-s
 
 -- istio
 https://cloud.google.com/istio/docs/istio-on-gke/installing#enabling_sidecar_injection
+https://github.com/GoogleCloudPlatform/istio-samples/tree/master/istio-canary-gke
 
 Log4j
     implementation('org.springframework.boot:spring-boot-starter-log4j2')
